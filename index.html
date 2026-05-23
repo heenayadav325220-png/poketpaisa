@@ -10,6 +10,30 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* डार्क मोड के लिए स्पेशल कलर्स */
+        body.dark-mode {
+            background-color: #1a252f;
+            color: #f5f6fa;
+        }
+        body.dark-mode .app-container {
+            background: #2c3e50;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        body.dark-mode .input-group input {
+            background-color: #34495e;
+            border: 1px solid #455a64;
+            color: white;
+        }
+        body.dark-mode .transaction-item {
+            background: #34495e;
+            color: white;
+        }
+        body.dark-mode .input-group style-bg {
+            background: #34495e !important;
         }
 
         body {
@@ -20,6 +44,26 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+        }
+
+        /* नए फीचर्स के बटनों का स्टाइल */
+        .top-utility-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        .btn-utility {
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            background-color: #7f8c8d;
+            color: white;
+            font-weight: normal;
+        }
+        .btn-reset-data {
+            background-color: #c0392b;
         }
 
         .app-container {
@@ -37,8 +81,10 @@
             margin-bottom: 20px;
             color: #2c3e50;
         }
+        body.dark-mode h2 {
+            color: #f1c40f;
+        }
 
-        /* Balance & Budget Dashboard */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -59,7 +105,6 @@
         .card p { font-size: 12px; opacity: 0.9; text-transform: uppercase; }
         .card h3 { font-size: 20px; margin-top: 5px; }
 
-        /* Warning Banners */
         .warning-banner {
             color: white;
             padding: 12px;
@@ -70,12 +115,9 @@
             display: none;
         }
         
-        .warn-95 {
-            background-color: #f39c12; /* Yellow Alert */
-        }
-
+        .warn-95 { background-color: #f39c12; }
         .warn-over {
-            background-color: #e74c3c; /* Red Danger Alert */
+            background-color: #e74c3c;
             animation: blink 1s infinite;
         }
 
@@ -85,10 +127,7 @@
             100% { opacity: 1; }
         }
 
-        .input-group {
-            margin-bottom: 12px;
-        }
-
+        .input-group { margin-bottom: 12px; }
         .input-group label {
             display: block;
             margin-bottom: 4px;
@@ -96,6 +135,7 @@
             font-weight: 600;
             color: #555;
         }
+        body.dark-mode .input-group label { color: #bdc3c7; }
 
         .input-group input {
             width: 100%;
@@ -139,6 +179,7 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 5px;
         }
+        body.dark-mode .history-section h3 { color: #bdc3c7; border-bottom-color: #455a64; }
 
         .transaction-list {
             list-style: none;
@@ -160,7 +201,6 @@
         .transaction-item.income-type { border-left-color: #2ecc71; }
         .transaction-item.expense-type { border-left-color: #e74c3c; }
 
-        /* Contact Footer Section */
         .footer-contact {
             background: #2c3e50;
             color: white;
@@ -184,6 +224,11 @@
 <audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 
 <div class="app-container">
+    <div class="top-utility-bar">
+        <button class="btn-utility" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+        <button class="btn-utility btn-reset-data" onclick="resetAllData()">🗑️ Reset App</button>
+    </div>
+
     <h2>💰 PocketPaisa Pro</h2>
     
     <div class="warning-banner warn-95" id="warn95Banner">
@@ -204,7 +249,7 @@
         </div>
     </div>
 
-    <div class="input-group" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+    <div class="input-group" id="salaryBox" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
         <label for="salaryInput">Set/Change Monthly Salary (₹):</label>
         <input type="number" id="salaryInput" placeholder="Enter your actual salary">
         <button class="btn-set" onclick="setSalary()">Update Salary</button>
@@ -240,10 +285,11 @@
 </div>
 
 <script>
-    // FIX 1: Shuruat mein default values ekdum 0.00 rahengi jab tak user data na dale
     let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
     let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
     let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
+    // डार्क मोड की मेमोरी स्टेट
+    let isDarkMode = localStorage.getItem('web_dark_mode') === 'true';
 
     const balanceDisplay = document.getElementById('balanceDisplay');
     const salaryDisplay = document.getElementById('salaryDisplay');
@@ -253,12 +299,40 @@
     const amountInput = document.getElementById('amount');
     const categoryInput = document.getElementById('category');
     const salaryInput = document.getElementById('salaryInput');
+    const salaryBox = document.getElementById('salaryBox');
     
     const sirenSound = document.getElementById('sirenSound');
     const warningSound = document.getElementById('warningSound');
 
     function init() {
+        // लोड होते ही डार्क मोड चेक करना
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
         updateUI();
+    }
+
+    // नया फीचर १: डार्क मोड चालू/बंद करने का फंक्शन
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('web_dark_mode', isDarkMode);
+    }
+
+    // नया फीचर २: ऐप का सारा डेटा साफ़ करने का फंक्शन
+    function resetAllData() {
+        let confirmReset = confirm("क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?");
+        if (confirmReset) {
+            localStorage.removeItem('web_salary_v2');
+            localStorage.removeItem('web_balance_v2');
+            localStorage.removeItem('web_transactions_v2');
+            salary = 0.00;
+            balance = 0.00;
+            transactions = [];
+            sirenSound.pause();
+            updateUI();
+            alert("ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!");
+        }
     }
 
     function setSalary() {
@@ -268,7 +342,7 @@
             return;
         }
         salary = inputVal;
-        balance = inputVal; // Reset balance to full new salary
+        balance = inputVal;
         
         salaryInput.value = '';
         updateUI();
@@ -278,28 +352,30 @@
         salaryDisplay.innerText = `₹${salary.toFixed(2)}`;
         balanceDisplay.innerText = `₹${balance.toFixed(2)}`;
         
-        // Alarms aur Warning check logic
+        // डार्क मोड में सैलरी इनपुट बॉक्स का बैकग्राउंड ठीक रखना
+        if (isDarkMode) {
+            salaryBox.style.background = '#34495e';
+        } else {
+            salaryBox.style.background = '#f9f9f9';
+        }
+
         let totalSpent = salary - balance;
         let spentPercentage = salary > 0 ? (totalSpent / salary) * 100 : 0;
 
-        // Banners aur Sound reset karein pehle
         warn95Banner.style.display = 'none';
         warnOverBanner.style.display = 'none';
         sirenSound.pause();
 
         if (salary > 0) {
             if (balance < 0) {
-                // 100% se zyada kharch: RED ALERT + SIREN LOOPS
                 warnOverBanner.style.display = 'block';
-                sirenSound.play().catch(e => console.log("Audio play blocked by browser interaction rules"));
+                sirenSound.play().catch(e => console.log("Audio block handling"));
             } else if (spentPercentage >= 95) {
-                // 95% se zyada kharch: YELLOW ALERT + BEEP ONCE
                 warn95Banner.style.display = 'block';
-                warningSound.play().catch(e => console.log("Audio play blocked"));
+                warningSound.play().catch(e => console.log("Audio block handling"));
             }
         }
 
-        // History render code
         transactionList.innerHTML = '';
         transactions.forEach(t => {
             const li = document.createElement('li');
