@@ -13,6 +13,17 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        body {
+            background-color: #f0f3f7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
         /* डार्क मोड के लिए स्पेशल कलर्स */
         body.dark-mode {
             background-color: #1a252f;
@@ -23,7 +34,7 @@
             color: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        body.dark-mode .input-group input {
+        body.dark-mode .input-group input, body.dark-mode .settings-menu select {
             background-color: #34495e;
             border: 1px solid #455a64;
             color: white;
@@ -36,22 +47,77 @@
             background: #34495e !important;
         }
 
-        body {
-            background-color: #f0f3f7;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+        .app-container {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            position: relative;
         }
 
-        /* नए फीचर्स के बटनों का स्टाइल */
+        /* तीन डॉट मेनू और हेडर का स्टाइल */
+        .header-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        body.dark-mode h2 {
+            color: #f1c40f;
+        }
+
+        .three-dot-btn {
+            position: absolute;
+            right: 0;
+            background: none;
+            border: none;
+            color: #2c3e50;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            width: auto;
+        }
+        body.dark-mode .three-dot-btn { color: white; }
+
+        /* सेटिंग्स पैनल (स्लाइडर मेनू) */
+        .settings-menu {
+            display: none;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+        body.dark-mode .settings-menu {
+            background: #34495e;
+            border-color: #455a64;
+        }
+
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .settings-row:last-child { margin-bottom: 0; }
+        .settings-row label { font-size: 13px; font-weight: 600; }
+        .settings-row select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; outline: none; }
+
+        /* पुराने फीचर्स के बटनों का स्टाइल */
         .top-utility-bar {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: 15px;
             gap: 10px;
         }
         .btn-utility {
@@ -64,25 +130,6 @@
         }
         .btn-reset-data {
             background-color: #c0392b;
-        }
-
-        .app-container {
-            background: white;
-            width: 100%;
-            max-width: 480px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        body.dark-mode h2 {
-            color: #f1c40f;
         }
 
         .dashboard-grid {
@@ -224,13 +271,36 @@
 <audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 
 <div class="app-container">
-    <div class="top-utility-bar">
-        <button class="btn-utility" onclick="toggleDarkMode()">🌓 Dark Mode</button>
-        <button class="btn-utility btn-reset-data" onclick="resetAllData()">🗑️ Reset App</button>
+    
+    <div class="header-area">
+        <h2>💰 PocketPaisa Pro</h2>
+        <button class="three-dot-btn" onclick="toggleSettings()">⋮</button>
     </div>
 
-    <h2>💰 PocketPaisa Pro</h2>
-    
+    <div class="settings-menu" id="settingsMenu">
+        <div class="settings-row">
+            <label id="langLabelCurrency">Select Currency:</label>
+            <select id="currencySelect" onchange="changeCurrency()">
+                <option value="₹">INR (₹)</option>
+                <option value="$">USD ($)</option>
+                <option value="€">EUR (€)</option>
+                <option value="£">GBP (£)</option>
+            </select>
+        </div>
+        <div class="settings-row">
+            <label id="langLabelLanguage">Select Language:</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="hi">Hindi (हिंदी)</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        <hr style="margin: 12px 0; opacity: 0.2;">
+        <div class="top-utility-bar">
+            <button class="btn-utility" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+            <button class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">🗑️ Reset App</button>
+        </div>
+    </div>
+
     <div class="warning-banner warn-95" id="warn95Banner">
         ⚠️ WARNING: You have spent 95% of your Budget!
     </div>
@@ -240,37 +310,37 @@
 
     <div class="dashboard-grid">
         <div class="card salary-card">
-            <p>Monthly Salary/Limit</p>
+            <p id="langSalaryLabel">Monthly Salary/Limit</p>
             <h3 id="salaryDisplay">₹0.00</h3>
         </div>
         <div class="card balance-card" id="balanceCard">
-            <p>Remaining Balance</p>
+            <p id="langBalanceLabel">Remaining Balance</p>
             <h3 id="balanceDisplay">₹0.00</h3>
         </div>
     </div>
 
     <div class="input-group" id="salaryBox" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-        <label for="salaryInput">Set/Change Monthly Salary (₹):</label>
-        <input type="number" id="salaryInput" placeholder="Enter your actual salary">
-        <button class="btn-set" onclick="setSalary()">Update Salary</button>
+        <label for="salaryInput" id="langSetSalaryLabel">Set/Change Monthly Salary:</label>
+        <input type="number" id="salaryInput" placeholder="Enter amount">
+        <button class="btn-set" onclick="setSalary()" id="langUpdateSalaryBtn">Update Salary</button>
     </div>
 
     <div class="input-group">
-        <label for="amount">Amount (₹)</label>
+        <label for="amount" id="langAmountLabel">Amount</label>
         <input type="number" id="amount" placeholder="e.g. 500">
     </div>
     <div class="input-group">
-        <label for="category">Category / Description</label>
+        <label for="category" id="langCategoryLabel">Category / Description</label>
         <input type="text" id="category" placeholder="e.g. Food, Bike, Tophy">
     </div>
 
     <div class="btn-container">
-        <button class="btn-income" onclick="addTransaction('income')">+ Add Income</button>
-        <button class="btn-expense" onclick="addTransaction('expense')">- Add Expense</button>
+        <button class="btn-income" onclick="addTransaction('income')" id="langIncomeBtn">+ Add Income</button>
+        <button class="btn-expense" onclick="addTransaction('expense')" id="langExpenseBtn">- Add Expense</button>
     </div>
 
     <div class="history-section">
-        <h3>Transaction Passbook</h3>
+        <h3 id="langPassbookLabel">Transaction Passbook</h3>
         <ul class="transaction-list" id="transactionList"></ul>
     </div>
 </div>
@@ -288,8 +358,11 @@
     let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
     let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
     let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
-    // डार्क मोड की मेमोरी स्टेट
     let isDarkMode = localStorage.getItem('web_dark_mode') === 'true';
+    
+    // नए वेरिएबल: मुद्रा और भाषा मेमोरी के लिए
+    let currentCurrency = localStorage.getItem('web_currency') || '₹';
+    let currentLang = localStorage.getItem('web_lang') || 'hi';
 
     const balanceDisplay = document.getElementById('balanceDisplay');
     const salaryDisplay = document.getElementById('salaryDisplay');
@@ -300,28 +373,86 @@
     const categoryInput = document.getElementById('category');
     const salaryInput = document.getElementById('salaryInput');
     const salaryBox = document.getElementById('salaryBox');
+    const settingsMenu = document.getElementById('settingsMenu');
     
     const sirenSound = document.getElementById('sirenSound');
     const warningSound = document.getElementById('warningSound');
 
+    // अनुवाद शब्दकोश (Translation Dictionary)
+    const translationsDict = {
+        hi: {
+            salaryLabel: "मासिक वेतन / सीमा",
+            balanceLabel: "बची हुई राशि",
+            setSalaryLabel: "मासिक वेतन सेट करें / बदलें:",
+            updateBtn: "वेतन अपडेट करें",
+            amountLabel: "राशि",
+            categoryLabel: "श्रेणी / विवरण",
+            incomeBtn: "+ आय जोड़ें",
+            expenseBtn: "- खर्च जोड़ें",
+            passbookLabel: "लेनदेन पासबुक",
+            currencyLabel: "मुद्रा चुनें:",
+            languageLabel: "भाषा चुनें:",
+            resetBtn: "🗑️ ऐप रीसेट करें",
+            confirmReset: "क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?",
+            alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!"
+        },
+        en: {
+            salaryLabel: "Monthly Salary/Limit",
+            balanceLabel: "Remaining Balance",
+            setSalaryLabel: "Set/Change Monthly Salary:",
+            updateBtn: "Update Salary",
+            amountLabel: "Amount",
+            categoryLabel: "Category / Description",
+            incomeBtn: "+ Add Income",
+            expenseBtn: "- Add Expense",
+            passbookLabel: "Transaction Passbook",
+            currencyLabel: "Select Currency:",
+            languageLabel: "Select Language:",
+            resetBtn: "🗑️ Reset App",
+            confirmReset: "Are you sure you want to clear all app data and history?",
+            alertReset: "App data reset successfully!"
+        }
+    };
+
     function init() {
-        // लोड होते ही डार्क मोड चेक करना
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
         }
+        document.getElementById('currencySelect').value = currentCurrency;
+        document.getElementById('languageSelect').value = currentLang;
         updateUI();
     }
 
-    // नया फीचर १: डार्क मोड चालू/बंद करने का फंक्शन
+    // तीन डॉट पैनल खोलने/बंद करने का फंक्शन
+    function toggleSettings() {
+        if (settingsMenu.style.display === 'block') {
+            settingsMenu.style.display = 'none';
+        } else {
+            settingsMenu.style.display = 'block';
+        }
+    }
+
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
         isDarkMode = document.body.classList.contains('dark-mode');
         localStorage.setItem('web_dark_mode', isDarkMode);
+        updateUI();
     }
 
-    // नया फीचर २: ऐप का सारा डेटा साफ़ करने का फंक्शन
+    function changeCurrency() {
+        currentCurrency = document.getElementById('currencySelect').value;
+        localStorage.setItem('web_currency', currentCurrency);
+        updateUI();
+    }
+
+    function changeLanguage() {
+        currentLang = document.getElementById('languageSelect').value;
+        localStorage.setItem('web_lang', currentLang);
+        updateUI();
+    }
+
     function resetAllData() {
-        let confirmReset = confirm("क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?");
+        let confirmReset = confirm(translationsDict[currentLang].confirmReset);
         if (confirmReset) {
             localStorage.removeItem('web_salary_v2');
             localStorage.removeItem('web_balance_v2');
@@ -331,14 +462,14 @@
             transactions = [];
             sirenSound.pause();
             updateUI();
-            alert("ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!");
+            alert(translationsDict[currentLang].alertReset);
         }
     }
 
     function setSalary() {
         const inputVal = parseFloat(salaryInput.value);
         if (isNaN(inputVal) || inputVal <= 0) {
-            alert('Please enter a valid salary amount!');
+            alert(currentLang === 'hi' ? 'कृपया सही वेतन राशि दर्ज करें!' : 'Please enter a valid salary amount!');
             return;
         }
         salary = inputVal;
@@ -349,10 +480,25 @@
     }
 
     function updateUI() {
-        salaryDisplay.innerText = `₹${salary.toFixed(2)}`;
-        balanceDisplay.innerText = `₹${balance.toFixed(2)}`;
+        // भाषा के अनुसार स्क्रीन का टेक्स्ट बदलना
+        const t = translationsDict[currentLang];
+        document.getElementById('langSalaryLabel').innerText = t.salaryLabel;
+        document.getElementById('langBalanceLabel').innerText = t.balanceLabel;
+        document.getElementById('langSetSalaryLabel').innerText = t.setSalaryLabel;
+        document.getElementById('langUpdateSalaryBtn').innerText = t.updateBtn;
+        document.getElementById('langAmountLabel').innerText = t.amountLabel;
+        document.getElementById('langCategoryLabel').innerText = t.categoryLabel;
+        document.getElementById('langIncomeBtn').innerText = t.incomeBtn;
+        document.getElementById('langExpenseBtn').innerText = t.expenseBtn;
+        document.getElementById('langPassbookLabel').innerText = t.passbookLabel;
+        document.getElementById('langLabelCurrency').innerText = t.currencyLabel;
+        document.getElementById('langLabelLanguage').innerText = t.languageLabel;
+        document.getElementById('langResetBtn').innerText = t.resetBtn;
+
+        // चुनी हुई मुद्रा (Currency) के सिंबल के साथ राशि दिखाना
+        salaryDisplay.innerText = `${currentCurrency}${salary.toFixed(2)}`;
+        balanceDisplay.innerText = `${currentCurrency}${balance.toFixed(2)}`;
         
-        // डार्क मोड में सैलरी इनपुट बॉक्स का बैकग्राउंड ठीक रखना
         if (isDarkMode) {
             salaryBox.style.background = '#34495e';
         } else {
@@ -368,9 +514,11 @@
 
         if (salary > 0) {
             if (balance < 0) {
+                warnOverBanner.innerText = currentLang === 'hi' ? `🚨 संकट चेतावनी: बजट पार हो गया! सायरन बज रहा है!` : `🚨 CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!`;
                 warnOverBanner.style.display = 'block';
                 sirenSound.play().catch(e => console.log("Audio block handling"));
             } else if (spentPercentage >= 95) {
+                warn95Banner.innerText = currentLang === 'hi' ? `⚠️ चेतावनी: आपने अपने बजट का 95% खर्च कर दिया है!` : `⚠️ WARNING: You have spent 95% of your Budget!`;
                 warn95Banner.style.display = 'block';
                 warningSound.play().catch(e => console.log("Audio block handling"));
             }
@@ -383,7 +531,7 @@
             li.innerHTML = `
                 <div><strong>${t.type === 'income' ? '➕' : '➖'} ${t.category}</strong></div>
                 <div style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold;">
-                    ${t.type === 'income' ? '+' : '-'}₹${t.amount.toFixed(2)}
+                    ${t.type === 'income' ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
                 </div>
             `;
             transactionList.appendChild(li);
@@ -399,12 +547,12 @@
         let category = categoryInput.value.trim();
 
         if (isNaN(amount) || amount <= 0) {
-            alert('Please enter a valid amount!');
+            alert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
             return;
         }
 
         if (category === '') {
-            category = type === 'income' ? 'Other Income' : 'Other Expense';
+            category = type === 'income' ? (currentLang === 'hi' ? 'अन्य आय' : 'Other Income') : (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
         }
 
         if (type === 'income') {
