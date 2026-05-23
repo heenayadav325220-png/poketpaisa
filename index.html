@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PocketPaisa - Money Tracker</title>
+    <title>PocketPaisa Pro - Smart Money Tracker</title>
     <style>
         * {
             margin: 0;
@@ -13,10 +13,10 @@
         }
 
         body {
-            background-color: #f4f6f9;
+            background-color: #f0f3f7;
             color: #333;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
@@ -25,10 +25,11 @@
         .app-container {
             background: white;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
         }
 
         h2 {
@@ -37,40 +38,54 @@
             color: #2c3e50;
         }
 
-        .balance-card {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        /* Balance & Budget Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            padding: 15px;
+            border-radius: 10px;
             color: white;
-            padding: 20px;
-            border-radius: 12px;
             text-align: center;
-            margin-bottom: 25px;
-            transition: background 0.3s;
         }
 
-        .balance-card.negative {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        .balance-card { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .salary-card { background: linear-gradient(135deg, #3498db, #2980b9); }
+
+        .card p { font-size: 12px; opacity: 0.9; text-transform: uppercase; }
+        .card h3 { font-size: 20px; margin-top: 5px; }
+
+        /* Warning Banner */
+        .warning-banner {
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: none;
+            animation: blink 1.5s infinite;
         }
 
-        .balance-card p {
-            font-size: 14px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .balance-card h1 {
-            font-size: 32px;
-            margin-top: 5px;
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 4px;
+            font-size: 13px;
             font-weight: 600;
             color: #555;
         }
@@ -80,17 +95,16 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
         }
 
-        .input-group input:focus {
-            border-color: #3498db;
-        }
+        .input-group input:focus { border-color: #3498db; }
 
         .btn-container {
             display: flex;
             gap: 10px;
+            margin-top: 15px;
             margin-bottom: 25px;
         }
 
@@ -106,15 +120,13 @@
             transition: transform 0.1s;
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
+        button:active { transform: scale(0.98); }
         .btn-income { background-color: #2ecc71; }
         .btn-expense { background-color: #e74c3c; }
+        .btn-set { background-color: #34495e; width: 100%; margin-top: 5px; }
 
         .history-section h3 {
-            font-size: 16px;
+            font-size: 15px;
             color: #7f8c8d;
             margin-bottom: 10px;
             border-bottom: 1px solid #eee;
@@ -123,7 +135,7 @@
 
         .transaction-list {
             list-style: none;
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
         }
 
@@ -141,103 +153,145 @@
         .transaction-item.income-type { border-left-color: #2ecc71; }
         .transaction-item.expense-type { border-left-color: #e74c3c; }
 
-        .item-details span {
-            display: block;
+        /* Contact Footer Section */
+        .footer-contact {
+            background: #2c3e50;
+            color: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
         }
-        .item-category {
-            font-size: 12px;
-            color: #7f8c8d;
-        }
-        .item-amount {
-            font-weight: bold;
-            align-self: center;
-        }
+
+        .footer-contact h4 { margin-bottom: 8px; color: #f1c40f; font-size: 16px; }
+        .footer-contact p { opacity: 0.9; margin: 4px 0; }
+        .footer-contact a { color: #3498db; text-decoration: none; font-weight: bold; }
+        .footer-contact a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <h2>💰 PocketPaisa</h2>
+    <h2>💰 PocketPaisa Pro</h2>
     
-    <!-- Balance Display -->
-    <div class="balance-card" id="balanceCard">
-        <p>Current Balance</p>
-        <h1 id="balanceDisplay">₹0.00</h1>
+    <!-- Warning System Banner -->
+    <div class="warning-banner" id="warningBanner">
+        ⚠️ ALERT: Budget Exceeded! Limit Crossed!
     </div>
 
-    <!-- Inputs -->
+    <!-- Dashboard Numbers -->
+    <div class="dashboard-grid">
+        <div class="card salary-card">
+            <p>Monthly Salary/Limit</p>
+            <h3 id="salaryDisplay">₹50,000.00</h3>
+        </div>
+        <div class="card balance-card" id="balanceCard">
+            <p>Remaining Balance</p>
+            <h3 id="balanceDisplay">₹50,000.00</h3>
+        </div>
+    </div>
+
+    <!-- Set Budget/Salary Section -->
+    <div class="input-group" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+        <label for="salaryInput">Set/Change Monthly Salary (₹):</label>
+        <input type="number" id="salaryInput" placeholder="Enter your salary, e.g. 50000">
+        <button class="btn-set" onclick="setSalary()">Update Salary</button>
+    </div>
+
+    <!-- Expense/Income Inputs -->
     <div class="input-group">
         <label for="amount">Amount (₹)</label>
-        <input type="number" id="amount" placeholder="e.g. 500" min="0">
+        <input type="number" id="amount" placeholder="e.g. 500">
     </div>
     <div class="input-group">
         <label for="category">Category / Description</label>
-        <input type="text" id="category" placeholder="e.g. Cricket Bat, Party, Pocket Money">
+        <input type="text" id="category" placeholder="e.g. Food, Cricket Stuff, Movies">
     </div>
 
-    <!-- Buttons -->
+    <!-- Transaction Buttons -->
     <div class="btn-container">
-        <button class="btn-income" onclick="addTransaction('income')">+ Income</button>
-        <button class="btn-expense" onclick="addTransaction('expense')">- Expense</button>
+        <button class="btn-income" onclick="addTransaction('income')">+ Add Income</button>
+        <button class="btn-expense" onclick="addTransaction('expense')">- Add Expense</button>
     </div>
 
-    <!-- History -->
+    <!-- History Log -->
     <div class="history-section">
-        <h3>Transaction History</h3>
-        <ul class="transaction-list" id="transactionList">
-            <!-- Items will be added here dynamically -->
-        </ul>
+        <h3>Transaction Passbook</h3>
+        <ul class="transaction-list" id="transactionList"></ul>
     </div>
 </div>
 
-<script>
-    // App State Load from LocalStorage
-    let balance = parseFloat(localStorage.getItem('balance')) || 0.0;
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+<!-- Contact Information Footer -->
+<div class="footer-contact">
+    <h4>👨‍💻 App Developer & Owner</h4>
+    <p><strong>Name:</strong> Rohit</p>
+    <p><strong>Call/WhatsApp:</strong> +91 7073282818</p>
+    <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank">@rohit.Yadav.1.4</a></p>
+    <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com">yadavrohityadav331@gmail.com</a></p>
+    <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">© 2026 PocketPaisa Pro. All Rights Reserved.</p>
+</div>
 
-    // DOM Elements
+<script>
+    // Load Data from Browser Memory
+    let salary = parseFloat(localStorage.getItem('web_salary')) || 50000.00;
+    let balance = parseFloat(localStorage.getItem('web_balance')) || 50000.00;
+    let transactions = JSON.parse(localStorage.getItem('web_transactions')) || [];
+
     const balanceDisplay = document.getElementById('balanceDisplay');
-    const balanceCard = document.getElementById('balanceCard');
+    const salaryDisplay = document.getElementById('salaryDisplay');
+    const warningBanner = document.getElementById('warningBanner');
     const transactionList = document.getElementById('transactionList');
     const amountInput = document.getElementById('amount');
     const categoryInput = document.getElementById('category');
+    const salaryInput = document.getElementById('salaryInput');
 
-    // App Initialization
     function init() {
         updateUI();
     }
 
+    function setSalary() {
+        const inputVal = parseFloat(salaryInput.value);
+        if (isNaN(inputVal) || inputVal <= 0) {
+            alert('Please enter a valid salary amount!');
+            return;
+        }
+        let diff = inputVal - salary;
+        salary = inputVal;
+        balance += diff;
+        
+        salaryInput.value = '';
+        updateUI();
+    }
+
     function updateUI() {
-        // Update Balance Text
+        salaryDisplay.innerText = `₹${salary.toFixed(2)}`;
         balanceDisplay.innerText = `₹${balance.toFixed(2)}`;
         
-        // Change color to Red if balance goes below 0
         if (balance < 0) {
-            balanceCard.classList.add('negative');
+            warningBanner.style.display = 'block';
         } else {
-            balanceCard.classList.remove('negative');
+            warningBanner.style.display = 'none';
         }
 
-        // Render List
         transactionList.innerHTML = '';
         transactions.forEach(t => {
             const li = document.createElement('li');
             li.className = `transaction-item ${t.type}-type`;
-            
             li.innerHTML = `
-                <div class="item-details">
-                    <span style="font-weight: 500;">${t.type === 'income' ? '➕' : '➖'} ${t.category}</span>
-                </div>
-                <div class="item-amount" style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}">
+                <div><strong>${t.type === 'income' ? '➕' : '➖'} ${t.category}</strong></div>
+                <div style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold;">
                     ${t.type === 'income' ? '+' : '-'}₹${t.amount.toFixed(2)}
                 </div>
             `;
             transactionList.appendChild(li);
         });
 
-        // Save to LocalStorage
-        localStorage.setItem('balance', balance);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
+        localStorage.setItem('web_salary', salary);
+        localStorage.setItem('web_balance', balance);
+        localStorage.setItem('web_transactions', JSON.stringify(transactions));
     }
 
     function addTransaction(type) {
@@ -250,7 +304,7 @@
         }
 
         if (category === '') {
-            category = type === 'income' ? 'General Income' : 'General Expense';
+            category = type === 'income' ? 'Other Income' : 'Other Expense';
         }
 
         if (type === 'income') {
@@ -259,21 +313,17 @@
             balance -= amount;
         }
 
-        // Add to array (at the beginning)
         transactions.unshift({
             type: type,
             amount: amount,
-            category: category,
-            date: new Date().toLocaleDateString()
+            category: category
         });
 
-        // Reset inputs & Update UI
         amountInput.value = '';
         categoryInput.value = '';
         updateUI();
     }
 
-    // Run on Load
     init();
 </script>
 
