@@ -242,16 +242,33 @@
         .transaction-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 10px;
             background: #f8f9fa;
             margin-bottom: 8px;
             border-radius: 6px;
             font-size: 14px;
             border-left: 5px solid #ccc;
+            flex-wrap: wrap;
         }
 
         .transaction-item.income-type { border-left-color: #2ecc71; }
         .transaction-item.expense-type { border-left-color: #e74c3c; }
+
+        .transaction-left {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .transaction-right {
+            text-align: right;
+        }
+
+        .transaction-date {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
 
         .footer-contact {
             background: #2c3e50;
@@ -402,7 +419,8 @@
             languageLabel: "भाषा चुनें:",
             resetBtn: "🗑️ ऐप रीसेट करें",
             confirmReset: "क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?",
-            alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!"
+            alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!",
+            dateLabel: "दिनांक"
         },
         en: {
             salaryLabel: "Monthly Salary/Limit",
@@ -418,7 +436,8 @@
             languageLabel: "Select Language:",
             resetBtn: "🗑️ Reset App",
             confirmReset: "Are you sure you want to clear all app data and history?",
-            alertReset: "App data reset successfully!"
+            alertReset: "App data reset successfully!",
+            dateLabel: "Date"
         }
     };
 
@@ -486,6 +505,12 @@
         updateUI();
     }
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return date.toLocaleDateString('en-IN', options);
+    }
+
     function updateUI() {
         const t = translationsDict[currentLang];
         document.getElementById('langSalaryLabel').innerText = t.salaryLabel;
@@ -530,13 +555,16 @@
         }
 
         transactionList.innerHTML = '';
-        transactions.forEach(t => {
+        transactions.forEach(txn => {
             const li = document.createElement('li');
-            li.className = `transaction-item ${t.type}-type`;
+            li.className = `transaction-item ${txn.type}-type`;
             li.innerHTML = `
-                <div><strong>${t.type === 'income' ? '➕' : '➖'} ${t.category}</strong></div>
-                <div style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold;">
-                    ${t.type === 'income' ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
+                <div class="transaction-left">
+                    <strong>${txn.type === 'income' ? '➕' : '➖'} ${txn.category}</strong>
+                    <div class="transaction-date">${formatDate(txn.date)}</div>
+                </div>
+                <div class="transaction-right" style="color: ${txn.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold;">
+                    ${txn.type === 'income' ? '+' : '-'}${currentCurrency}${txn.amount.toFixed(2)}
                 </div>
             `;
             transactionList.appendChild(li);
@@ -566,7 +594,8 @@
             balance -= amount;
         }
 
-        transactions.unshift({ type: type, amount: amount, category: category });
+        const currentDate = new Date().toISOString();
+        transactions.unshift({ type: type, amount: amount, category: category, date: currentDate });
         amountInput.value = '';
         categoryInput.value = '';
         updateUI();
@@ -577,4 +606,4 @@
 </script>
 
 </body>
-        </html>
+</html>
