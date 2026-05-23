@@ -360,6 +360,11 @@
 </div>
 
 <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+<script>
     let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
     let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
     let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
