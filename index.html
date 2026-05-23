@@ -3,577 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="google-site-verification" content="dw3QRR89B6z0EFgVHjmKcMzHkIZO3S9763s3pr0I3i8" />
-
-    <link rel="icon" href="https://fav.farm/💰" />
-
     <title>PocketPaisa Pro - Smart Money Tracker</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body {
-            background-color: #f0f3f7;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-        }
-
-        /* डार्क मोड के लिए स्पेशल कलर्स */
-        body.dark-mode {
-            background-color: #1a252f;
-            color: #f5f6fa;
-        }
-        body.dark-mode .app-container {
-            background: #2c3e50;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        body.dark-mode .input-group input, body.dark-mode .settings-menu select {
-            background-color: #34495e;
-            border: 1px solid #455a64;
-            color: white;
-        }
-        body.dark-mode .transaction-item {
-            background: #34495e;
-            color: white;
-        }
-        body.dark-mode .input-group style-bg {
-            background: #34495e !important;
-        }
-
-        .app-container {
-            background: white;
-            width: 100%;
-            max-width: 480px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        /* तीन डॉट मेनू और हेडर का स्टाइल */
-        .header-area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        body.dark-mode h2 {
-            color: #f1c40f;
-        }
-
-        .three-dot-btn {
-            position: absolute;
-            right: 0;
-            background: none;
-            border: none;
-            color: #2c3e50;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-            width: auto;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: #f0f3f7; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+        body.dark-mode { background-color: #1a252f; color: #f5f6fa; }
+        .app-container { background: white; width: 100%; max-width: 480px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        body.dark-mode .app-container { background: #2c3e50; color: white; }
+        .ai-panel { background: #2c3e50; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none; text-align: center; }
+        .btn-action { background: #3498db; color: white; padding: 10px; border: none; border-radius: 8px; width: 100%; margin-top: 5px; cursor: pointer; }
+        .header-area { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 20px; }
+        .three-dot-btn { position: absolute; right: 0; background: none; border: none; color: #2c3e50; font-size: 24px; cursor: pointer; }
         body.dark-mode .three-dot-btn { color: white; }
-
-        /* सेटिंग्स पैनल (स्लाइडर मेनू) */
-        .settings-menu {
-            display: none;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        }
-        body.dark-mode .settings-menu {
-            background: #34495e;
-            border-color: #455a64;
-        }
-
-        .settings-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .settings-row:last-child { margin-bottom: 0; }
-        .settings-row label { font-size: 13px; font-weight: 600; }
-        .settings-row select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; outline: none; }
-
-        /* पुराने फीचर्स के बटनों का स्टाइल */
-        .top-utility-bar {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            gap: 10px;
-        }
-        .btn-utility {
-            padding: 8px 12px;
-            font-size: 12px;
-            border-radius: 6px;
-            background-color: #7f8c8d;
-            color: white;
-            font-weight: normal;
-        }
-        .btn-reset-data {
-            background-color: #c0392b;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
-            text-align: center;
-        }
-
+        .settings-menu { display: none; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        body.dark-mode .settings-menu { background: #34495e; border-color: #455a64; }
+        .settings-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn-utility { padding: 8px 12px; font-size: 12px; border-radius: 6px; background-color: #7f8c8d; color: white; border: none; cursor: pointer; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .card { padding: 15px; border-radius: 10px; color: white; text-align: center; }
         .balance-card { background: linear-gradient(135deg, #2ecc71, #27ae60); }
         .salary-card { background: linear-gradient(135deg, #3498db, #2980b9); }
-
-        .card p { font-size: 12px; opacity: 0.9; text-transform: uppercase; }
-        .card h3 { font-size: 20px; margin-top: 5px; }
-
-        .warning-banner {
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .warn-95 { background-color: #f39c12; }
-        .warn-over {
-            background-color: #e74c3c;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
         .input-group { margin-bottom: 12px; }
-        .input-group label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-        }
-        body.dark-mode .input-group label { color: #bdc3c7; }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .input-group input:focus { border-color: #3498db; }
-
-        .btn-container {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            margin-bottom: 25px;
-        }
-
-        button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            transition: transform 0.1s;
-        }
-
-        button:active { transform: scale(0.98); }
-        .btn-income { background-color: #2ecc71; }
-        .btn-expense { background-color: #e74c3c; }
-        .btn-set { background-color: #34495e; width: 100%; margin-top: 5px; }
-
-        .history-section h3 {
-            font-size: 15px;
-            color: #7f8c8d;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-        body.dark-mode .history-section h3 { color: #bdc3c7; border-bottom-color: #455a64; }
-
-        .transaction-list {
-            list-style: none;
-            max-height: 180px;
-            overflow-y: auto;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background: #f8f9fa;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            font-size: 14px;
-            border-left: 5px solid #ccc;
-        }
-
-        .transaction-item.income-type { border-left-color: #2ecc71; }
-        .transaction-item.expense-type { border-left-color: #e74c3c; }
-
-        .footer-contact {
-            background: #2c3e50;
-            color: white;
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .footer-contact h4 { margin-bottom: 8px; color: #f1c40f; font-size: 16px; }
-        .footer-contact p { opacity: 0.9; margin: 4px 0; }
-        .footer-contact a { color: #3498db; text-decoration: none; font-weight: bold; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .btn-container { display: flex; gap: 10px; margin-top: 15px; }
+        button { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-income { background-color: #2ecc71; flex: 1; }
+        .btn-expense { background-color: #e74c3c; flex: 1; }
+        .transaction-list { list-style: none; max-height: 200px; overflow-y: auto; }
+        .transaction-item { display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; margin-bottom: 8px; border-radius: 6px; border-left: 5px solid #ccc; font-size: 13px;}
+        body.dark-mode .transaction-item { background: #34495e; color: white; }
+        .income-type { border-left-color: #2ecc71; }
+        .expense-type { border-left-color: #e74c3c; }
+        .warning-banner { color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 20px; display: none; }
+        .warn-95 { background-color: #f39c12; }
+        .warn-over { background-color: #e74c3c; }
     </style>
 </head>
 <body>
 
-<audio id="sirenSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto" loop></audio>
-<audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
-
 <div class="app-container">
-    
-    <div class="header-area">
-        <h2>💰 PocketPaisa Pro</h2>
-        <button class="three-dot-btn" onclick="toggleSettings()">⋮</button>
-    </div>
+    <div class="header-area"><h2>💰 PocketPaisa Pro</h2><button class="three-dot-btn" onclick="toggleSettings()">⋮</button></div>
 
     <div class="settings-menu" id="settingsMenu">
-        <div class="settings-row">
-            <label id="langLabelCurrency">Select Currency:</label>
-            <select id="currencySelect" onchange="changeCurrency()">
-                <option value="₹">INR (₹)</option>
-                <option value="$">USD ($)</option>
-                <option value="€">EUR (€)</option>
-                <option value="£">GBP (£)</option>
-            </select>
-        </div>
-        <div class="settings-row">
-            <label id="langLabelLanguage">Select Language:</label>
-            <select id="languageSelect" onchange="changeLanguage()">
-                <option value="hi">Hindi (हिंदी)</option>
-                <option value="en">English</option>
-            </select>
-        </div>
-        <hr style="margin: 12px 0; opacity: 0.2;">
-        <div class="top-utility-bar">
-            <button class="btn-utility" onclick="toggleDarkMode()">🌓 Dark Mode</button>
-            <button class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">🗑️ Reset App</button>
-        </div>
+        <div class="settings-row"><label>Currency:</label><select id="currencySelect" onchange="changeCurrency()"><option value="₹">INR (₹)</option><option value="$">USD ($)</option></select></div>
+        <div class="settings-row"><label>Language:</label><select id="languageSelect" onchange="changeLanguage()"><option value="hi">Hindi</option><option value="en">English</option></select></div>
+        <button class="btn-utility" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+        <button class="btn-utility" style="background:#c0392b" onclick="resetAllData()">🗑️ Reset</button>
     </div>
 
-    <div class="warning-banner warn-95" id="warn95Banner">
-        ⚠️ WARNING: You have spent 95% of your Budget!
+    <div class="warning-banner warn-95" id="warn95Banner">⚠️ बजट 95% तक पहुँच गया!</div>
+    <div class="warning-banner warn-over" id="warnOverBanner">🚨 खतरा! बजट खत्म!</div>
+
+    <div id="aiPanel" class="ai-panel">
+        <h4 id="aiAdvice">AI Analyzing...</h4>
+        <p id="avgDisplay">Daily Avg: 0</p>
     </div>
-    <div class="warning-banner warn-over" id="warnOverBanner">
-        🚨 CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!
-    </div>
+    <button class="btn-action" onclick="toggleAI()">📊 AI Stats</button>
 
     <div class="dashboard-grid">
-        <div class="card salary-card">
-            <p id="langSalaryLabel">Monthly Salary/Limit</p>
-            <h3 id="salaryDisplay">₹0.00</h3>
-        </div>
-        <div class="card balance-card" id="balanceCard">
-            <p id="langBalanceLabel">Remaining Balance</p>
-            <h3 id="balanceDisplay">₹0.00</h3>
-        </div>
-    </div>
-
-    <div class="input-group" id="salaryBox" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-        <label for="salaryInput" id="langSetSalaryLabel">Set/Change Monthly Salary:</label>
-        <input type="number" id="salaryInput" placeholder="Enter amount">
-        <button class="btn-set" onclick="setSalary()" id="langUpdateSalaryBtn">Update Salary</button>
+        <div class="card salary-card"><p>Salary</p><h3 id="salaryDisplay">0</h3></div>
+        <div class="card balance-card"><p>Balance</p><h3 id="balanceDisplay">0</h3></div>
     </div>
 
     <div class="input-group">
-        <label for="amount" id="langAmountLabel">Amount</label>
-        <input type="number" id="amount" placeholder="e.g. 500">
+        <input type="number" id="salaryInput" placeholder="Set Salary">
+        <button onclick="setSalary()" style="background:#34495e; width:100%; margin-top:5px;">Update Salary</button>
     </div>
+
     <div class="input-group">
-        <label for="category" id="langCategoryLabel">Category / Description</label>
-        <input type="text" id="category" placeholder="e.g. Food, Bike, Tophy">
+        <input type="number" id="amount" placeholder="Amount">
+        <input type="text" id="category" placeholder="Category">
     </div>
 
     <div class="btn-container">
-        <button class="btn-income" onclick="addTransaction('income')" id="langIncomeBtn">+ Add Income</button>
-        <button class="btn-expense" onclick="addTransaction('expense')" id="langExpenseBtn">- Add Expense</button>
+        <button class="btn-income" onclick="addTransaction('income')">+ Income</button>
+        <button class="btn-expense" onclick="addTransaction('expense')">- Expense</button>
     </div>
 
-    <div class="history-section">
-        <h3 id="langPassbookLabel">Transaction Passbook</h3>
-        <ul class="transaction-list" id="transactionList"></ul>
-    </div>
-</div>
-
-<div class="footer-contact">
-    <h4>👨‍💻 App Developer & Owner</h4>
-    <p><strong>Name:</strong> Rohit</p>
-    <p><strong>Call/WhatsApp:</strong> +91 7073282818</p>
-    <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank" style="color: #3498db;">@rohit.Yadav.1.4</a></p>
-    <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com" style="color: #3498db;">yadavrohityadav331@gmail.com</a></p>
-    <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">© 2026 PocketPaisa Pro. All Rights Reserved.</p>
+    <h3>Passbook</h3>
+    <ul class="transaction-list" id="transactionList"></ul>
 </div>
 
 <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-
-<script>
-    let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
-    let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
+    let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0;
+    let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0;
     let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
-    let isDarkMode = localStorage.getItem('web_dark_mode') === 'true';
-    
     let currentCurrency = localStorage.getItem('web_currency') || '₹';
     let currentLang = localStorage.getItem('web_lang') || 'hi';
 
-    const balanceDisplay = document.getElementById('balanceDisplay');
-    const salaryDisplay = document.getElementById('salaryDisplay');
-    const warn95Banner = document.getElementById('warn95Banner');
-    const warnOverBanner = document.getElementById('warnOverBanner');
-    const transactionList = document.getElementById('transactionList');
-    const amountInput = document.getElementById('amount');
-    const categoryInput = document.getElementById('category');
-    const salaryInput = document.getElementById('salaryInput');
-    const salaryBox = document.getElementById('salaryBox');
-    const settingsMenu = document.getElementById('settingsMenu');
-    
-    const sirenSound = document.getElementById('sirenSound');
-    const warningSound = document.getElementById('warningSound');
-
-    const translationsDict = {
-        hi: {
-            salaryLabel: "मासिक वेतन / सीमा",
-            balanceLabel: "बची हुई राशि",
-            setSalaryLabel: "मासिक वेतन सेट करें / बदलें:",
-            updateBtn: "वेतन अपडेट करें",
-            amountLabel: "राशि",
-            categoryLabel: "श्रेणी / विवरण",
-            incomeBtn: "+ आय जोड़ें",
-            expenseBtn: "- खर्च जोड़ें",
-            passbookLabel: "लेनदेन पासबुक",
-            currencyLabel: "मुद्रा चुनें:",
-            languageLabel: "भाषा चुनें:",
-            resetBtn: "🗑️ ऐप रीसेट करें",
-            confirmReset: "क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?",
-            alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!"
-        },
-        en: {
-            salaryLabel: "Monthly Salary/Limit",
-            balanceLabel: "Remaining Balance",
-            setSalaryLabel: "Set/Change Monthly Salary:",
-            updateBtn: "Update Salary",
-            amountLabel: "Amount",
-            categoryLabel: "Category / Description",
-            incomeBtn: "+ Add Income",
-            expenseBtn: "- Add Expense",
-            passbookLabel: "Transaction Passbook",
-            currencyLabel: "Select Currency:",
-            languageLabel: "Select Language:",
-            resetBtn: "🗑️ Reset App",
-            confirmReset: "Are you sure you want to clear all app data and history?",
-            alertReset: "App data reset successfully!"
-        }
-    };
-
-    function init() {
-        if (isDarkMode) {
-            document.body.classList.add('dark-mode');
-        }
-        document.getElementById('currencySelect').value = currentCurrency;
-        document.getElementById('languageSelect').value = currentLang;
-        updateUI();
-    }
-
-    function toggleSettings() {
-        if (settingsMenu.style.display === 'block') {
-            settingsMenu.style.display = 'none';
-        } else {
-            settingsMenu.style.display = 'block';
-        }
-    }
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        isDarkMode = document.body.classList.contains('dark-mode');
-        localStorage.setItem('web_dark_mode', isDarkMode);
-        updateUI();
-    }
-
-    function changeCurrency() {
-        currentCurrency = document.getElementById('currencySelect').value;
-        localStorage.setItem('web_currency', currentCurrency);
-        updateUI();
-    }
-
-    function changeLanguage() {
-        currentLang = document.getElementById('languageSelect').value;
-        localStorage.setItem('web_lang', currentLang);
-        updateUI();
-    }
-
-    function resetAllData() {
-        let confirmReset = confirm(translationsDict[currentLang].confirmReset);
-        if (confirmReset) {
-            localStorage.removeItem('web_salary_v2');
-            localStorage.removeItem('web_balance_v2');
-            localStorage.removeItem('web_transactions_v2');
-            salary = 0.00;
-            balance = 0.00;
-            transactions = [];
-            sirenSound.pause();
-            updateUI();
-            alert(translationsDict[currentLang].alertReset);
-        }
-    }
-
-    function setSalary() {
-        const inputVal = parseFloat(salaryInput.value);
-        if (isNaN(inputVal) || inputVal <= 0) {
-            alert(currentLang === 'hi' ? 'कृपया सही वेतन राशि दर्ज करें!' : 'Please enter a valid salary amount!');
-            return;
-        }
-        salary = inputVal;
-        balance = inputVal;
-        
-        salaryInput.value = '';
-        updateUI();
-    }
-
     function updateUI() {
-        const t = translationsDict[currentLang];
-        document.getElementById('langSalaryLabel').innerText = t.salaryLabel;
-        document.getElementById('langBalanceLabel').innerText = t.balanceLabel;
-        document.getElementById('langSetSalaryLabel').innerText = t.setSalaryLabel;
-        document.getElementById('langUpdateSalaryBtn').innerText = t.updateBtn;
-        document.getElementById('langAmountLabel').innerText = t.amountLabel;
-        document.getElementById('langCategoryLabel').innerText = t.categoryLabel;
-        document.getElementById('langIncomeBtn').innerText = t.incomeBtn;
-        document.getElementById('langExpenseBtn').innerText = t.expenseBtn;
-        document.getElementById('langPassbookLabel').innerText = t.passbookLabel;
-        document.getElementById('langLabelCurrency').innerText = t.currencyLabel;
-        document.getElementById('langLabelLanguage').innerText = t.languageLabel;
-        document.getElementById('langResetBtn').innerText = t.resetBtn;
-
-        salaryDisplay.innerText = `${currentCurrency}${salary.toFixed(2)}`;
-        balanceDisplay.innerText = `${currentCurrency}${balance.toFixed(2)}`;
+        document.getElementById('salaryDisplay').innerText = currentCurrency + salary;
+        document.getElementById('balanceDisplay').innerText = currentCurrency + balance;
         
-        if (isDarkMode) {
-            salaryBox.style.background = '#34495e';
-        } else {
-            salaryBox.style.background = '#f9f9f9';
-        }
+        // Budget Logic
+        let totalExpense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+        let warn95 = document.getElementById('warn95Banner');
+        let warnOver = document.getElementById('warnOverBanner');
+        warn95.style.display = (salary > 0 && totalExpense >= salary * 0.95 && totalExpense < salary) ? 'block' : 'none';
+        warnOver.style.display = (salary > 0 && totalExpense >= salary) ? 'block' : 'none';
 
-        let totalSpent = salary - balance;
-        let spentPercentage = salary > 0 ? (totalSpent / salary) * 100 : 0;
-
-        warn95Banner.style.display = 'none';
-        warnOverBanner.style.display = 'none';
-        sirenSound.pause();
-
-        if (salary > 0) {
-            if (balance < 0) {
-                warnOverBanner.innerText = currentLang === 'hi' ? `🚨 संकट चेतावनी: बजट पार हो गया! सायरन बज रहा है!` : `🚨 CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!`;
-                warnOverBanner.style.display = 'block';
-                sirenSound.play().catch(e => console.log("Audio block handling"));
-            } else if (spentPercentage >= 95) {
-                warn95Banner.innerText = currentLang === 'hi' ? `⚠️ चेतावनी: आपने अपने बजट का 95% खर्च कर दिया है!` : `⚠️ WARNING: You have spent 95% of your Budget!`;
-                warn95Banner.style.display = 'block';
-                warningSound.play().catch(e => console.log("Audio block handling"));
-            }
-        }
-
-        transactionList.innerHTML = '';
-        transactions.forEach(t => {
-            const li = document.createElement('li');
-            li.className = `transaction-item ${t.type}-type`;
-            li.innerHTML = `
-                <div><strong>${t.type === 'income' ? '➕' : '➖'} ${t.category}</strong></div>
-                <div style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold;">
-                    ${t.type === 'income' ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
-                </div>
-            `;
-            transactionList.appendChild(li);
+        let list = document.getElementById('transactionList');
+        list.innerHTML = '';
+        transactions.forEach(item => {
+            list.innerHTML += `<li class="transaction-item ${item.type}-type"><div>${item.category}<br><small>${item.date}</small></div><div>${item.type=='income'?'+':'-'}${currentCurrency}${item.amount}</div></li>`;
         });
-
-        localStorage.setItem('web_salary_v2', salary);
-        localStorage.setItem('web_balance_v2', balance);
-        localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
     }
 
     function addTransaction(type) {
-        const amount = parseFloat(amountInput.value);
-        let category = categoryInput.value.trim();
-
-        if (isNaN(amount) || amount <= 0) {
-            alert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
-            return;
-        }
-
-        if (category === '') {
-            category = type === 'income' ? (currentLang === 'hi' ? 'अन्य आय' : 'Other Income') : (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
-        }
-
-        if (type === 'income') {
-            balance += amount;
-        } else {
-            balance -= amount;
-        }
-
-        transactions.unshift({ type: type, amount: amount, category: category });
-        amountInput.value = '';
-        categoryInput.value = '';
+        let amt = parseFloat(document.getElementById('amount').value);
+        let cat = document.getElementById('category').value || "General";
+        if(isNaN(amt)) return;
+        if(type === 'income') balance += amt; else balance -= amt;
+        
+        let date = new Date().toLocaleDateString();
+        transactions.unshift({ type, amount: amt, category: cat, date: date });
+        
+        localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
+        localStorage.setItem('web_balance_v2', balance);
+        document.getElementById('amount').value = '';
+        document.getElementById('category').value = '';
         updateUI();
     }
 
-    init();
-</script>
+    function setSalary() {
+        salary = parseFloat(document.getElementById('salaryInput').value);
+        balance = salary;
+        localStorage.setItem('web_salary_v2', salary);
+        localStorage.setItem('web_balance_v2', balance);
+        updateUI();
+    }
 
+    function toggleSettings() { document.getElementById('settingsMenu').style.display = (document.getElementById('settingsMenu').style.display === 'block') ? 'none' : 'block'; }
+    function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+    function changeCurrency() { currentCurrency = document.getElementById('currencySelect').value; localStorage.setItem('web_currency', currentCurrency); updateUI(); }
+    function changeLanguage() { currentLang = document.getElementById('languageSelect').value; localStorage.setItem('web_lang', currentLang); updateUI(); }
+    function toggleAI() { let p = document.getElementById('aiPanel'); p.style.display = (p.style.display === 'block') ? 'none' : 'block'; }
+    function resetAllData() { localStorage.clear(); location.reload(); }
+
+    // Init
+    document.getElementById('currencySelect').value = currentCurrency;
+    document.getElementById('languageSelect').value = currentLang;
+    updateUI();
+</script>
 </body>
-               </html>
+</html>
