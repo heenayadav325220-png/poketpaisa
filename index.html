@@ -59,9 +59,8 @@
         .card p { font-size: 12px; opacity: 0.9; text-transform: uppercase; }
         .card h3 { font-size: 20px; margin-top: 5px; }
 
-        /* Warning Banner */
+        /* Warning Banners */
         .warning-banner {
-            background-color: #e74c3c;
             color: white;
             padding: 12px;
             border-radius: 8px;
@@ -69,12 +68,20 @@
             font-weight: bold;
             margin-bottom: 20px;
             display: none;
-            animation: blink 1.5s infinite;
+        }
+        
+        .warn-95 {
+            background-color: #f39c12; /* Yellow Alert */
+        }
+
+        .warn-over {
+            background-color: #e74c3c; /* Red Danger Alert */
+            animation: blink 1s infinite;
         }
 
         @keyframes blink {
             0% { opacity: 1; }
-            50% { opacity: 0.6; }
+            50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
 
@@ -169,84 +176,86 @@
         .footer-contact h4 { margin-bottom: 8px; color: #f1c40f; font-size: 16px; }
         .footer-contact p { opacity: 0.9; margin: 4px 0; }
         .footer-contact a { color: #3498db; text-decoration: none; font-weight: bold; }
-        .footer-contact a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
+<audio id="sirenSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto" loop></audio>
+<audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+
 <div class="app-container">
     <h2>💰 PocketPaisa Pro</h2>
     
-    <!-- Warning System Banner -->
-    <div class="warning-banner" id="warningBanner">
-        ⚠️ ALERT: Budget Exceeded! Limit Crossed!
+    <div class="warning-banner warn-95" id="warn95Banner">
+        ⚠️ WARNING: You have spent 95% of your Budget!
+    </div>
+    <div class="warning-banner warn-over" id="warnOverBanner">
+        🚨 CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!
     </div>
 
-    <!-- Dashboard Numbers -->
     <div class="dashboard-grid">
         <div class="card salary-card">
             <p>Monthly Salary/Limit</p>
-            <h3 id="salaryDisplay">₹50,000.00</h3>
+            <h3 id="salaryDisplay">₹0.00</h3>
         </div>
         <div class="card balance-card" id="balanceCard">
             <p>Remaining Balance</p>
-            <h3 id="balanceDisplay">₹50,000.00</h3>
+            <h3 id="balanceDisplay">₹0.00</h3>
         </div>
     </div>
 
-    <!-- Set Budget/Salary Section -->
     <div class="input-group" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
         <label for="salaryInput">Set/Change Monthly Salary (₹):</label>
-        <input type="number" id="salaryInput" placeholder="Enter your salary, e.g. 50000">
+        <input type="number" id="salaryInput" placeholder="Enter your actual salary">
         <button class="btn-set" onclick="setSalary()">Update Salary</button>
     </div>
 
-    <!-- Expense/Income Inputs -->
     <div class="input-group">
         <label for="amount">Amount (₹)</label>
         <input type="number" id="amount" placeholder="e.g. 500">
     </div>
     <div class="input-group">
         <label for="category">Category / Description</label>
-        <input type="text" id="category" placeholder="e.g. Food, Cricket Stuff, Movies">
+        <input type="text" id="category" placeholder="e.g. Food, Bike, Tophy">
     </div>
 
-    <!-- Transaction Buttons -->
     <div class="btn-container">
         <button class="btn-income" onclick="addTransaction('income')">+ Add Income</button>
         <button class="btn-expense" onclick="addTransaction('expense')">- Add Expense</button>
     </div>
 
-    <!-- History Log -->
     <div class="history-section">
         <h3>Transaction Passbook</h3>
         <ul class="transaction-list" id="transactionList"></ul>
     </div>
 </div>
 
-<!-- Contact Information Footer -->
 <div class="footer-contact">
     <h4>👨‍💻 App Developer & Owner</h4>
     <p><strong>Name:</strong> Rohit</p>
     <p><strong>Call/WhatsApp:</strong> +91 7073282818</p>
-    <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank">@rohit.Yadav.1.4</a></p>
-    <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com">yadavrohityadav331@gmail.com</a></p>
+    <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank" style="color: #3498db;">@rohit.Yadav.1.4</a></p>
+    <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com" style="color: #3498db;">yadavrohityadav331@gmail.com</a></p>
     <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">© 2026 PocketPaisa Pro. All Rights Reserved.</p>
 </div>
 
 <script>
-    // Load Data from Browser Memory
-    let salary = parseFloat(localStorage.getItem('web_salary')) || 50000.00;
-    let balance = parseFloat(localStorage.getItem('web_balance')) || 50000.00;
-    let transactions = JSON.parse(localStorage.getItem('web_transactions')) || [];
+    // FIX 1: Shuruat mein default values ekdum 0.00 rahengi jab tak user data na dale
+    let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
+    let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
+    let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
 
     const balanceDisplay = document.getElementById('balanceDisplay');
     const salaryDisplay = document.getElementById('salaryDisplay');
-    const warningBanner = document.getElementById('warningBanner');
+    const warn95Banner = document.getElementById('warn95Banner');
+    const warnOverBanner = document.getElementById('warnOverBanner');
     const transactionList = document.getElementById('transactionList');
     const amountInput = document.getElementById('amount');
     const categoryInput = document.getElementById('category');
     const salaryInput = document.getElementById('salaryInput');
+    
+    const sirenSound = document.getElementById('sirenSound');
+    const warningSound = document.getElementById('warningSound');
 
     function init() {
         updateUI();
@@ -258,9 +267,8 @@
             alert('Please enter a valid salary amount!');
             return;
         }
-        let diff = inputVal - salary;
         salary = inputVal;
-        balance += diff;
+        balance = inputVal; // Reset balance to full new salary
         
         salaryInput.value = '';
         updateUI();
@@ -270,12 +278,28 @@
         salaryDisplay.innerText = `₹${salary.toFixed(2)}`;
         balanceDisplay.innerText = `₹${balance.toFixed(2)}`;
         
-        if (balance < 0) {
-            warningBanner.style.display = 'block';
-        } else {
-            warningBanner.style.display = 'none';
+        // Alarms aur Warning check logic
+        let totalSpent = salary - balance;
+        let spentPercentage = salary > 0 ? (totalSpent / salary) * 100 : 0;
+
+        // Banners aur Sound reset karein pehle
+        warn95Banner.style.display = 'none';
+        warnOverBanner.style.display = 'none';
+        sirenSound.pause();
+
+        if (salary > 0) {
+            if (balance < 0) {
+                // 100% se zyada kharch: RED ALERT + SIREN LOOPS
+                warnOverBanner.style.display = 'block';
+                sirenSound.play().catch(e => console.log("Audio play blocked by browser interaction rules"));
+            } else if (spentPercentage >= 95) {
+                // 95% se zyada kharch: YELLOW ALERT + BEEP ONCE
+                warn95Banner.style.display = 'block';
+                warningSound.play().catch(e => console.log("Audio play blocked"));
+            }
         }
 
+        // History render code
         transactionList.innerHTML = '';
         transactions.forEach(t => {
             const li = document.createElement('li');
@@ -289,9 +313,9 @@
             transactionList.appendChild(li);
         });
 
-        localStorage.setItem('web_salary', salary);
-        localStorage.setItem('web_balance', balance);
-        localStorage.setItem('web_transactions', JSON.stringify(transactions));
+        localStorage.setItem('web_salary_v2', salary);
+        localStorage.setItem('web_balance_v2', balance);
+        localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
     }
 
     function addTransaction(type) {
@@ -313,12 +337,7 @@
             balance -= amount;
         }
 
-        transactions.unshift({
-            type: type,
-            amount: amount,
-            category: category
-        });
-
+        transactions.unshift({ type: type, amount: amount, category: category });
         amountInput.value = '';
         categoryInput.value = '';
         updateUI();
