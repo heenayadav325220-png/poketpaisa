@@ -1,197 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CORE AI - Futuristic UI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PocketPaisa - Money Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-<style>
-/* --- CSS MERGED & REFINED --- */
-* {
-    margin: 0; padding: 0; box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-}
+        .app-container {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
 
-html, body {
-    width: 100%; height: 100%;
-    overflow: hidden; /* पूरी वेबसाइट का स्क्रॉल बंद */
-    position: fixed; inset: 0;
-    background: #050816; color: white;
-    touch-action: none;
-}
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
 
-/* BACKGROUNDS (Original) */
-body::before {
-    content: ""; position: fixed; inset: 0;
-    background: radial-gradient(circle at top left,#6a00ff22,transparent 30%),
-                radial-gradient(circle at bottom right,#00c3ff11,transparent 30%),
-                radial-gradient(circle at center,#7b2cff11,transparent 40%);
-    z-index: -2;
-}
-body::after {
-    content: ""; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; z-index: -1;
-}
+        .balance-card {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: background 0.3s;
+        }
 
-.app { display: flex; width: 100%; height: 100vh; overflow: hidden; }
+        .balance-card.negative {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
 
-/* SIDEBAR FIX: बंद होने पर पूरी तरह गायब */
-.sidebar {
-    width: 280px; height: 100vh;
-    background: rgba(8,12,30,0.98);
-    border-right: 1px solid rgba(255,255,255,0.06);
-    padding: 24px 18px;
-    display: flex; flex-direction: column;
-    justify-content: space-between;
-    backdrop-filter: blur(20px);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: fixed; left: 0; top: 0; z-index: 9999;
-}
+        .balance-card p {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-/* मोबाइल पर डिफ़ॉल्ट रूप से बंद (App Look) */
-.sidebar.collapsed {
-    transform: translateX(-100%);
-}
+        .balance-card h1 {
+            font-size: 32px;
+            margin-top: 5px;
+        }
 
-.logo { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
-.logo-icon { width: 45px; height: 45px; border-radius: 16px; background: linear-gradient(135deg,#7b2cff,#4f8cff); display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 0 20px #7b2cff88; }
+        .input-group {
+            margin-bottom: 15px;
+        }
 
-.menu { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-.menu-item { height: 50px; min-height: 50px; border-radius: 15px; display: flex; align-items: center; gap: 15px; padding: 0 15px; color: #d6d6d6; cursor: pointer; transition: 0.3s; font-size: 14px; }
-.menu-item:hover { background: rgba(123,44,255,0.15); color: white; }
-.menu-item.active { background: linear-gradient(90deg,#7b2cff33,#7b2cff10); border: 1px solid #7b2cff55; color: white; }
-.menu-item i { width: 20px; text-align: center; color: #8c9eff; }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
 
-.upgrade { background: linear-gradient(145deg,#120b2d,#0c1435); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 15px; margin: 15px 0; }
-.profile { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 15px; background: rgba(255,255,255,0.03); }
-.avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,#7b2cff,#00c3ff); }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
 
-/* MAIN AREA */
-.main { flex: 1; display: flex; flex-direction: column; width: 100%; height: 100vh; }
+        .input-group input:focus {
+            border-color: #3498db;
+        }
 
-.topbar { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(6,10,25,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
 
-.nav-toggle { background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.1s;
+        }
 
-/* CONTENT (Scrollable) */
-.content { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
-.hero { background: linear-gradient(145deg,#0d1435,#0a0f26); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 30px; margin-bottom: 25px; position: relative; overflow: hidden; }
-.ai-input { width: 100%; height: 75px; border-radius: 22px; border: 1px solid #7b2cff66; background: #090d22; display: flex; align-items: center; padding: 0 20px; margin-top: 20px; }
-.ai-input input { flex: 1; background: none; border: none; outline: none; color: white; font-size: 16px; }
+        button:active {
+            transform: scale(0.98);
+        }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
-.card { background: #0b1028; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; transition: 0.3s; }
-.card-icon { width: 50px; height: 50px; border-radius: 15px; background: linear-gradient(135deg,#7b2cff,#00c3ff); display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+        .btn-income { background-color: #2ecc71; }
+        .btn-expense { background-color: #e74c3c; }
 
-/* CHAT AREA (The Bottom Chat) */
-.chat-main { background: #0d1433; border: 1px solid rgba(255,255,255,0.08); border-radius: 26px; display: flex; flex-direction: column; overflow: hidden; margin-top: 10px; }
-.chat-messages { height: 250px; overflow-y: auto; padding: 20px; }
-.message { max-width: 80%; padding: 12px 16px; border-radius: 18px; margin-bottom: 15px; font-size: 14px; }
-.message.ai { background: #151d45; border-bottom-left-radius: 4px; }
-.message.user { background: linear-gradient(135deg,#7b2cff,#4f8cff); margin-left: auto; border-bottom-right-radius: 4px; }
+        .history-section h3 {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
 
-.chat-input-area { height: 80px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 12px; padding: 0 15px; }
-.chat-input-area input { flex: 1; height: 50px; background: #121938; border: none; border-radius: 15px; padding: 0 15px; color: white; outline: none; }
-.chat-send { width: 50px; height: 50px; border-radius: 15px; border: none; background: linear-gradient(135deg,#7b2cff,#4f8cff); color: white; cursor: pointer; }
+        .transaction-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
 
-/* --- CSS END --- */
-</style>
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f8f9fa;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 5px solid #ccc;
+        }
+
+        .transaction-item.income-type { border-left-color: #2ecc71; }
+        .transaction-item.expense-type { border-left-color: #e74c3c; }
+
+        .item-details span {
+            display: block;
+        }
+        .item-category {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        .item-amount {
+            font-weight: bold;
+            align-self: center;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="app">
-
-    <div class="sidebar collapsed" id="sidebar">
-        <div>
-            <div class="logo">
-                <div class="logo-icon">C</div>
-                <h2>CORE AI</h2>
-            </div>
-            <div class="menu">
-                <div class="menu-item active"><i class="fa-solid fa-house"></i><span>Home</span></div>
-                <div class="menu-item"><i class="fa-solid fa-comments"></i><span>Chat</span></div>
-                <div class="menu-item"><i class="fa-solid fa-bolt"></i><span>AI Tools</span></div>
-                <div class="menu-item"><i class="fa-solid fa-brain"></i><span>Knowledge</span></div>
-                <div class="menu-item"><i class="fa-solid fa-robot"></i><span>Automation</span></div>
-                <div class="menu-item"><i class="fa-solid fa-gear"></i><span>Settings</span></div>
-            </div>
-        </div>
-
-        <div class="bottom-box">
-            <div class="upgrade">
-                <h3>Upgrade CORE</h3>
-                <p>Unlock futuristic features.</p>
-            </div>
-            <div class="profile">
-                <div class="avatar"></div>
-                <div><h4>CORE User</h4><small style="color:#999;">Future Plan</small></div>
-            </div>
-        </div>
+<div class="app-container">
+    <h2>💰 PocketPaisa</h2>
+    
+    <!-- Balance Display -->
+    <div class="balance-card" id="balanceCard">
+        <p>Current Balance</p>
+        <h1 id="balanceDisplay">₹0.00</h1>
     </div>
 
-    <div class="main">
-        <div class="topbar">
-            <button class="nav-toggle" onclick="toggleSidebar()">
-                <i class="fa-solid fa-bars-staggered"></i>
-            </button>
-            <div style="font-weight:700; letter-spacing:3px; color:#7b2cff;">CORE AI</div>
-            <div class="avatar" style="width:35px; height:35px;"></div>
-        </div>
+    <!-- Inputs -->
+    <div class="input-group">
+        <label for="amount">Amount (₹)</label>
+        <input type="number" id="amount" placeholder="e.g. 500" min="0">
+    </div>
+    <div class="input-group">
+        <label for="category">Category / Description</label>
+        <input type="text" id="category" placeholder="e.g. Cricket Bat, Party, Pocket Money">
+    </div>
 
-        <div class="content">
-            <div class="hero">
-                <h1>Welcome, Boss ⚡</h1>
-                <p>Advanced futuristic AI interface is active.</p>
-                <div class="ai-input">
-                    <input type="text" placeholder="Ask CORE AI anything...">
-                    <button class="nav-toggle" style="color:#7b2cff;"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>
+    <!-- Buttons -->
+    <div class="btn-container">
+        <button class="btn-income" onclick="addTransaction('income')">+ Income</button>
+        <button class="btn-expense" onclick="addTransaction('expense')">- Expense</button>
+    </div>
 
-            <div class="grid">
-                <div class="card"><div class="card-icon"><i class="fa-solid fa-robot"></i></div><h4>AI Assistant</h4></div>
-                <div class="card"><div class="card-icon"><i class="fa-solid fa-eye"></i></div><h4>AI Vision</h4></div>
-                <div class="card"><div class="card-icon"><i class="fa-solid fa-bolt"></i></div><h4>Automation</h4></div>
-            </div>
-
-            <div class="chat-main">
-                <div class="chat-messages">
-                    <div class="message ai">All systems online. How can I assist you?</div>
-                    <div class="message user">Show me the latest analytics.</div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" placeholder="Message CORE AI...">
-                    <button class="chat-send"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </div>
+    <!-- History -->
+    <div class="history-section">
+        <h3>Transaction History</h3>
+        <ul class="transaction-list" id="transactionList">
+            <!-- Items will be added here dynamically -->
+        </ul>
     </div>
 </div>
 
 <script>
-/* --- JS MERGED & REFINED --- */
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('collapsed');
-}
+    // App State Load from LocalStorage
+    let balance = parseFloat(localStorage.getItem('balance')) || 0.0;
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
-// क्लिक बाहर होने पर स्लाइडर बंद (मोबाइल के लिए)
-document.addEventListener('click', (e) => {
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.querySelector('.nav-toggle');
-    
-    if (!sidebar.contains(e.target) && !toggleBtn.contains(event.target) && !sidebar.classList.contains('collapsed')) {
-        sidebar.classList.add('collapsed');
+    // DOM Elements
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const balanceCard = document.getElementById('balanceCard');
+    const transactionList = document.getElementById('transactionList');
+    const amountInput = document.getElementById('amount');
+    const categoryInput = document.getElementById('category');
+
+    // App Initialization
+    function init() {
+        updateUI();
     }
-});
+
+    function updateUI() {
+        // Update Balance Text
+        balanceDisplay.innerText = `₹${balance.toFixed(2)}`;
+        
+        // Change color to Red if balance goes below 0
+        if (balance < 0) {
+            balanceCard.classList.add('negative');
+        } else {
+            balanceCard.classList.remove('negative');
+        }
+
+        // Render List
+        transactionList.innerHTML = '';
+        transactions.forEach(t => {
+            const li = document.createElement('li');
+            li.className = `transaction-item ${t.type}-type`;
+            
+            li.innerHTML = `
+                <div class="item-details">
+                    <span style="font-weight: 500;">${t.type === 'income' ? '➕' : '➖'} ${t.category}</span>
+                </div>
+                <div class="item-amount" style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}">
+                    ${t.type === 'income' ? '+' : '-'}₹${t.amount.toFixed(2)}
+                </div>
+            `;
+            transactionList.appendChild(li);
+        });
+
+        // Save to LocalStorage
+        localStorage.setItem('balance', balance);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+    }
+
+    function addTransaction(type) {
+        const amount = parseFloat(amountInput.value);
+        let category = categoryInput.value.trim();
+
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount!');
+            return;
+        }
+
+        if (category === '') {
+            category = type === 'income' ? 'General Income' : 'General Expense';
+        }
+
+        if (type === 'income') {
+            balance += amount;
+        } else {
+            balance -= amount;
+        }
+
+        // Add to array (at the beginning)
+        transactions.unshift({
+            type: type,
+            amount: amount,
+            category: category,
+            date: new Date().toLocaleDateString()
+        });
+
+        // Reset inputs & Update UI
+        amountInput.value = '';
+        categoryInput.value = '';
+        updateUI();
+    }
+
+    // Run on Load
+    init();
 </script>
 
 </body>
