@@ -1,0 +1,6 @@
+/* सारा CSS जो तुमने पहले <style> टैग में लिखा था, उसे यहाँ कॉपी-पेस्ट कर लो */
+/* (मैंने इसे यहाँ जगह बचाने के लिए छोटा रखा है, तुम अपना पूरा CSS यहाँ रख सकते हो) */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background-color: #f0f3f7; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+.app-container { background: white; width: 100%; max-width: 480px; padding: 25px; border-radius: 15px; }
+/* ...अपना सारा पुराना CSS यहाँ paste कर दो... */
