@@ -34,6 +34,7 @@ function addTransaction(type) {
 
     transactions.unshift({ type, amount, category: category || 'General', date: formatDate() });
     updateUI();
+  
     // ... (बाकी logic)
 }
 
