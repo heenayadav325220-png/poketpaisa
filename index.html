@@ -242,51 +242,16 @@
         .transaction-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             padding: 10px;
             background: #f8f9fa;
             margin-bottom: 8px;
             border-radius: 6px;
             font-size: 14px;
             border-left: 5px solid #ccc;
-            flex-wrap: wrap;
-            gap: 8px;
         }
 
         .transaction-item.income-type { border-left-color: #2ecc71; }
         .transaction-item.expense-type { border-left-color: #e74c3c; }
-
-        .transaction-details {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            align-items: center;
-        }
-
-        .transaction-category-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .transaction-category {
-            font-weight: bold;
-        }
-
-        .transaction-date {
-            font-size: 12px;
-            opacity: 0.7;
-            color: #666;
-        }
-
-        body.dark-mode .transaction-date {
-            color: #aaa;
-        }
-
-        .transaction-amount {
-            font-weight: bold;
-            text-align: right;
-        }
 
         .footer-contact {
             background: #2c3e50;
@@ -393,8 +358,6 @@
     <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com" style="color: #3498db;">yadavrohityadav331@gmail.com</a></p>
     <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">© 2026 PocketPaisa Pro. All Rights Reserved.</p>
 </div>
-</button>
-
 
 <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -458,17 +421,6 @@
             alertReset: "App data reset successfully!"
         }
     };
-
-    function formatDate(date) {
-        const d = new Date(date);
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        
-        return `${day}/${month}/${year} ${hours}:${minutes}`;
-    }
 
     function init() {
         if (isDarkMode) {
@@ -582,14 +534,9 @@
             const li = document.createElement('li');
             li.className = `transaction-item ${t.type}-type`;
             li.innerHTML = `
-                <div class="transaction-details">
-                    <div class="transaction-category-info">
-                        <span class="transaction-category">${t.type === 'income' ? '➕' : '➖'} ${t.category}</span>
-                        <span class="transaction-date">${formatDate(t.date)}</span>
-                    </div>
-                    <div class="transaction-amount" style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'};">
-                        ${t.type === 'income' ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
-                    </div>
+                <div><strong>${t.type === 'income' ? '➕' : '➖'} ${t.category}</strong></div>
+                <div style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold;">
+                    ${t.type === 'income' ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
                 </div>
             `;
             transactionList.appendChild(li);
@@ -619,16 +566,14 @@
             balance -= amount;
         }
 
-        transactions.unshift({ type: type, amount: amount, category: category, date: new Date().toISOString() });
+        transactions.unshift({ type: type, amount: amount, category: category });
         amountInput.value = '';
         categoryInput.value = '';
         updateUI();
     }
 
-    init():
-    
-    </script> 
+    init();
+</script>
 
 </body>
-    
-    </html>
+</html>
