@@ -626,8 +626,11 @@
         updateUI();
     }
 
-    init();
-</script>function exportToCSV() {
+    init():
+    
+</script>
+    
+    function exportToCSV() {
     let csvContent = "data:text/csv;charset=utf-8,Category,Amount,Type,Date\n";
     transactions.forEach(t => {
         csvContent += `${t.category},${t.amount},${t.type},${t.date}\n`;
@@ -640,6 +643,6 @@
     link.click();
 }
 
-
 </body>
+    
 </html>
