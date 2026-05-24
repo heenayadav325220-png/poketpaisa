@@ -5,125 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="dw3QRR89B6z0EFgVHjmKcMzHkIZO3S9763s3pr0I3i8" />
     <link rel="icon" href="https://fav.farm/💰" />
+    <link rel="stylesheet" href="style.css">
     <title>PocketPaisa Pro - Smart Money Tracker</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.3s, color 0.3s; }
-        body { background-color: #f0f3f7; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; position: relative; }
-        body.dark-mode { background-color: #1a252f; color: #f5f6fa; }
-        body.dark-mode .app-container { background: #2c3e50; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .app-container { background: white; width: 100%; max-width: 480px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 20px; position: relative; }
-        .header-area { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 20px; }
-        h2 { text-align: center; color: #2c3e50; }
-        body.dark-mode h2 { color: #f1c40f; }
-        .three-dot-btn { position: absolute; right: 0; background: none; border: none; color: #2c3e50; font-size: 24px; cursor: pointer; padding: 5px; }
-        body.dark-mode .three-dot-btn { color: white; }
-        .settings-menu { display: none; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
-        body.dark-mode .settings-menu { background: #34495e; border-color: #455a64; }
-        .settings-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .btn-utility { padding: 8px 12px; font-size: 12px; border-radius: 6px; background-color: #7f8c8d; color: white; border: none; }
-        .btn-reset-data { background-color: #c0392b; }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .card { padding: 15px; border-radius: 10px; color: white; text-align: center; }
-        .balance-card { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        .salary-card { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .warning-banner { color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 20px; display: none; }
-        .warn-95 { background-color: #f39c12; }
-        .warn-over { background-color: #e74c3c; }
-        .input-group { margin-bottom: 12px; }
-        .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
-        .btn-container { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 25px; }
-        button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-income { background-color: #2ecc71; }
-        .btn-expense { background-color: #e74c3c; }
-        .btn-set { background-color: #34495e; width: 100%; margin-top: 5px; }
-        .history-section { border-top: 1px solid #eee; padding-top: 10px; }
-        .transaction-list { list-style: none; max-height: 180px; overflow-y: auto; }
-        .transaction-item { display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; margin-bottom: 8px; border-radius: 6px; border-left: 5px solid #ccc; }
-        .footer-contact { background: #2c3e50; color: white; width: 100%; max-width: 480px; padding: 20px; border-radius: 12px; text-align: center; font-size: 14px; }
-        .footer-contact a { color: #3498db; }
-    </style>
 </head>
 <body>
+
+<audio id="sirenSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto" loop></audio>
+<audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 
 <div class="app-container">
     <div class="header-area">
         <h2>💰 PocketPaisa Pro</h2>
         <button class="three-dot-btn" onclick="toggleSettings()">⋮</button>
     </div>
+
     <div class="settings-menu" id="settingsMenu">
         <div class="settings-row">
-            <label>Currency:</label>
+            <label id="langLabelCurrency">Select Currency:</label>
             <select id="currencySelect" onchange="changeCurrency()">
                 <option value="₹">INR (₹)</option>
                 <option value="$">USD ($)</option>
+                <option value="€">EUR (€)</option>
+                <option value="£">GBP (£)</option>
             </select>
         </div>
+        <div class="settings-row">
+            <label id="langLabelLanguage">Select Language:</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="hi">Hindi (हिंदी)</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        <hr style="margin: 12px 0; opacity: 0.2;">
         <div class="top-utility-bar">
-            <button class="btn-utility" onclick="toggleDarkMode()">🌓 Mode</button>
-            <button class="btn-utility btn-reset-data" onclick="resetAllData()">🗑️ Reset</button>
+            <button class="btn-utility" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+            <button class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">🗑️ Reset App</button>
         </div>
     </div>
+
+    <div class="warning-banner warn-95" id="warn95Banner">⚠️ WARNING: You have spent 95% of your Budget!</div>
+    <div class="warning-banner warn-over" id="warnOverBanner">🚨 CRITICAL ALERT: Budget Exceeded!</div>
+
     <div class="dashboard-grid">
-        <div class="card salary-card"><p>Salary</p><h3 id="salaryDisplay">₹0.00</h3></div>
-        <div class="card balance-card"><p>Balance</p><h3 id="balanceDisplay">₹0.00</h3></div>
+        <div class="card salary-card">
+            <p id="langSalaryLabel">Monthly Salary/Limit</p>
+            <h3 id="salaryDisplay">₹0.00</h3>
+        </div>
+        <div class="card balance-card">
+            <p id="langBalanceLabel">Remaining Balance</p>
+            <h3 id="balanceDisplay">₹0.00</h3>
+        </div>
+    </div>
+
+    <div class="input-group" id="salaryBox" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+        <label for="salaryInput" id="langSetSalaryLabel">Set/Change Monthly Salary:</label>
+        <input type="number" id="salaryInput" placeholder="Enter amount">
+        <button class="btn-set" onclick="setSalary()" id="langUpdateSalaryBtn">Update Salary</button>
+    </div>
+
+    <div class="input-group">
+        <label for="amount" id="langAmountLabel">Amount</label>
+        <input type="number" id="amount" placeholder="e.g. 500">
     </div>
     <div class="input-group">
-        <input type="number" id="amount" placeholder="Amount">
-        <input type="text" id="category" placeholder="Category">
+        <label for="category" id="langCategoryLabel">Category / Description</label>
+        <input type="text" id="category" placeholder="e.g. Food, Bike, Tophy">
     </div>
+
     <div class="btn-container">
-        <button class="btn-income" onclick="addTransaction('income')">+ Income</button>
-        <button class="btn-expense" onclick="addTransaction('expense')">- Expense</button>
+        <button class="btn-income" onclick="addTransaction('income')" id="langIncomeBtn">+ Add Income</button>
+        <button class="btn-expense" onclick="addTransaction('expense')" id="langExpenseBtn">- Add Expense</button>
     </div>
-    <ul class="transaction-list" id="transactionList"></ul>
+
+    <div class="history-section">
+        <h3 id="langPassbookLabel">Transaction Passbook</h3>
+        <ul class="transaction-list" id="transactionList"></ul>
+    </div>
 </div>
 
 <div class="footer-contact">
-    <h4>👨‍💻 App Developer: Rohit</h4>
-    <p>WhatsApp: +91 7073282818</p>
+    <h4>👨‍💻 App Developer & Owner</h4>
+    <p><strong>Name:</strong> Rohit</p>
+    <p><strong>Call/WhatsApp:</strong> +91 7073282818</p>
+    <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank">@rohit.Yadav.1.4</a></p>
+    <p>© 2026 PocketPaisa Pro. All Rights Reserved.</p>
 </div>
 
-<script>
-    let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
-    let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
-    let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
-
-    function updateUI() {
-        document.getElementById('salaryDisplay').innerText = `₹${salary.toFixed(2)}`;
-        document.getElementById('balanceDisplay').innerText = `₹${balance.toFixed(2)}`;
-        const list = document.getElementById('transactionList');
-        list.innerHTML = '';
-        transactions.forEach(t => {
-            const li = document.createElement('li');
-            li.className = 'transaction-item';
-            li.innerHTML = `<span>${t.category}</span> <span>${t.amount}</span>`;
-            list.appendChild(li);
-        });
-    }
-
-    function toggleSettings() {
-        const m = document.getElementById('settingsMenu');
-        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function addTransaction(type) {
-        const amt = parseFloat(document.getElementById('amount').value);
-        const cat = document.getElementById('category').value;
-        if(isNaN(amt)) return;
-        if(type === 'income') balance += amt;
-        else balance -= amt;
-        transactions.unshift({ type, amount: amt, category: cat });
-        localStorage.setItem('web_balance_v2', balance);
-        localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
-        updateUI();
-    }
-
-    function resetAllData() {
-        localStorage.clear();
-        location.reload();
-    }
-
-    updateUI();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
