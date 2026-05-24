@@ -1,14 +1,1 @@
-body { font-family: sans-serif; background: #f0f3f7; padding: 20px; display: flex; justify-content: center; }
-.app-container { background: white; width: 100%; max-width: 400px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.card { padding: 15px; border-radius: 10px; color: white; text-align: center; }
-.balance-card { background: #2ecc71; }
-.salary-card { background: #3498db; }
-.input-group input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
-.btn-container { display: flex; gap: 10px; }
-button { flex: 1; padding: 10px; border: none; border-radius: 5px; color: white; cursor: pointer; }
-.btn-income { background: #2ecc71; }
-.btn-expense { background: #e74c3c; }
-#transactionList { list-style: none; margin-top: 20px; }
-.transaction-item { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;}
 
