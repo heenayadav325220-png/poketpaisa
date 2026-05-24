@@ -392,7 +392,10 @@
     <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank" style="color: #3498db;">@rohit.Yadav.1.4</a></p>
     <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com" style="color: #3498db;">yadavrohityadav331@gmail.com</a></p>
     <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">© 2026 PocketPaisa Pro. All Rights Reserved.</p>
-</div>
+</div><button onclick="exportToCSV()" style="background: #3498db; padding: 5px 10px; border-radius: 5px; color: white; border: none; cursor: pointer; margin-top: 10px;">
+    📥 Download Report
+</button>
+
 
 <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -624,7 +627,19 @@
     }
 
     init();
-</script>
+</script>function exportToCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,Category,Amount,Type,Date\n";
+    transactions.forEach(t => {
+        csvContent += `${t.category},${t.amount},${t.type},${t.date}\n`;
+    });
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "my_report.csv");
+    document.body.appendChild(link);
+    link.click();
+}
+
 
 </body>
 </html>
