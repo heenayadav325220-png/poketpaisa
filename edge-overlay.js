@@ -303,6 +303,35 @@
                     <input type="text" id="edgeCategoryInput" class="edge-category-input" placeholder="e.g. Food, Fuel, Coffee">
                 </div>
 
+                <!-- Fast Account Selector -->
+                <div class="edge-input-field">
+                    <label class="edge-input-label" for="edgeAccountSelect">Account</label>
+                    <select id="edgeAccountSelect" class="edge-account-select">
+                        <option value="bank" selected>Bank (UPI)</option>
+                        <option value="cash">Cash (नकद)</option>
+                        <option value="credit">Card Debt (उधार)</option>
+                    </select>
+                </div>
+
+                <!-- Quick Voice Add Section -->
+                <div class="edge-voice-add-section">
+                    <div class="edge-voice-add-info">
+                        <span class="edge-voice-add-title">Quick Voice Add</span>
+                        <span id="edgeVoiceInstruction" class="edge-voice-instruction">💡 Say: "Lunch 120 bank" or "Salary 5000 cash"</span>
+                    </div>
+                    <div class="edge-voice-mic-container">
+                        <button type="button" id="edgePanelMicBtn" class="edge-panel-mic-btn" onclick="window.EdgeOverlayService.toggleVoice()" title="Tap to speak & add">
+                            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                        <div id="edgeMicPulseWave" class="edge-mic-pulse-wave"></div>
+                    </div>
+                </div>
+
                 <!-- Fast Category Preset Chips -->
                 <div class="edge-chips-grid">
                     <button type="button" class="edge-chip" onclick="window.EdgeOverlayService.quickFill('Food & Dining')">
@@ -444,12 +473,14 @@
     function submitTransaction() {
         const amountEl = document.getElementById('edgeAmountInput');
         const categoryEl = document.getElementById('edgeCategoryInput');
+        const accountEl = document.getElementById('edgeAccountSelect');
         const toastEl = document.getElementById('edgePanelToast');
         const toastTextEl = document.getElementById('edgePanelToastText');
 
         if (!amountEl) return;
         const amount = parseFloat(amountEl.value);
         const category = categoryEl ? categoryEl.value : '';
+        const account = accountEl ? accountEl.value : 'bank';
 
         if (isNaN(amount) || amount <= 0) {
             amountEl.style.borderColor = 'var(--accent-rose, #f43f5e)';
@@ -461,7 +492,7 @@
         let success = false;
 
         if (bridge && bridge.addTransaction) {
-            success = bridge.addTransaction(state.activeType, amount, category);
+            success = bridge.addTransaction(state.activeType, amount, category, account);
         } else if (typeof window.addTransaction === 'function') {
             // Fallback direct invocation
             const amtInput = document.getElementById('amount');
@@ -709,6 +740,240 @@
         }
     }
 
+    // --- EDGE FLOATING OVERLAY QUICK VOICE ADD SYSTEM ---
+    let edgeIsListening = false;
+    let edgeRecognition = null;
+
+    function initEdgeSpeech() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            const label = document.getElementById('edgeVoiceInstruction');
+            if (label) {
+                const isHi = getAppLanguage() === 'hi';
+                label.innerText = isHi ? '⚠️ वॉइस सपोर्ट नहीं है' : '⚠️ Speech not supported';
+                label.style.color = 'var(--accent-rose, #f43f5e)';
+            }
+            return;
+        }
+
+        edgeRecognition = new SpeechRecognition();
+        edgeRecognition.continuous = false;
+        edgeRecognition.interimResults = false;
+
+        edgeRecognition.onstart = function() {
+            edgeIsListening = true;
+            updateEdgeMicUI(true);
+        };
+
+        edgeRecognition.onerror = function(event) {
+            console.error("[Edge Speech] Error:", event.error);
+            edgeIsListening = false;
+            updateEdgeMicUI(false);
+            const label = document.getElementById('edgeVoiceInstruction');
+            if (label) {
+                const isHi = getAppLanguage() === 'hi';
+                if (event.error === 'not-allowed') {
+                    label.innerText = isHi ? '⚠️ माइक अनुमति आवश्यक है' : '⚠️ Mic permission required';
+                } else {
+                    label.innerText = isHi ? '⚠️ एरर आ गया' : '⚠️ Speech error';
+                }
+                label.style.color = 'var(--accent-rose, #f43f5e)';
+            }
+        };
+
+        edgeRecognition.onend = function() {
+            edgeIsListening = false;
+            updateEdgeMicUI(false);
+        };
+
+        edgeRecognition.onresult = function(event) {
+            const text = event.results[0][0].transcript;
+            if (text && text.trim()) {
+                processEdgeVoiceInput(text);
+            }
+        };
+    }
+
+    function getAppLanguage() {
+        const bridge = window.PocketPaisaBridge;
+        return (bridge ? bridge.getState().currentLang : (localStorage.getItem('web_lang') || 'en'));
+    }
+
+    function updateEdgeMicUI(active) {
+        const micBtn = document.getElementById('edgePanelMicBtn');
+        const wave = document.getElementById('edgeMicPulseWave');
+        const instruction = document.getElementById('edgeVoiceInstruction');
+        const isHi = getAppLanguage() === 'hi';
+
+        if (active) {
+            if (micBtn) micBtn.style.background = 'var(--accent-rose, #f43f5e)';
+            if (wave) wave.style.display = 'block';
+            if (instruction) {
+                instruction.innerText = isHi ? 'सुन रहा हूँ... बोलें' : 'Listening... Speak now';
+                instruction.style.color = 'var(--accent-rose, #f43f5e)';
+            }
+        } else {
+            if (micBtn) micBtn.style.background = 'var(--accent-green, #10b981)';
+            if (wave) wave.style.display = 'none';
+            if (instruction) {
+                instruction.style.color = '';
+                resetVoiceInstruction();
+            }
+        }
+    }
+
+    function resetVoiceInstruction() {
+        const instruction = document.getElementById('edgeVoiceInstruction');
+        if (!instruction) return;
+        const isHi = getAppLanguage() === 'hi';
+        instruction.innerText = isHi 
+            ? '💡 बोलें: "चाय ₹10 नकद" या "सैलरी 50000 बैंक"' 
+            : '💡 Say: "Lunch 120 bank" or "Salary 5000 cash"';
+    }
+
+    function toggleEdgeVoice() {
+        if (!edgeRecognition) {
+            initEdgeSpeech();
+        }
+        if (!edgeRecognition) return;
+
+        if (edgeIsListening) {
+            edgeRecognition.stop();
+        } else {
+            edgeRecognition.lang = getAppLanguage() === 'hi' ? 'hi-IN' : 'en-US';
+            try {
+                edgeRecognition.start();
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+    }
+
+    function parseEdgeVoiceTransaction(text) {
+        const lowercaseText = text.toLowerCase().trim();
+        
+        // Find numbers matching amount
+        const amountMatch = lowercaseText.match(/(\d+(?:\.\d+)?)/);
+        if (!amountMatch) return null;
+        const amount = parseFloat(amountMatch[1]);
+
+        // Determine if income or expense
+        let isIncome = false;
+        const incomeWords = ["salary", "deposit", "income", "received", "credited", "कमाई", "सैलरी", "आय", "मिला", "ब्याज", "मुनाफा", "bonus", "जोड़ो"];
+        for (let word of incomeWords) {
+            if (lowercaseText.includes(word)) {
+                isIncome = true;
+                break;
+            }
+        }
+
+        // Determine Account (cash vs bank vs credit)
+        let account = 'bank';
+        if (lowercaseText.includes('cash') || lowercaseText.includes('नकद') || lowercaseText.includes('कैश')) {
+            account = 'cash';
+        } else if (lowercaseText.includes('credit') || lowercaseText.includes('card') || lowercaseText.includes('कार्ड') || lowercaseText.includes('उधार')) {
+            account = 'credit';
+        }
+
+        // Clean category name
+        let category = text
+            .replace(amountMatch[1], '')
+            .replace(/(salary|deposit|income|received|credited|कमाई|सैलरी|आय|मिला|ब्याज|मुनाफा|bonus|cash|नकद|कैश|credit|card|कार्ड|उधार|जोड़ो|काटो|खर्च|रुपये|रुपया|rupees|rupee|rs|spent|spend|pay)/gi, '')
+            .replace(/[\s\-\:\,\/\=\+]+/g, ' ')
+            .trim();
+
+        if (!category) {
+            category = isIncome 
+                ? (getAppLanguage() === 'hi' ? 'विविध आय' : 'Miscellaneous Income') 
+                : (getAppLanguage() === 'hi' ? 'विविध खर्च' : 'Miscellaneous Expense');
+        } else {
+            category = category.charAt(0).toUpperCase() + category.slice(1);
+        }
+
+        return {
+            type: isIncome ? 'income' : 'expense',
+            amount: amount,
+            category: category,
+            account: account
+        };
+    }
+
+    function processEdgeVoiceInput(text) {
+        const parsed = parseEdgeVoiceTransaction(text);
+        if (!parsed) {
+            const instruction = document.getElementById('edgeVoiceInstruction');
+            if (instruction) {
+                const isHi = getAppLanguage() === 'hi';
+                instruction.innerText = isHi ? '⚠️ राशि समझ नहीं आई' : '⚠️ Could not parse amount';
+                instruction.style.color = 'var(--accent-rose, #f43f5e)';
+                setTimeout(resetVoiceInstruction, 2500);
+            }
+            return;
+        }
+
+        const bridge = window.PocketPaisaBridge;
+        let success = false;
+
+        if (bridge && bridge.addTransaction) {
+            success = bridge.addTransaction(parsed.type, parsed.amount, parsed.category, parsed.account);
+        } else if (typeof window.addTransaction === 'function') {
+            const amtInput = document.getElementById('amount');
+            const catInput = document.getElementById('category');
+            if (amtInput) amtInput.value = parsed.amount;
+            if (catInput) catInput.value = parsed.category;
+            window.addTransaction(parsed.type);
+            success = true;
+        }
+
+        if (success !== false) {
+            // Speak confirmation
+            speakEdgeConfirmation(parsed);
+
+            // Show recorded notification inside edge panel
+            const toastEl = document.getElementById('edgePanelToast');
+            const toastTextEl = document.getElementById('edgePanelToastText');
+            if (toastEl && toastTextEl) {
+                const cur = (bridge && bridge.getState().currentCurrency) || '₹';
+                toastTextEl.innerText = `Voice Recorded: ${cur}${parsed.amount.toFixed(2)} - ${parsed.category}!`;
+                toastEl.style.display = 'flex';
+                
+                // Keep panel open just briefly to show toast, then auto-close
+                setTimeout(() => {
+                    toastEl.style.display = 'none';
+                    closeQuickPanel();
+                }, 1000);
+            } else {
+                closeQuickPanel();
+            }
+        }
+    }
+
+    function speakEdgeConfirmation(tx) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const isHi = getAppLanguage() === 'hi';
+            const action = tx.type === 'income' ? (isHi ? 'आय' : 'Income') : (isHi ? 'खर्च' : 'Expense');
+            const acctLabel = tx.account === 'bank' ? (isHi ? 'बैंक' : 'Bank') : (tx.account === 'cash' ? (isHi ? 'कैश' : 'Cash') : (isHi ? 'कार्ड' : 'Card'));
+            
+            let sentence = isHi 
+                ? `✅ ठीक है! मैंने आपके ${acctLabel} खाते में ${tx.category} के लिए ${tx.amount} रुपये का ${action} जोड़ दिया है।`
+                : `✅ Done! Added ${tx.amount} to your ${acctLabel} for ${tx.category}.`;
+                
+            const utterance = new SpeechSynthesisUtterance(sentence);
+            utterance.lang = isHi ? 'hi-IN' : 'en-US';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.lang.startsWith(isHi ? 'hi' : 'en'));
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+    // --- END EDGE FLOATING OVERLAY QUICK VOICE ADD SYSTEM ---
+
     /**
      * Initialize Edge Overlay System
      */
@@ -741,6 +1006,7 @@
         dismissOnboarding: dismissOnboarding,
         toggleFromSettings: toggleFromSettings,
         syncWithApp: syncPanelWithApp,
+        toggleVoice: toggleEdgeVoice,
         getState: () => ({ ...state })
     };
 

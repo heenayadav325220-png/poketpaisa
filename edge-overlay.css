@@ -835,3 +835,115 @@ body.dark-mode .edge-side-switch-btn {
 .edge-side-switch-btn:hover {
     border-color: var(--accent-green, #10b981);
 }
+
+/* Custom account select element in edge quick-launch panel */
+.edge-account-select {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary, #e2e8f0);
+    background: var(--bg-surface, #ffffff);
+    color: var(--text-primary, #0f172a);
+    font-size: 13px;
+    font-weight: 600;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+
+body.dark-mode .edge-account-select {
+    background: #111723;
+    border-color: #2b3648;
+    color: #f1f5f9;
+}
+
+.edge-account-select:focus {
+    border-color: var(--accent-green, #10b981);
+}
+
+/* Quick Voice Add Section inside quick panel */
+.edge-voice-add-section {
+    border: 1px dashed var(--accent-green, #10b981);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--accent-green-subtle, rgba(16, 185, 129, 0.05));
+    margin-top: 4px;
+    gap: 8px;
+}
+
+body.dark-mode .edge-voice-add-section {
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.02);
+}
+
+.edge-voice-add-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.edge-voice-add-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent-green, #10b981);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.edge-voice-instruction {
+    font-size: 10px;
+    color: var(--text-secondary, #64748b);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.dark-mode .edge-voice-instruction {
+    color: #94a3b8;
+}
+
+.edge-voice-mic-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.edge-panel-mic-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-green, #10b981);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.edge-panel-mic-btn:hover {
+    transform: scale(1.05);
+}
+
+.edge-panel-mic-btn:active {
+    transform: scale(0.95);
+}
+
+.edge-mic-pulse-wave {
+    display: none;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 2px solid var(--accent-rose, #f43f5e);
+    border-radius: 50%;
+    animation: pulseWave 1.4s infinite;
+    pointer-events: none;
+}
+

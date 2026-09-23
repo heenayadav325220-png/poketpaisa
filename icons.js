@@ -230,5 +230,26 @@ const Icons = {
             <path d="M8 13h8"/>
             <path d="M8 17h8"/>
             <path d="M12 13v8"/>
+        </svg>`,
+
+    filePdf: (cls = "svg-icon") => `
+        <svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <circle cx="10" cy="15" r="2"/>
+            <path d="m14 13 3 4"/>
+        </svg>`,
+
+    piggy: (cls = "svg-icon") => `
+        <svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 5c-1.5 0-2.8 1.4-3 2-2.3-.5-4.7-.5-7 0-1-.8-2.2-2-3-2C4 5 3 6.5 3 8c0 1.4.8 2.5 1.5 3 .5 1.8 1.9 3.1 3.5 3.5.5 1.5.5 3.5 0 4.5h2c.5-1 1-2.5 1-3.5h2c0 1 1 2.5 1 3.5h2c-.5-1-.5-3 0-4.5 1.6-.4 3-1.7 3.5-3.5.7-.5 1.5-1.6 1.5-3 0-1.5-1-3-3-3z"/>
+            <path d="M16 11c0 .5-.5 1-1 1s-1-.5-1-1 .5-1 1-1 1 .5 1 1z"/>
+        </svg>`,
+
+    wallet: (cls = "svg-icon") => `
+        <svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>
+            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>
+            <path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>
         </svg>`
 };

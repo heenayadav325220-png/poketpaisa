@@ -33,6 +33,10 @@
         }
     </script>
 
+    <!-- jsPDF Engine for Professional PDF Ledger Reports -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
     <!-- Professional Handcrafted Vector Icon System -->
     <script src="/icons.js"></script>
 
@@ -651,6 +655,29 @@
 
         .btn-set:active {
             transform: scale(0.98);
+        }
+
+        /* Account Selector & Mini-Card Styles */
+        .account-selector-pill {
+            outline: none;
+        }
+        .account-selector-pill.active {
+            background: var(--text-primary) !important;
+            color: var(--bg-surface) !important;
+            border-color: var(--text-primary) !important;
+        }
+        body.dark-mode .account-selector-pill.active {
+            background: var(--accent-green) !important;
+            color: #ffffff !important;
+            border-color: var(--accent-green) !important;
+        }
+        .account-mini-card {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .account-mini-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-green) !important;
+            box-shadow: var(--shadow-sm);
         }
 
         /* Quick Transaction Composer */
@@ -1683,6 +1710,48 @@
             color: var(--text-secondary);
             border: 1px solid var(--border-primary);
         }
+
+        /* Advisor Hands-Free Voice Assistant Styles */
+        @keyframes pulseWave {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 0.4; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+        .btn-mic:hover {
+            transform: scale(1.05);
+            background: var(--accent-rose-subtle) !important;
+            color: var(--accent-rose) !important;
+        }
+        .btn-mic.listening {
+            background: var(--accent-rose) !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 12px var(--accent-rose);
+        }
+        
+        .chat-msg-user {
+            align-self: flex-end;
+            background: var(--accent-green);
+            color: #ffffff;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 var(--radius-sm);
+            padding: 8px 12px;
+            font-size: 12.5px;
+            font-weight: 700;
+            max-width: 85%;
+            word-break: break-word;
+            box-shadow: var(--shadow-sm);
+        }
+        .chat-msg-advisor {
+            align-self: flex-start;
+            background: transparent;
+            color: var(--text-primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm);
+            padding: 4px 6px;
+            font-size: 13px;
+            line-height: 1.5;
+            max-width: 95%;
+            word-break: break-word;
+            border-left: 2px solid var(--accent-green);
+        }
     </style>
 </head>
 <body>
@@ -1835,6 +1904,22 @@
                     </div>
                 </div>
 
+                <!-- Account Breakdowns Row (Cash, Bank, Credit Card) -->
+                <div class="accounts-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-primary);">
+                    <div class="account-mini-card" onclick="selectAccountForComposer('bank')" style="background: var(--bg-subtle); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); padding: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; outline: none;" id="acctCardBank">
+                        <div style="font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;" id="lblBank">BANK (UPI)</div>
+                        <div class="tabular-number" style="font-size: 11px; font-weight: 800; color: var(--accent-green); margin-top: 2px;" id="valBank">₹0.00</div>
+                    </div>
+                    <div class="account-mini-card" onclick="selectAccountForComposer('cash')" style="background: var(--bg-subtle); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); padding: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; outline: none;" id="acctCardCash">
+                        <div style="font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;" id="lblCash">CASH</div>
+                        <div class="tabular-number" style="font-size: 11px; font-weight: 800; color: var(--accent-amber); margin-top: 2px;" id="valCash">₹0.00</div>
+                    </div>
+                    <div class="account-mini-card" onclick="selectAccountForComposer('credit')" style="background: var(--bg-subtle); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); padding: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; outline: none;" id="acctCardCredit">
+                        <div style="font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;" id="lblCredit">CARD DEBT</div>
+                        <div class="tabular-number" style="font-size: 11px; font-weight: 800; color: var(--accent-rose); margin-top: 2px;" id="valCredit">₹0.00</div>
+                    </div>
+                </div>
+
                 <!-- Inline Salary Setter Box -->
                 <div class="salary-management-box" id="salaryBox">
                     <label for="salaryInput" id="langSetSalaryLabel" style="font-size: 11px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase;">Set/Change Monthly Salary:</label>
@@ -1852,6 +1937,20 @@
                         <script>document.write(Icons.composer('svg-icon-md'));</script>
                         <span id="langComposerTitle">Record Transaction</span>
                     </h2>
+                </div>
+
+                <!-- Quick Smart Natural Language Parse Input Row -->
+                <div style="margin-bottom: 14px; background: var(--bg-subtle); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-primary);">
+                    <label style="font-size: 10px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+                        <span>✨ SMART FAST PARSE / त्वरित दर्ज करें</span>
+                    </label>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="smartInput" class="fin-input" placeholder="e.g. 250 Groceries or salary 30000" style="padding: 8px 10px; font-size: 13px !important; flex: 1;">
+                        <button type="button" class="btn-set" onclick="parseSmartText()" style="padding: 0 12px; min-height: unset; height: 38px; font-size: 12px; background: var(--accent-green); color: white;">
+                            Parse ✨
+                        </button>
+                    </div>
+                    <small style="font-size: 10px; color: var(--text-muted); margin-top: 4px; display: block;">Type a line and click Parse to autofill the form below instantly!</small>
                 </div>
 
                 <div class="input-group">
@@ -1895,6 +1994,22 @@
                     </div>
                 </div>
 
+                <!-- Account Selector Switch (Multi-Account) -->
+                <div class="input-group" style="margin-bottom: 14px;">
+                    <label style="font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; display: block;" id="langAccountSelectorLabel">Select Account / स्रोत</label>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                        <button type="button" class="account-selector-pill active" onclick="setComposerAccount('bank')" id="composerAcctBank" style="padding: 8px 10px; font-size: 12px; font-weight: 700; border-radius: var(--radius-sm); border: 1px solid var(--border-primary); background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; transition: all 0.2s;">
+                            Bank
+                        </button>
+                        <button type="button" class="account-selector-pill" onclick="setComposerAccount('cash')" id="composerAcctCash" style="padding: 8px 10px; font-size: 12px; font-weight: 700; border-radius: var(--radius-sm); border: 1px solid var(--border-primary); background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; transition: all 0.2s;">
+                            Cash
+                        </button>
+                        <button type="button" class="account-selector-pill" onclick="setComposerAccount('credit')" id="composerAcctCredit" style="padding: 8px 10px; font-size: 12px; font-weight: 700; border-radius: var(--radius-sm); border: 1px solid var(--border-primary); background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; transition: all 0.2s;">
+                            Card Debt
+                        </button>
+                    </div>
+                </div>
+
                 <div class="btn-container">
                     <button type="button" class="btn-action btn-income" onclick="addTransaction('income')" id="langIncomeBtn">
                         <script>document.write(Icons.income('svg-icon-sm'));</script>
@@ -1907,10 +2022,98 @@
                 </div>
             </div>
 
+            <!-- Category Budgets Panel -->
+            <div class="fin-card">
+                <div class="fin-card-header" style="margin-bottom: 10px; gap: 8px;">
+                    <h2 class="fin-card-title">
+                        <script>document.write(Icons.warning('svg-icon-md'));</script>
+                        <span id="langCatBudgetsTitle">Category Budget Limits</span>
+                    </h2>
+                    <button type="button" class="btn-set" onclick="toggleCatBudgetForm()" style="min-height: unset; height: 26px; padding: 2px 8px; font-size: 11px;" id="btnManageCatLimits">
+                        Manage Limits
+                    </button>
+                </div>
+
+                <!-- Expandable Manage Limits Form -->
+                <div id="catBudgetFormBox" style="display: none; background: var(--bg-subtle); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
+                    <div style="font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-secondary);" id="lblSetCatBudgetHeader">Set Limit for Category:</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" id="catLimitName" class="fin-input" placeholder="e.g. Food & Dining, Groceries" style="padding: 8px 10px; font-size: 13px !important;">
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="catLimitAmt" class="fin-input" placeholder="Limit Amount (e.g. 5000)" style="padding: 8px 10px; font-size: 13px !important; flex: 1;" inputmode="decimal">
+                            <button type="button" class="btn-set" onclick="saveCategoryBudget()" style="padding: 0 14px; min-height: unset; height: 38px; font-size: 12px; background: var(--accent-green); color: white;">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category budgets progress bar list -->
+                <div id="catBudgetsProgressList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+
         </div>
 
         <!-- Right Column: Analytics & Ledger -->
         <div class="dashboard-col">
+            
+            <!-- PocketPaisa Premium AI Advisor Coach & Hands-Free Voice Assistant -->
+            <div class="fin-card" id="advisorCard" style="border: 1px solid var(--border-primary); position: relative; overflow: hidden; background: var(--bg-surface); transition: all 0.3s ease; margin-bottom: 16px;">
+                <!-- Premium Header -->
+                <div class="fin-card-header" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-primary); padding-bottom: 10px;">
+                    <h2 class="fin-card-title" style="display: flex; align-items: center; gap: 8px; font-weight: 800;">
+                        <span id="advisorBotIcon" style="color: var(--accent-green); display: flex; align-items: center;">
+                            <script>document.write(Icons.info('svg-icon-md'));</script>
+                        </span>
+                        <span id="langAdvisorTitle">PocketPaisa Voice Advisor</span>
+                    </h2>
+                    <!-- Hands-Free Voice Status & Voice Toggle -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label class="toggle-container" style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 11px; font-weight: 700; color: var(--text-secondary);" title="Speak out responses automatically using Text-to-Speech">
+                            <span id="langVoiceFeedbackLabel">Speak Response</span>
+                            <input type="checkbox" id="voiceFeedbackToggle" checked style="cursor: pointer; width: 14px; height: 14px; accent-color: var(--accent-green);">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Chat Feed Messages Log -->
+                <div id="advisorChatFeed" style="max-height: 220px; min-height: 120px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; border-radius: var(--radius-sm); background: var(--bg-subtle); border: 1px solid var(--border-primary);">
+                    <!-- Welcome messages loaded dynamically -->
+                </div>
+
+                <!-- Input & Voice Recording Actions Bar -->
+                <div style="display: flex; gap: 8px; align-items: center; background: var(--bg-surface); border: 1px solid var(--border-primary); padding: 6px; border-radius: var(--radius-sm);">
+                    <!-- Visual mic container with pulse animations -->
+                    <div class="mic-button-wrapper" style="position: relative;">
+                        <button type="button" id="advisorMicBtn" onclick="toggleVoiceListening()" class="btn-mic" style="width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--bg-subtle); color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease;" title="Click to speak (Hands-free voice input)">
+                            <svg id="micIconSvg" style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                        <div id="micPulseWave" style="display: none; position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px; border: 2px solid var(--accent-rose); border-radius: 50%; animation: pulseWave 1.4s infinite; pointer-events: none;"></div>
+                    </div>
+                    
+                    <!-- Text manual entry fallback as composer text field -->
+                    <input type="text" id="advisorTextInput" class="fin-input" style="flex: 1; height: 38px; padding: 0 12px; font-size: 13px !important; border: none; background: transparent; outline: none !important;" placeholder="Ask or speak e.g. 'Can I spend 500?'" onkeydown="if(event.key==='Enter') submitAdvisorText()">
+                    
+                    <!-- Send Button -->
+                    <button type="button" onclick="submitAdvisorText()" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: var(--accent-green); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.2s;" title="Send Message">
+                        <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Helper voice instructions cue footer -->
+                <div style="font-size: 10px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding: 0 4px;">
+                    <span id="langSpeechInstruction">💡 Speak: "ऑटो का ₹50 कैश से काटो" or "Can I spend 500?"</span>
+                    <span id="speechStateBadge" style="font-weight: 700; color: var(--accent-green);">Voice Ready</span>
+                </div>
+            </div>
             
             <!-- D3.js Monthly Expense Visualization & 6-Month Trend Component -->
             <div class="chart-section" id="chartSection">
@@ -1979,6 +2182,36 @@
                 </div>
             </div>
 
+            <!-- Smart Savings Goals -->
+            <div class="fin-card">
+                <div class="fin-card-header" style="margin-bottom: 10px; gap: 8px;">
+                    <h2 class="fin-card-title">
+                        <script>document.write(Icons.piggy('svg-icon-md'));</script>
+                        <span id="langSavingsGoalsTitle">Smart Savings Goals</span>
+                    </h2>
+                    <button type="button" class="btn-set" onclick="toggleSavingsGoalForm()" style="min-height: unset; height: 26px; padding: 2px 8px; font-size: 11px;" id="btnNewGoal">
+                        + Create Goal
+                    </button>
+                </div>
+
+                <!-- Expandable Create Goal Form -->
+                <div id="savingsGoalFormBox" style="display: none; background: var(--bg-subtle); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px;">
+                    <div style="font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-secondary);" id="lblNewGoalHeader">New Saving Target:</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" id="goalInputName" class="fin-input" placeholder="e.g. Emergency Fund, New Laptop" style="padding: 8px 10px; font-size: 13px !important;">
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="goalInputTarget" class="fin-input" placeholder="Target (e.g. 10000)" style="padding: 8px 10px; font-size: 13px !important; flex: 1;" inputmode="decimal">
+                            <button type="button" class="btn-set" onclick="saveSavingsGoal()" style="padding: 0 14px; min-height: unset; height: 38px; font-size: 12px; background: var(--accent-green); color: white;">Create</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Savings goals progress bar list -->
+                <div id="savingsGoalsList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Filled dynamically -->
+                </div>
+            </div>
+
             <!-- Passbook / Transaction Feed -->
             <div class="history-section">
                 <div class="passbook-toolbar">
@@ -1993,9 +2226,9 @@
                             <button type="button" class="filter-tab" onclick="setPassbookFilter('expense', this)" id="filterTabExp">Expense</button>
                             <button type="button" class="filter-tab" onclick="setPassbookFilter('income', this)" id="filterTabInc">Income</button>
                         </div>
-                        <button type="button" class="btn-export-csv" onclick="openExportModal()" id="btnExportCsv" title="Export transactions to CSV for Excel/Sheets">
-                            <script>document.write(Icons.download('svg-icon-sm'));</script>
-                            <span id="langExportCsvBtn">Export CSV</span>
+                        <button type="button" class="btn-export-csv" onclick="openExportModal()" id="btnExportCsv" title="Download professional PDF ledger statement">
+                            <script>document.write(Icons.filePdf('svg-icon-sm'));</script>
+                            <span id="langExportCsvBtn">Export PDF</span>
                         </button>
                     </div>
                 </div>
@@ -2049,26 +2282,26 @@
     </div>
 </div>
 
-<!-- CSV Export Options Modal -->
+<!-- PDF Export Options Modal -->
 <div id="exportCsvModal" class="custom-app-modal" onclick="if(event.target===this) closeExportModal()">
     <div class="modal-box export-modal-box">
         <div class="export-modal-icon">
-            <script>document.write(Icons.fileSpreadsheet('svg-icon-lg'));</script>
+            <script>document.write(Icons.filePdf('svg-icon-lg'));</script>
         </div>
-        <h4 id="exportModalTitle" style="font-size: 16px; font-weight: 800; margin: 0 0 6px 0; color: var(--text-primary);">Export CSV Ledger</h4>
-        <p id="exportModalSubtitle" style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">Download your transaction history in spreadsheet format (ready for Excel, Google Sheets, & Numbers).</p>
+        <h4 id="exportModalTitle" style="font-size: 16px; font-weight: 800; margin: 0 0 6px 0; color: var(--text-primary);">Download PDF Ledger Statement</h4>
+        <p id="exportModalSubtitle" style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">Download a beautifully formatted, professional PDF statement containing your financial analysis, budget progress, and transaction ledger.</p>
         
         <div class="export-options-list">
-            <button type="button" class="export-option-btn primary-export-btn" onclick="executeExport('all')">
+            <button type="button" class="export-option-btn primary-export-btn" onclick="executePdfExport('all')">
                 <div class="export-opt-content">
-                    <span class="export-opt-title" id="exportAllTitle">Export All Records</span>
+                    <span class="export-opt-title" id="exportAllTitle">Export All Records (PDF)</span>
                     <span class="export-opt-meta" id="exportAllCount">All transactions</span>
                 </div>
                 <script>document.write(Icons.download('svg-icon-sm'));</script>
             </button>
-            <button type="button" class="export-option-btn" id="exportFilteredBtn" onclick="executeExport('filtered')">
+            <button type="button" class="export-option-btn" id="exportFilteredBtn" onclick="executePdfExport('filtered')">
                 <div class="export-opt-content">
-                    <span class="export-opt-title" id="exportFilteredTitle">Export Filtered View</span>
+                    <span class="export-opt-title" id="exportFilteredTitle">Export Filtered View (PDF)</span>
                     <span class="export-opt-meta" id="exportFilteredCount">Matching active filters</span>
                 </div>
                 <script>document.write(Icons.download('svg-icon-sm'));</script>
@@ -2097,6 +2330,12 @@
     let currentLang = localStorage.getItem('web_lang') || 'hi';
     let activeFilter = 'all';
     let currentChartTab = localStorage.getItem('web_chart_tab') || 'breakdown';
+
+    // New Wealth Management State Persistence
+    let categoryBudgets = JSON.parse(localStorage.getItem('web_category_budgets_v3')) || {};
+    let savingsGoals = JSON.parse(localStorage.getItem('web_savings_goals_v3')) || [];
+    let accountBalances = JSON.parse(localStorage.getItem('web_account_balances_v3')) || { bank: balance, cash: 0.00, credit: 0.00 };
+    let selectedComposerAccount = 'bank';
 
     // DOM Elements
     const balanceDisplay = document.getElementById('balanceDisplay');
@@ -2154,14 +2393,28 @@
             trendStable: "समान खर्च",
             trendVsPrev: "बनाम पिछला माह",
             trendEmpty: "पिछले 6 महीनों में कोई खर्च दर्ज नहीं है।",
-            exportCsvBtn: "CSV एक्सपोर्ट",
-            exportDrawerBtn: "CSV लेजर एक्सपोर्ट",
-            exportModalTitle: "CSV लेजर एक्सपोर्ट",
-            exportModalSubtitle: "लेनदेन का पूरा इतिहास एक्सेल और स्प्रेडशीट फॉर्मेट (CSV) में डाउनलोड करें।",
-            exportAllTitle: "सभी लेनदेन एक्सपोर्ट करें",
-            exportFilteredTitle: "फ़िल्टर किए गए रिकॉर्ड",
-            exportSuccessToast: "CSV फ़ाइल सफलतापूर्वक डाउनलोड हो गई!",
-            noTxToExport: "एक्सपोर्ट करने के लिए कोई लेनदेन नहीं मिला!"
+            exportCsvBtn: "PDF डाउनलोड",
+            exportDrawerBtn: "PDF लेजर रिपोर्ट",
+            exportModalTitle: "PDF वित्तीय विवरण डाउनलोड करें",
+            exportModalSubtitle: "अपनी व्यक्तिगत वित्तीय रिपोर्ट, बजट विश्लेषण, और पूरा खाता बही पीडीएफ फॉर्मेट (PDF) में डाउनलोड करें।",
+            exportAllTitle: "सभी रिकॉर्ड डाउनलोड करें (PDF)",
+            exportFilteredTitle: "फ़िल्टर किए गए रिकॉर्ड (PDF)",
+            exportSuccessToast: "PDF वित्तीय रिपोर्ट सफलतापूर्वक डाउनलोड हो गई!",
+            noTxToExport: "डाउनलोड करने के लिए कोई लेनदेन नहीं मिला!",
+            lblBank: "बैंक (UPI)",
+            lblCash: "नकद",
+            lblCredit: "कार्ड कर्ज",
+            smartFastParse: "✨ स्मार्ट त्वरित पार्स",
+            catBudgetsTitle: "कैटेगरी बजट सीमाएं",
+            savingsGoalsTitle: "स्मार्ट बचत लक्ष्य",
+            btnNewGoal: "+ नया लक्ष्य",
+            btnManageCatLimits: "सीमाएं सेट करें",
+            lblSetCatBudgetHeader: "कैटेगरी के लिए सीमा सेट करें:",
+            lblNewGoalHeader: "नया बचत लक्ष्य दर्ज करें:",
+            acctSelectorLabel: "खाता स्रोत चुनें",
+            langAdvisorTitle: "पॉकेटपैसा वॉइस कोच 🤖💬",
+            langVoiceFeedbackLabel: "बोलकर जवाब दें",
+            langSpeechInstruction: "💡 बोलें: 'ऑटो का ₹50 कैश से काटो' या 'डिनर कर सकता हूँ?'"
         },
         en: {
             salaryLabel: "Monthly Salary/Limit",
@@ -2198,14 +2451,28 @@
             trendStable: "Stable Spending",
             trendVsPrev: "vs prev month",
             trendEmpty: "No expense records in the last 6 months.",
-            exportCsvBtn: "Export CSV",
-            exportDrawerBtn: "Export CSV Ledger",
-            exportModalTitle: "Export CSV Ledger",
-            exportModalSubtitle: "Download full ledger in spreadsheet format for Excel, Google Sheets, & Numbers.",
-            exportAllTitle: "Export All Records",
-            exportFilteredTitle: "Export Filtered View",
-            exportSuccessToast: "CSV ledger exported successfully!",
-            noTxToExport: "No transactions available to export!"
+            exportCsvBtn: "Export PDF",
+            exportDrawerBtn: "Export PDF Ledger",
+            exportModalTitle: "Download PDF Ledger Statement",
+            exportModalSubtitle: "Download a beautifully formatted, professional PDF statement containing your financial analysis, budget progress, and transaction ledger.",
+            exportAllTitle: "Export All Records (PDF)",
+            exportFilteredTitle: "Export Filtered View (PDF)",
+            exportSuccessToast: "PDF statement downloaded successfully!",
+            noTxToExport: "No transactions available to export!",
+            lblBank: "BANK (UPI)",
+            lblCash: "CASH",
+            lblCredit: "CARD DEBT",
+            smartFastParse: "✨ Smart Fast Parse",
+            catBudgetsTitle: "Category Budget Limits",
+            savingsGoalsTitle: "Smart Savings Goals",
+            btnNewGoal: "+ Create Goal",
+            btnManageCatLimits: "Manage Limits",
+            lblSetCatBudgetHeader: "Set Limit for Category:",
+            lblNewGoalHeader: "New Saving Target:",
+            acctSelectorLabel: "Select Account",
+            langAdvisorTitle: "PocketPaisa Voice Advisor 🤖💬",
+            langVoiceFeedbackLabel: "Speak Response",
+            langSpeechInstruction: "💡 Say: 'Spend 120 on lunch bank' or 'Can I spend 500?'"
         }
     };
 
@@ -2220,6 +2487,7 @@
         document.getElementById('currencySelect').value = currentCurrency;
         document.getElementById('languageSelect').value = currentLang;
         updateUI();
+        renderAdvisorWelcome();
     }
 
     function toggleSettings(event) {
@@ -2260,6 +2528,7 @@
         currentLang = document.getElementById('languageSelect').value;
         localStorage.setItem('web_lang', currentLang);
         updateUI();
+        renderAdvisorWelcome();
     }
 
     function quickFillCategory(catName) {
@@ -2327,9 +2596,15 @@
                 localStorage.removeItem('web_salary_v2');
                 localStorage.removeItem('web_balance_v2');
                 localStorage.removeItem('web_transactions_v2');
+                localStorage.removeItem('web_category_budgets_v3');
+                localStorage.removeItem('web_savings_goals_v3');
+                localStorage.removeItem('web_account_balances_v3');
                 salary = 0.00;
                 balance = 0.00;
                 transactions = [];
+                categoryBudgets = {};
+                savingsGoals = [];
+                accountBalances = { bank: 0.00, cash: 0.00, credit: 0.00 };
                 sirenSound.pause();
                 closeSettings();
                 updateUI();
@@ -2346,6 +2621,9 @@
         }
         salary = inputVal;
         balance = inputVal;
+        accountBalances.bank = inputVal;
+        accountBalances.cash = 0.00;
+        accountBalances.credit = 0.00;
         salaryInput.value = '';
         updateUI();
     }
@@ -3098,12 +3376,77 @@
             document.getElementById('langTrendChangeLabel').innerText = t.trendChangeLabel || "MoM Shift";
         }
 
+        // New Wealth Management Localizations
+        if (document.getElementById('langAccountSelectorLabel')) {
+            document.getElementById('langAccountSelectorLabel').innerText = t.acctSelectorLabel || "Select Account / स्रोत";
+        }
+        if (document.getElementById('langCatBudgetsTitle')) {
+            document.getElementById('langCatBudgetsTitle').innerText = t.catBudgetsTitle || "Category Budget Limits";
+        }
+        if (document.getElementById('langSavingsGoalsTitle')) {
+            document.getElementById('langSavingsGoalsTitle').innerText = t.savingsGoalsTitle || "Smart Savings Goals";
+        }
+        if (document.getElementById('btnNewGoal')) {
+            document.getElementById('btnNewGoal').innerText = t.btnNewGoal || "+ Create Goal";
+        }
+        if (document.getElementById('btnManageCatLimits')) {
+            document.getElementById('btnManageCatLimits').innerText = t.btnManageCatLimits || "Manage Limits";
+        }
+        if (document.getElementById('lblSetCatBudgetHeader')) {
+            document.getElementById('lblSetCatBudgetHeader').innerText = t.lblSetCatBudgetHeader || "Set Limit for Category:";
+        }
+        if (document.getElementById('lblNewGoalHeader')) {
+            document.getElementById('lblNewGoalHeader').innerText = t.lblNewGoalHeader || "New Saving Target:";
+        }
+        if (document.getElementById('lblBank')) {
+            document.getElementById('lblBank').innerText = t.lblBank || "BANK (UPI)";
+        }
+        if (document.getElementById('lblCash')) {
+            document.getElementById('lblCash').innerText = t.lblCash || "CASH";
+        }
+        if (document.getElementById('lblCredit')) {
+            document.getElementById('lblCredit').innerText = t.lblCredit || "CARD DEBT";
+        }
+        if (document.getElementById('langAdvisorTitle')) {
+            document.getElementById('langAdvisorTitle').innerText = t.langAdvisorTitle || "PocketPaisa Voice Advisor";
+        }
+        if (document.getElementById('langVoiceFeedbackLabel')) {
+            document.getElementById('langVoiceFeedbackLabel').innerText = t.langVoiceFeedbackLabel || "Speak Response";
+        }
+        if (document.getElementById('langSpeechInstruction')) {
+            document.getElementById('langSpeechInstruction').innerText = t.langSpeechInstruction || "💡 Say: 'Spend 120 on lunch bank' or 'Can I spend 500?'";
+        }
+
         // Quick badges
         if (amountCurrencyPrefix) {
             amountCurrencyPrefix.innerText = currentCurrency;
         }
         if (quickCurrencyBadge) {
             quickCurrencyBadge.innerText = currentCurrency;
+        }
+
+        // Recalculate Wealth Balance
+        balance = accountBalances.bank + accountBalances.cash - accountBalances.credit;
+
+        // Render Multi-Account Mini Cards
+        if (document.getElementById('valBank')) {
+            document.getElementById('valBank').innerText = `${currentCurrency}${accountBalances.bank.toFixed(2)}`;
+        }
+        if (document.getElementById('valCash')) {
+            document.getElementById('valCash').innerText = `${currentCurrency}${accountBalances.cash.toFixed(2)}`;
+        }
+        if (document.getElementById('valCredit')) {
+            document.getElementById('valCredit').innerText = `${currentCurrency}${accountBalances.credit.toFixed(2)}`;
+        }
+
+        // Highlight selected account pill in composer
+        document.querySelectorAll('.account-selector-pill').forEach(el => el.classList.remove('active'));
+        if (selectedComposerAccount === 'bank') {
+            document.getElementById('composerAcctBank').classList.add('active');
+        } else if (selectedComposerAccount === 'cash') {
+            document.getElementById('composerAcctCash').classList.add('active');
+        } else if (selectedComposerAccount === 'credit') {
+            document.getElementById('composerAcctCredit').classList.add('active');
         }
 
         // Numbers format
@@ -3152,11 +3495,19 @@
             }
         }
 
+        // Render sub-widgets
+        renderCategoryBudgets();
+        renderSavingsGoals();
+
         renderTransactionList();
 
+        // Save state persistence
         localStorage.setItem('web_salary_v2', salary);
         localStorage.setItem('web_balance_v2', balance);
         localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
+        localStorage.setItem('web_account_balances_v3', JSON.stringify(accountBalances));
+        localStorage.setItem('web_category_budgets_v3', JSON.stringify(categoryBudgets));
+        localStorage.setItem('web_savings_goals_v3', JSON.stringify(savingsGoals));
 
         renderActiveChart();
 
@@ -3165,9 +3516,10 @@
         }
     }
 
-    function addTransaction(type, customAmount, customCategory) {
+    function addTransaction(type, customAmount, customCategory, customAccount) {
         const amount = customAmount !== undefined ? parseFloat(customAmount) : parseFloat(amountInput.value);
         let category = customCategory !== undefined ? (customCategory || '').trim() : categoryInput.value.trim();
+        let targetAccount = customAccount !== undefined ? customAccount : selectedComposerAccount;
 
         if (isNaN(amount) || amount <= 0) {
             showModalAlert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
@@ -3180,16 +3532,63 @@
                 : (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
         }
 
+        // Apply to Multi-Account Balances
         if (type === 'income') {
-            balance += amount;
+            if (targetAccount === 'bank') {
+                accountBalances.bank += amount;
+            } else if (targetAccount === 'cash') {
+                accountBalances.cash += amount;
+            } else if (targetAccount === 'credit') {
+                accountBalances.credit = Math.max(0, accountBalances.credit - amount);
+            }
         } else {
-            balance -= amount;
+            if (targetAccount === 'bank') {
+                accountBalances.bank -= amount;
+            } else if (targetAccount === 'cash') {
+                accountBalances.cash -= amount;
+            } else if (targetAccount === 'credit') {
+                accountBalances.credit += amount;
+            }
+
+            // Check Category Budgets and Warn the User
+            const lowerCat = category.toLowerCase().trim();
+            let matchedKey = null;
+            for (let k in categoryBudgets) {
+                if (k.toLowerCase().trim() === lowerCat) {
+                    matchedKey = k;
+                    break;
+                }
+            }
+
+            if (matchedKey) {
+                const limit = categoryBudgets[matchedKey];
+                // Calculate current month's spent on this category
+                let currentSpent = transactions
+                    .filter(tr => tr.type === 'expense' && isCurrentMonth(tr) && tr.category.toLowerCase().trim() === lowerCat)
+                    .reduce((sum, tr) => sum + tr.amount, 0);
+                
+                const totalSpentWithThis = currentSpent + amount;
+                const ratio = totalSpentWithThis / limit;
+
+                if (totalSpentWithThis >= limit) {
+                    showToastNotification(currentLang === 'hi' 
+                        ? `⚠️ चेतावनी: '${matchedKey}' का बजट पार हो गया! (${currentCurrency}${totalSpentWithThis.toFixed(0)}/${currentCurrency}${limit})`
+                        : `⚠️ Budget limit exceeded for '${matchedKey}'! (${currentCurrency}${totalSpentWithThis.toFixed(0)}/${currentCurrency}${limit})`, 4500);
+                    if (warningSound) warningSound.play().catch(e => console.log(e));
+                } else if (ratio >= 0.8) {
+                    showToastNotification(currentLang === 'hi'
+                        ? `🔔 ध्यान दें: आप '${matchedKey}' बजट के पास हैं (${(ratio*100).toFixed(0)}% खर्च)`
+                        : `🔔 Warning: Close to '${matchedKey}' budget limit (${(ratio*100).toFixed(0)}% spent)`, 4000);
+                    if (warningSound) warningSound.play().catch(e => console.log(e));
+                }
+            }
         }
 
         transactions.unshift({ 
             type: type, 
             amount: amount, 
             category: category, 
+            account: targetAccount,
             date: new Date().toLocaleString(),
             timestamp: Date.now()
         });
@@ -3197,6 +3596,9 @@
         if (customAmount === undefined) {
             amountInput.value = '';
             categoryInput.value = '';
+            if (document.getElementById('smartInput')) {
+                document.getElementById('smartInput').value = '';
+            }
         }
         updateUI();
         return true;
@@ -3205,14 +3607,804 @@
     function deleteTransaction(index) {
         const t = transactions[index];
         if (!t) return;
+        
+        let targetAccount = t.account || 'bank';
+
         if (t.type === 'income') {
-            balance -= t.amount;
+            if (targetAccount === 'bank') {
+                accountBalances.bank -= t.amount;
+            } else if (targetAccount === 'cash') {
+                accountBalances.cash -= t.amount;
+            } else if (targetAccount === 'credit') {
+                accountBalances.credit += t.amount;
+            }
         } else {
-            balance += t.amount;
+            if (targetAccount === 'bank') {
+                accountBalances.bank += t.amount;
+            } else if (targetAccount === 'cash') {
+                accountBalances.cash += t.amount;
+            } else if (targetAccount === 'credit') {
+                accountBalances.credit = Math.max(0, accountBalances.credit - t.amount);
+            }
         }
+
         transactions.splice(index, 1);
         updateUI();
     }
+
+    // --- NEW WEALTH MANAGEMENT UTILITIES ---
+
+    function selectAccountForComposer(acct) {
+        selectedComposerAccount = acct;
+        updateUI();
+        // visual highlight effect on the composer input
+        const amountCard = document.getElementById('amount');
+        if (amountCard) {
+            amountCard.focus();
+            amountCard.style.outline = '2px solid var(--accent-green)';
+            setTimeout(() => { amountCard.style.outline = 'none'; }, 800);
+        }
+    }
+
+    function setComposerAccount(acct) {
+        selectedComposerAccount = acct;
+        updateUI();
+    }
+
+    function parseSmartText() {
+        const smartText = (document.getElementById('smartInput')?.value || '').trim();
+        if (!smartText) {
+            showModalAlert(currentLang === 'hi' ? 'कृपया पहले कुछ शब्द टाइप करें!' : 'Please enter some text first!');
+            return;
+        }
+
+        // Parse Amount
+        const amountMatch = smartText.match(/(\d+(?:\.\d+)?)/);
+        if (!amountMatch) {
+            showModalAlert(currentLang === 'hi' ? 'कोई संख्या/राशि नहीं मिली! जैसे: 250 चाय' : 'No amount found! Try: 250 chai');
+            return;
+        }
+        const amount = parseFloat(amountMatch[1]);
+
+        // Determine Type
+        const incomeKeywords = ["salary", "deposit", "income", "received", "credited", "कमाई", "सैलरी", "आय", "मिला", "ब्याज", "मुनाफा", "bonus"];
+        let isIncome = false;
+        const lowercaseText = smartText.toLowerCase();
+        for (let word of incomeKeywords) {
+            if (lowercaseText.includes(word)) {
+                isIncome = true;
+                break;
+            }
+        }
+
+        // Determine Account
+        let targetAcct = 'bank';
+        if (lowercaseText.includes('cash') || lowercaseText.includes('नकद') || lowercaseText.includes('कैश')) {
+            targetAcct = 'cash';
+        } else if (lowercaseText.includes('credit') || lowercaseText.includes('card') || lowercaseText.includes('कार्ड') || lowercaseText.includes('उधार')) {
+            targetAcct = 'credit';
+        }
+
+        // Clean Category/Description
+        let categoryClean = smartText
+            .replace(amountMatch[1], '') // strip number
+            .replace(/(salary|deposit|income|received|credited|कमाई|सैलरी|आय|मिला|ब्याज|मुनाफा|bonus|cash|नकद|कैश|credit|card|कार्ड|उधार)/gi, '') // strip keywords
+            .replace(/[\s\-\:\,]+/g, ' ') // clean spaces/punctuation
+            .trim();
+
+        // Titlecase or fallback
+        if (!categoryClean) {
+            categoryClean = isIncome 
+                ? (currentLang === 'hi' ? 'अन्य आय' : 'Other Income') 
+                : (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
+        } else {
+            // Capitalize first letter
+            categoryClean = categoryClean.charAt(0).toUpperCase() + categoryClean.slice(1);
+        }
+
+        // Apply parsed fields to inputs
+        amountInput.value = amount;
+        categoryInput.value = categoryClean;
+        selectedComposerAccount = targetAcct;
+        updateUI();
+
+        // Visual highlight effect
+        amountInput.style.outline = '2px solid var(--accent-green)';
+        categoryInput.style.outline = '2px solid var(--accent-green)';
+        setTimeout(() => {
+            amountInput.style.outline = 'none';
+            categoryInput.style.outline = 'none';
+        }, 800);
+
+        // Toast feedback
+        const formattedType = isIncome 
+            ? (currentLang === 'hi' ? 'आय (Income)' : 'Income')
+            : (currentLang === 'hi' ? 'खर्च (Expense)' : 'Expense');
+        
+        const acctLabel = targetAcct === 'bank' ? 'Bank' : (targetAcct === 'cash' ? 'Cash' : 'Card Debt');
+
+        showToastNotification(currentLang === 'hi'
+            ? `✨ भरा गया: ${currentCurrency}${amount} - '${categoryClean}' (${formattedType}) स्रोत: ${acctLabel}`
+            : `✨ Filled: ${currentCurrency}${amount} for '${categoryClean}' (${formattedType}) on ${acctLabel}!`, 4500);
+    }
+
+    function toggleCatBudgetForm() {
+        const box = document.getElementById('catBudgetFormBox');
+        if (!box) return;
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function saveCategoryBudget() {
+        const nameInput = document.getElementById('catLimitName');
+        const amtInput = document.getElementById('catLimitAmt');
+        if (!nameInput || !amtInput) return;
+
+        const catName = nameInput.value.trim();
+        const limitAmt = parseFloat(amtInput.value);
+
+        if (!catName) {
+            showModalAlert(currentLang === 'hi' ? 'कृपया श्रेणी का नाम लिखें!' : 'Please enter a category name!');
+            return;
+        }
+        if (isNaN(limitAmt) || limitAmt <= 0) {
+            showModalAlert(currentLang === 'hi' ? 'कृपया सही सीमा राशि दर्ज करें!' : 'Please enter a valid limit amount!');
+            return;
+        }
+
+        categoryBudgets[catName] = limitAmt;
+        nameInput.value = '';
+        amtInput.value = '';
+        document.getElementById('catBudgetFormBox').style.display = 'none';
+        
+        updateUI();
+        showToastNotification(currentLang === 'hi'
+            ? `✅ '${catName}' के लिए ${currentCurrency}${limitAmt} का बजट सीमा सेट हो गया!`
+            : `✅ Budget limit of ${currentCurrency}${limitAmt} set for '${catName}'!`, 3500);
+    }
+
+    function deleteCategoryBudget(catName) {
+        if (categoryBudgets[catName] !== undefined) {
+            delete categoryBudgets[catName];
+            updateUI();
+            showToastNotification(currentLang === 'hi' ? '❌ बजट सीमा हटा दी गई!' : '❌ Budget limit removed!', 3000);
+        }
+    }
+
+    function renderCategoryBudgets() {
+        const listContainer = document.getElementById('catBudgetsProgressList');
+        if (!listContainer) return;
+        listContainer.innerHTML = '';
+
+        const categories = Object.keys(categoryBudgets);
+        if (categories.length === 0) {
+            listContainer.innerHTML = `
+                <div style="text-align:center; padding:16px; color:var(--text-muted); font-size:12px;">
+                    ${currentLang === 'hi' 
+                        ? 'कोई बजट सीमा तय नहीं की गई है। ऊपर बटन दबाकर सीमा सेट करें!' 
+                        : 'No category budget limits set yet. Click Manage Limits to add.'}
+                </div>
+            `;
+            return;
+        }
+
+        categories.forEach(cat => {
+            const limit = categoryBudgets[cat];
+            // Calculate total spent in this category for CURRENT MONTH
+            let totalSpent = transactions
+                .filter(t => t.type === 'expense' && isCurrentMonth(t) && t.category.toLowerCase().trim() === cat.toLowerCase().trim())
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            const percent = limit > 0 ? (totalSpent / limit) * 100 : 0;
+            const fillWidth = Math.max(0, Math.min(percent, 100));
+
+            let progressColor = 'var(--accent-green)';
+            if (percent >= 100) {
+                progressColor = 'var(--accent-rose)';
+            } else if (percent >= 80) {
+                progressColor = 'var(--accent-amber)';
+            }
+
+            const div = document.createElement('div');
+            div.style.background = 'var(--bg-subtle)';
+            div.style.border = '1px solid var(--border-primary)';
+            div.style.borderRadius = 'var(--radius-sm)';
+            div.style.padding = '10px';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700; margin-bottom:4px;">
+                   <span style="color:var(--text-primary);">${cat}</span>
+                   <div style="display:flex; align-items:center; gap:6px;">
+                       <span style="color:var(--text-secondary);" class="tabular-number">${currentCurrency}${totalSpent.toFixed(0)} / ${currentCurrency}${limit.toFixed(0)}</span>
+                       <button type="button" onclick="deleteCategoryBudget('${cat}')" style="background:none; border:none; color:var(--accent-rose); cursor:pointer; padding:2px; display:flex; align-items:center;">
+                           ${Icons.close('svg-icon-xs')}
+                       </button>
+                   </div>
+                </div>
+                <div class="budget-progress-track" style="height:6px; background:var(--border-primary); border-radius:99px; overflow:hidden;">
+                    <div style="height:100%; width:${fillWidth}%; background-color:${progressColor}; border-radius:99px; transition:width 0.4s ease;"></div>
+                </div>
+                <div style="font-size:9px; color:var(--text-muted); margin-top:3px; text-align:right;">
+                    ${percent.toFixed(0)}% spent (${(100 - percent).toFixed(0)}% remaining)
+                </div>
+            `;
+            listContainer.appendChild(div);
+        });
+    }
+
+    function toggleSavingsGoalForm() {
+        const box = document.getElementById('savingsGoalFormBox');
+        if (!box) return;
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function saveSavingsGoal() {
+        const nameInput = document.getElementById('goalInputName');
+        const targetInput = document.getElementById('goalInputTarget');
+        if (!nameInput || !targetInput) return;
+
+        const name = nameInput.value.trim();
+        const target = parseFloat(targetInput.value);
+
+        if (!name) {
+            showModalAlert(currentLang === 'hi' ? 'कृपया लक्ष्य का नाम लिखें!' : 'Please enter a goal name!');
+            return;
+        }
+        if (isNaN(target) || target <= 0) {
+            showModalAlert(currentLang === 'hi' ? 'कृपया सही लक्ष्य राशि दर्ज करें!' : 'Please enter a valid target amount!');
+            return;
+        }
+
+        const newGoal = {
+            id: 'goal_' + Date.now(),
+            name: name,
+            target: target,
+            current: 0.00,
+            createdAt: Date.now()
+        };
+
+        savingsGoals.push(newGoal);
+        nameInput.value = '';
+        targetInput.value = '';
+        document.getElementById('savingsGoalFormBox').style.display = 'none';
+
+        updateUI();
+        showToastNotification(currentLang === 'hi'
+            ? `🐷 नया बचत लक्ष्य '${name}' सफलता पूर्वक बनाया गया!`
+            : `🐷 Savings Goal '${name}' created successfully!`, 3500);
+    }
+
+    function deleteSavingsGoal(id) {
+        showModalConfirm(currentLang === 'hi' ? 'क्या आप इस बचत लक्ष्य को हटाना चाहते हैं? (बचाया गया पैसा मुख्य खाते में लौट जाएगा)' : 'Are you sure you want to delete this savings goal? Saved money will return to main bank account.', function(confirmed) {
+            if (confirmed) {
+                const idx = savingsGoals.findIndex(g => g.id === id);
+                if (idx !== -1) {
+                    const g = savingsGoals[idx];
+                    if (g.current > 0) {
+                        // Return saved funds back to Bank
+                        accountBalances.bank += g.current;
+                    }
+                    savingsGoals.splice(idx, 1);
+                    updateUI();
+                    showToastNotification(currentLang === 'hi' ? '❌ बचत लक्ष्य हटा दिया गया!' : '❌ Savings goal deleted!', 3000);
+                }
+            }
+        });
+    }
+
+    function addSavingsGoalDeposit(id) {
+        const idx = savingsGoals.findIndex(g => g.id === id);
+        if (idx === -1) return;
+        const g = savingsGoals[idx];
+
+        const promptMsg = currentLang === 'hi' 
+            ? `बचत लक्ष्य '${g.name}' में कितने पैसे जोड़ने हैं? (यह राशि आपके बैंक खाते से कट जाएगी)` 
+            : `How much do you want to add to '${g.name}'? (Deducts from Bank Account)`;
+        
+        const amtStr = prompt(promptMsg, "");
+        const amt = parseFloat(amtStr);
+
+        if (isNaN(amt) || amt <= 0) {
+            if (amtStr !== null) {
+                showModalAlert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
+            }
+            return;
+        }
+
+        if (accountBalances.bank < amt) {
+            showModalAlert(currentLang === 'hi' ? 'आपके बैंक खाते में पर्याप्त राशि नहीं है!' : 'Insufficient funds in Bank Account!');
+            return;
+        }
+
+        // Transfer money from Bank to Goal
+        accountBalances.bank -= amt;
+        g.current += amt;
+
+        // Record system transaction for traceability
+        transactions.unshift({
+            type: 'expense',
+            amount: amt,
+            category: `${currentLang === 'hi' ? 'लक्ष्य बचत' : 'Goal Saving'}: ${g.name}`,
+            account: 'bank',
+            date: new Date().toLocaleString(),
+            timestamp: Date.now()
+        });
+
+        updateUI();
+        showToastNotification(currentLang === 'hi'
+            ? `✨ ${currentCurrency}${amt} बचत लक्ष्य में जमा कर दिए गए!`
+            : `✨ Added ${currentCurrency}${amt} to savings goal!`, 3500);
+    }
+
+    function releaseSavingsGoalDeposit(id) {
+        const idx = savingsGoals.findIndex(g => g.id === id);
+        if (idx === -1) return;
+        const g = savingsGoals[idx];
+
+        if (g.current <= 0) {
+            showModalAlert(currentLang === 'hi' ? 'इस लक्ष्य में कोई बचत नहीं है!' : 'No savings in this goal yet!');
+            return;
+        }
+
+        const promptMsg = currentLang === 'hi' 
+            ? `बचत लक्ष्य '${g.name}' से कितने पैसे निकालने हैं? (यह आपके बैंक खाते में जमा हो जाएगा)` 
+            : `How much do you want to withdraw from '${g.name}'? (Adds back to Bank Account)`;
+        
+        const amtStr = prompt(promptMsg, g.current.toFixed(2));
+        const amt = parseFloat(amtStr);
+
+        if (isNaN(amt) || amt <= 0) {
+            if (amtStr !== null) {
+                showModalAlert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
+            }
+            return;
+        }
+
+        if (g.current < amt) {
+            showModalAlert(currentLang === 'hi' ? 'लक्ष्य में इतनी राशि नहीं है!' : 'Insufficient goal savings!');
+            return;
+        }
+
+        // Transfer money from Goal back to Bank
+        g.current -= amt;
+        accountBalances.bank += amt;
+
+        // Record system transaction for traceability
+        transactions.unshift({
+            type: 'income',
+            amount: amt,
+            category: `${currentLang === 'hi' ? 'बचत निकासी' : 'Goal Withdrawal'}: ${g.name}`,
+            account: 'bank',
+            date: new Date().toLocaleString(),
+            timestamp: Date.now()
+        });
+
+        updateUI();
+        showToastNotification(currentLang === 'hi'
+            ? `💸 ${currentCurrency}${amt} बैंक खाते में वापस आ गए!`
+            : `💸 Withdrew ${currentCurrency}${amt} back to bank!`, 3500);
+    }
+
+    function renderSavingsGoals() {
+        const listContainer = document.getElementById('savingsGoalsList');
+        if (!listContainer) return;
+        listContainer.innerHTML = '';
+
+        if (savingsGoals.length === 0) {
+            listContainer.innerHTML = `
+                <div style="text-align:center; padding:16px; color:var(--text-muted); font-size:12px;">
+                    ${currentLang === 'hi' 
+                        ? 'कोई बचत लक्ष्य नहीं है। ऊपर क्लिक करके नया लक्ष्य बनाएं!' 
+                        : 'No savings goals created yet. Click Create Goal to start saving!'}
+                </div>
+            `;
+            return;
+        }
+
+        savingsGoals.forEach(g => {
+            const percent = g.target > 0 ? (g.current / g.target) * 100 : 0;
+            const fillWidth = Math.max(0, Math.min(percent, 100));
+
+            const div = document.createElement('div');
+            div.style.background = 'var(--bg-subtle)';
+            div.style.border = '1px solid var(--border-primary)';
+            div.style.borderRadius = 'var(--radius-sm)';
+            div.style.padding = '12px';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700; margin-bottom:6px;">
+                    <span style="color:var(--text-primary); font-size:13px;">${g.name}</span>
+                    <button type="button" onclick="deleteSavingsGoal('${g.id}')" style="background:none; border:none; color:var(--accent-rose); cursor:pointer; padding:2px; display:flex; align-items:center;">
+                        ${Icons.close('svg-icon-xs')}
+                    </button>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:11px; margin-bottom:4px;">
+                    <span style="color:var(--text-secondary); font-weight:700;" class="tabular-number">Saved: ${currentCurrency}${g.current.toFixed(0)}</span>
+                    <span style="color:var(--text-muted);" class="tabular-number">Target: ${currentCurrency}${g.target.toFixed(0)}</span>
+                </div>
+                <div class="budget-progress-track" style="height:6px; background:var(--border-primary); border-radius:99px; overflow:hidden; margin-bottom:8px;">
+                    <div style="height:100%; width:${fillWidth}%; background-color:var(--accent-green); border-radius:99px; transition:width 0.4s ease;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10px; font-weight:700; color:var(--accent-green);">${percent.toFixed(0)}% Completed</span>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" onclick="releaseSavingsGoalDeposit('${g.id}')" class="btn-set" style="min-height:unset; height:24px; padding:2px 8px; font-size:10px; background:var(--border-primary); color:var(--text-primary);">
+                            Withdraw
+                        </button>
+                        <button type="button" onclick="addSavingsGoalDeposit('${g.id}')" class="btn-set" style="min-height:unset; height:24px; padding:2px 8px; font-size:10px; background:var(--accent-green); color:white;">
+                            + Add Money
+                        </button>
+                    </div>
+                </div>
+            `;
+            listContainer.appendChild(div);
+        });
+    }
+
+    // --- END NEW WEALTH MANAGEMENT UTILITIES ---
+
+    // --- POCKETPAISA VOICE-ENABLED ADVISOR SYSTEM ---
+
+    let isListening = false;
+    let recognition = null;
+
+    // Check voice support and initialize recognition
+    function initSpeechSystem() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            const badge = document.getElementById('speechStateBadge');
+            if (badge) {
+                badge.innerText = currentLang === 'hi' ? 'वॉइस सपोर्ट नहीं है' : 'Voice Not Supported';
+                badge.style.color = 'var(--accent-rose)';
+            }
+            return;
+        }
+
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = function() {
+            isListening = true;
+            updateMicUIState(true);
+        };
+
+        recognition.onerror = function(event) {
+            console.error("Speech Error:", event.error);
+            isListening = false;
+            updateMicUIState(false);
+            if (event.error === 'not-allowed') {
+                appendMsgToFeed('advisor', currentLang === 'hi' 
+                    ? '⚠️ कृपया माइक्रोफोन की अनुमति दें ताकि मैं आपकी आवाज सुन सकूँ!' 
+                    : '⚠️ Please grant microphone permission so I can hear you!');
+            }
+        };
+
+        recognition.onend = function() {
+            isListening = false;
+            updateMicUIState(false);
+        };
+
+        recognition.onresult = function(event) {
+            const resultText = event.results[0][0].transcript;
+            if (resultText && resultText.trim()) {
+                processUserMessage(resultText);
+            }
+        };
+    }
+
+    function updateMicUIState(active) {
+        const micBtn = document.getElementById('advisorMicBtn');
+        const wave = document.getElementById('micPulseWave');
+        const badge = document.getElementById('speechStateBadge');
+
+        if (active) {
+            if (micBtn) micBtn.classList.add('listening');
+            if (wave) wave.style.display = 'block';
+            if (badge) {
+                badge.innerText = currentLang === 'hi' ? 'सुन रहा हूँ...' : 'Listening...';
+                badge.style.color = 'var(--accent-rose)';
+            }
+        } else {
+            if (micBtn) micBtn.classList.remove('listening');
+            if (wave) wave.style.display = 'none';
+            if (badge) {
+                badge.innerText = currentLang === 'hi' ? 'वॉइस सक्रिय' : 'Voice Ready';
+                badge.style.color = 'var(--accent-green)';
+            }
+        }
+    }
+
+    function toggleVoiceListening() {
+        if (!recognition) {
+            initSpeechSystem();
+        }
+        if (!recognition) {
+            showModalAlert(currentLang === 'hi' ? 'इस ब्राउज़र में स्पीच रिकग्निशन समर्थित नहीं है।' : 'Speech recognition is not supported in this browser.');
+            return;
+        }
+
+        if (isListening) {
+            recognition.stop();
+        } else {
+            // Set language dynamically
+            recognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
+            try {
+                recognition.start();
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
+    function submitAdvisorText() {
+        const input = document.getElementById('advisorTextInput');
+        if (!input) return;
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        processUserMessage(msg);
+        input.value = '';
+    }
+
+    function appendMsgToFeed(sender, text) {
+        const feed = document.getElementById('advisorChatFeed');
+        if (!feed) return;
+
+        const msgDiv = document.createElement('div');
+        msgDiv.className = sender === 'user' ? 'chat-msg-user' : 'chat-msg-advisor';
+        msgDiv.innerText = text;
+        feed.appendChild(msgDiv);
+
+        // Auto scroll to bottom
+        feed.scrollTop = feed.scrollHeight;
+    }
+
+    function speakTextOut(text) {
+        const toggle = document.getElementById('voiceFeedbackToggle');
+        if (!toggle || !toggle.checked) return;
+
+        if ('speechSynthesis' in window) {
+            // Stop any ongoing speech
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+
+            // Optional: pick a premium voice if matches
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.lang.startsWith(currentLang === 'hi' ? 'hi' : 'en'));
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function processUserMessage(text) {
+        appendMsgToFeed('user', text);
+
+        // Check if message is a TRANSACTION record command
+        const transactionParsed = parseVoiceTransaction(text);
+        if (transactionParsed) {
+            const { type, amount, category, account } = transactionParsed;
+            const success = addTransaction(type, amount, category, account);
+            
+            if (success) {
+                const actionLabel = type === 'income' 
+                    ? (currentLang === 'hi' ? 'आय' : 'Income')
+                    : (currentLang === 'hi' ? 'खर्च' : 'Expense');
+                
+                const acctLabel = account === 'bank' ? (currentLang === 'hi' ? 'बैंक (UPI)' : 'Bank') : (account === 'cash' ? (currentLang === 'hi' ? 'नकद' : 'Cash') : (currentLang === 'hi' ? 'कार्ड कर्ज' : 'Card Debt'));
+                
+                let voiceResponse = "";
+                if (currentLang === 'hi') {
+                    voiceResponse = `✅ ठीक है! मैंने आपके ${acctLabel} खाते में ${category} के लिए ${amount} रुपये का ${actionLabel} सफलतापूर्वक जोड़ दिया है।`;
+                } else {
+                    voiceResponse = `✅ Perfect! I have recorded an ${type} of ${currentCurrency}${amount} for '${category}' under your ${acctLabel} account.`;
+                }
+
+                setTimeout(() => {
+                    appendMsgToFeed('advisor', voiceResponse);
+                    speakTextOut(voiceResponse);
+                }, 400);
+            }
+            return;
+        }
+
+        // Else, it's a BUDGET ADVICE query command
+        const requestedBudgetCheckAmount = parseBudgetCheckQuery(text);
+        if (requestedBudgetCheckAmount !== null) {
+            const expenseSubject = parseBudgetSubject(text) || (currentLang === 'hi' ? 'खरीदारी' : 'shopping');
+            generateAdvisorBudgetRecommendation(requestedBudgetCheckAmount, expenseSubject);
+            return;
+        }
+
+        // Generic query recommendation fallback
+        generateDefaultAdvisorAdvice(text);
+    }
+
+    // Smart Voice Transaction Matching (Hindi and English)
+    function parseVoiceTransaction(text) {
+        const lowercaseText = text.toLowerCase().trim();
+        
+        // Check triggers like "काटो", "खर्च", "spent", "spend", "pay", "जोड़ो", "add", "received", "credited"
+        const triggerMatch = lowercaseText.match(/(काटो|खर्च|spent|spend|pay|जोड़ो|add|received|credited|कमाई|सैलरी|आय)/);
+        if (!triggerMatch) return null;
+
+        // Match numbers using regex
+        const amountMatch = lowercaseText.match(/(\d+(?:\.\d+)?)/);
+        if (!amountMatch) return null;
+        const amount = parseFloat(amountMatch[1]);
+
+        // Determine if income or expense
+        let isIncome = false;
+        const incomeWords = ["salary", "deposit", "income", "received", "credited", "कमाई", "सैलरी", "आय", "मिला", "ब्याज", "मुनाफा", "bonus", "जोड़ो"];
+        for (let word of incomeWords) {
+            if (lowercaseText.includes(word)) {
+                isIncome = true;
+                break;
+            }
+        }
+
+        // Determine Account (cash vs bank vs credit)
+        let account = 'bank';
+        if (lowercaseText.includes('cash') || lowercaseText.includes('नकद') || lowercaseText.includes('कैश')) {
+            account = 'cash';
+        } else if (lowercaseText.includes('credit') || lowercaseText.includes('card') || lowercaseText.includes('कार्ड') || lowercaseText.includes('उधार')) {
+            account = 'credit';
+        }
+
+        // Clean out category name
+        let cleanText = text
+            .replace(amountMatch[1], '') // strip number
+            .replace(/(salary|deposit|income|received|credited|कमाई|सैलरी|आय|मिला|ब्याज|मुनाफा|bonus|cash|नकद|कैश|credit|card|कार्ड|उधार|जोड़ो|काटो|खर्च|रुपये|रुपया|rupees|rupee|rs|spent|spend)/gi, '') // strip system triggers
+            .replace(/[\s\-\:\,\/\=\+]+/g, ' ') // clean punctuation
+            .trim();
+
+        if (!cleanText) {
+            cleanText = isIncome 
+                ? (currentLang === 'hi' ? 'विविध आय' : 'Miscellaneous Income') 
+                : (currentLang === 'hi' ? 'विविध खर्च' : 'Miscellaneous Expense');
+        } else {
+            cleanText = cleanText.charAt(0).toUpperCase() + cleanText.slice(1);
+        }
+
+        return {
+            type: isIncome ? 'income' : 'expense',
+            amount: amount,
+            category: cleanText,
+            account: account
+        };
+    }
+
+    // Parses text for checking budget query (e.g. "क्या मैं 500 का डिनर कर सकता हूँ?")
+    function parseBudgetCheckQuery(text) {
+        const lowercaseText = text.toLowerCase();
+        
+        // Match query intent indicators
+        const queryTriggers = ["can i", "can we", "should i", "safe to", "spend", "डिनर", "खरीदूँ", "सकता हूँ", "लूँ", "क्या मैं", "सलाह"];
+        let hasQueryIntent = false;
+        for (let word of queryTriggers) {
+            if (lowercaseText.includes(word)) {
+                hasQueryIntent = true;
+                break;
+            }
+        }
+
+        if (!hasQueryIntent) return null;
+
+        // Match any amount query inside text
+        const amountMatch = lowercaseText.match(/(\d+(?:\.\d+)?)/);
+        if (amountMatch) {
+            return parseFloat(amountMatch[1]);
+        }
+        return null;
+    }
+
+    // Helper to find the subject of a query expense
+    function parseBudgetSubject(text) {
+        const lowercaseText = text.toLowerCase();
+        let stripped = text
+            .replace(/(\d+(?:\.\d+)?)/, '') // remove amount
+            .replace(/(can i spend|buy|spend|purchased|shopping|dinner|lunch|hotel|क्या मैं|का|की|कर सकता हूँ|करूँ|खरीदूँ|रुपये|रुपया|rupees|rupee|rs|काटो|जोड़ो|खर्च|बजट)/gi, '')
+            .replace(/[\s\?\!\.]+/g, ' ')
+            .trim();
+        return stripped || null;
+    }
+
+    // On-device core algorithmic intelligence and advisory recommendation
+    function generateAdvisorBudgetRecommendation(requestedAmt, subject) {
+        const today = new Date();
+        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        const remainingDays = lastDay.getDate() - today.getDate() + 1;
+        
+        // Balance available across liquid accounts
+        const liquidAssets = accountBalances.bank + accountBalances.cash;
+        const dailySafeCap = remainingDays > 0 ? (liquidAssets / remainingDays) : 0;
+
+        let verdict = "";
+        let adviceText = "";
+
+        if (requestedAmt > liquidAssets) {
+            if (currentLang === 'hi') {
+                verdict = "❌ बिल्कुल नहीं!";
+                adviceText = `आपके पास कुल शेष नकद और बैंक राशि केवल ${currentCurrency}${liquidAssets.toFixed(0)} है, इसलिए ${subject} के लिए ${currentCurrency}${requestedAmt} खर्च करना नामुमकिन है। पहले वेतन या बचत जमा करें!`;
+            } else {
+                verdict = "❌ Absolutely Not!";
+                adviceText = `You only have ${currentCurrency}${liquidAssets.toFixed(0)} left in cash & bank combined. Spending ${currentCurrency}${requestedAmt} on ${subject} is physically impossible right now without putting yourself in debt.`;
+            }
+        } else if (requestedAmt > dailySafeCap * 1.5) {
+            const recommendedLimit = Math.max(50, dailySafeCap * 0.8).toFixed(0);
+            if (currentLang === 'hi') {
+                verdict = "⚠️ सावधानी की सलाह!";
+                adviceText = `आपके पास महीने के बचे हुए ${remainingDays} दिनों के लिए सुरक्षित दैनिक खर्च सीमा केवल ${currentCurrency}${dailySafeCap.toFixed(0)} प्रतिदिन है। ${subject} पर ${currentCurrency}${requestedAmt} खर्च करने से आपका बजट बिगड़ सकता है। मेरी सलाह है कि आप इसे ${currentCurrency}${recommendedLimit} के अंदर रखें।`;
+            } else {
+                verdict = "⚠️ Caution Recommended!";
+                adviceText = `Your safe daily allowance is ${currentCurrency}${dailySafeCap.toFixed(0)} for the remaining ${remainingDays} days of the month. Spending ${currentCurrency}${requestedAmt} on ${subject} exceeds this by a wide margin. Try to keep this spend under ${currentCurrency}${recommendedLimit} if possible.`;
+            }
+        } else {
+            if (currentLang === 'hi') {
+                verdict = "✅ हाँ, सुरक्षित है!";
+                adviceText = `आपकी औसत सुरक्षित दैनिक खर्च क्षमता ${currentCurrency}${dailySafeCap.toFixed(0)} है, इसलिए ${subject} के लिए ${currentCurrency}${requestedAmt} का खर्च आपके निर्धारित बजट के बिल्कुल अनुकूल और सुरक्षित है। बेझिझक आगे बढ़ें!`;
+            } else {
+                verdict = "✅ Yes, completely safe!";
+                adviceText = `Your calculated safe daily allowance is ${currentCurrency}${dailySafeCap.toFixed(0)}, so spending ${currentCurrency}${requestedAmt} on ${subject} is well within your budget limits. Go ahead!`;
+            }
+        }
+
+        const formattedResponse = `${verdict} ${adviceText}`;
+        appendMsgToFeed('advisor', formattedResponse);
+        speakTextOut(formattedResponse);
+    }
+
+    // Default conversational AI prompt guidance when no numbers are present
+    function generateDefaultAdvisorAdvice(text) {
+        let genericResponse = "";
+        const lowercaseText = text.toLowerCase();
+
+        if (lowercaseText.includes('hi') || lowercaseText.includes('hello') || lowercaseText.includes('नमस्ते') || lowercaseText.includes('हे')) {
+            if (currentLang === 'hi') {
+                genericResponse = "नमस्ते! मैं आपका पर्सनल पॉकेटपैसा बजट कोच हूँ। आप मुझसे बोलकर खर्च जोड़ सकते हैं (जैसे: 'चाय ₹10') या पूछ सकते हैं कि क्या कोई विशेष खर्च करना सुरक्षित है।";
+            } else {
+                genericResponse = "Hello! I am your personal PocketPaisa budget coach. You can speak to instantly log expenses (e.g., 'Spend 50 on auto cash') or ask whether a future purchase is safe for your budget.";
+            }
+        } else if (lowercaseText.includes('सलाह') || lowercaseText.includes('advice') || lowercaseText.includes('टिप्स') || lowercaseText.includes('tips')) {
+            const topCategories = Object.keys(categoryBudgets);
+            if (currentLang === 'hi') {
+                genericResponse = `💡 काम की सलाह: ${topCategories.length > 0 ? "आपने '" + topCategories.join(', ') + "' पर बजट सीमाएं लगाई हैं जो बेहतरीन आदत है!" : "महीने के अंत में बजट घाटे से बचने के लिए तुरंत 'Category Budget Limits' पैनल से अपनी व्यय सीमाएं तय करें।"}`;
+            } else {
+                genericResponse = `💡 Smart tip: ${topCategories.length > 0 ? "You have active budget targets for " + topCategories.join(', ') + " which is amazing discipline!" : "To maximize your savings, set category limits right away in the Budget Limits card."}`;
+            }
+        } else {
+            if (currentLang === 'hi') {
+                genericResponse = `मुझे आपकी बात पूरी तरह समझ नहीं आई। आप बोल सकते हैं: "चाय का ₹10 काटो" या "क्या मैं ₹1000 का जूता खरीदूँ?"`;
+            } else {
+                genericResponse = `I couldn't match a direct action. You can say: "Add tea expense of 50 cash" or ask "Can I buy shoes for 1500?"`;
+            }
+        }
+
+        appendMsgToFeed('advisor', genericResponse);
+        speakTextOut(genericResponse);
+    }
+
+    // Load default welcome messages on screen load
+    function renderAdvisorWelcome() {
+        const feed = document.getElementById('advisorChatFeed');
+        if (!feed) return;
+        feed.innerHTML = '';
+
+        const welcomeText = currentLang === 'hi'
+            ? "नमस्ते रोहित! मैं आपका पर्सनल पॉकेटपैसा ऑन-डिवाइस कोच हूँ। 🎙️ नीचे माइक दबाकर बोलें: 'ऑटो का ₹50 कैश से काटो' या 'क्या मैं आज ₹500 का डिनर करूँ?'"
+            : "Hello Rohit! I'm your personal on-device budget coach. 🎙️ Click the mic and speak: 'Spend 120 on dinner bank' or 'Can I buy a new phone for 15000?'";
+
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg-advisor';
+        msgDiv.innerText = welcomeText;
+        feed.appendChild(msgDiv);
+    }
+
+    // --- END POCKETPAISA VOICE-ENABLED ADVISOR SYSTEM ---
 
     // App Toast Feedback
     let toastTimer = null;
@@ -3272,13 +4464,13 @@
         if (modal) modal.style.display = 'none';
     }
 
-    function executeExport(scope) {
+    function executePdfExport(scope) {
         closeExportModal();
-        exportTransactionsToCSV(scope);
+        exportTransactionsToPDF(scope);
     }
 
-    // Robust CSV Generation conforming to RFC 4180 with UTF-8 BOM
-    function exportTransactionsToCSV(scope = 'all') {
+    // High-Fidelity Professional PDF Report Generation with On-Device Financial Intelligence & Advice
+    function exportTransactionsToPDF(scope = 'all') {
         if (!transactions || transactions.length === 0) {
             showModalAlert(translationsDict[currentLang].noTxToExport || 'No transactions available to export!');
             return;
@@ -3299,127 +4491,429 @@
             return;
         }
 
-        // Helper to escape values according to RFC 4180
-        const escapeCsv = (val) => {
-            if (val === null || val === undefined) return '""';
-            const str = String(val).replace(/"/g, '""');
-            return `"${str}"`;
-        };
-
-        const headers = [
-            "Record_No",
-            "Transaction_Date",
-            "Transaction_Time",
-            "Type",
-            "Category",
-            "Amount",
-            "Net_Flow",
-            "Currency",
-            "Timestamp"
-        ];
-
-        const rows = [];
-        rows.push(headers.map(escapeCsv).join(','));
-
-        let cumulativeNet = 0;
-        let totalIncome = 0;
-        let totalExpense = 0;
-
-        dataset.forEach((tx, idx) => {
-            let dateObj = null;
-            if (tx.timestamp) {
-                dateObj = new Date(tx.timestamp);
-            } else if (tx.date) {
-                dateObj = new Date(tx.date);
-            }
-            if (!dateObj || isNaN(dateObj.getTime())) {
-                dateObj = new Date();
-            }
-
-            const yyyy = dateObj.getFullYear();
-            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const dd = String(dateObj.getDate()).padStart(2, '0');
-            const dateStr = `${yyyy}-${mm}-${dd}`;
-            
-            const hours = String(dateObj.getHours()).padStart(2, '0');
-            const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-            const seconds = String(dateObj.getSeconds()).padStart(2, '0');
-            const timeStr = `${hours}:${minutes}:${seconds}`;
-
-            const isIncome = tx.type === 'income';
-            const amt = Math.abs(parseFloat(tx.amount) || 0);
-
-            if (isIncome) {
-                totalIncome += amt;
-                cumulativeNet += amt;
-            } else {
-                totalExpense += amt;
-                cumulativeNet -= amt;
-            }
-
-            const netAmountFormatted = isIncome ? `+${amt.toFixed(2)}` : `-${amt.toFixed(2)}`;
-            const categoryClean = (tx.category || (isIncome ? 'Income' : 'Expense')).trim();
-
-            const row = [
-                idx + 1,
-                dateStr,
-                timeStr,
-                isIncome ? 'INCOME' : 'EXPENSE',
-                categoryClean,
-                amt.toFixed(2),
-                netAmountFormatted,
-                currentCurrency,
-                tx.timestamp || dateObj.getTime()
-            ];
-
-            rows.push(row.map(escapeCsv).join(','));
-        });
-
-        // Financial Summary Block for instant spreadsheet insights
-        rows.push('');
-        rows.push([escapeCsv('=== POCKETPAISA FINANCIAL SUMMARY ==='), '""', '""', '""', '""', '""', '""', '""', '""'].join(','));
-        rows.push([escapeCsv('Total Records Exported'), '""', '""', '""', '""', escapeCsv(dataset.length), '""', '""', '""'].join(','));
-        rows.push([escapeCsv('Total Income'), '""', '""', escapeCsv('INCOME'), '""', escapeCsv(totalIncome.toFixed(2)), escapeCsv(`+${totalIncome.toFixed(2)}`), escapeCsv(currentCurrency), '""'].join(','));
-        rows.push([escapeCsv('Total Expenses'), '""', '""', escapeCsv('EXPENSE'), '""', escapeCsv(totalExpense.toFixed(2)), escapeCsv(`-${totalExpense.toFixed(2)}`), escapeCsv(currentCurrency), '""'].join(','));
-        rows.push([escapeCsv('Net Ledger Impact'), '""', '""', escapeCsv('NET'), '""', escapeCsv(Math.abs(cumulativeNet).toFixed(2)), escapeCsv((cumulativeNet >= 0 ? '+' : '') + cumulativeNet.toFixed(2)), escapeCsv(currentCurrency), '""'].join(','));
-        rows.push([escapeCsv('Current App Balance'), '""', '""', escapeCsv('BALANCE'), '""', escapeCsv(balance.toFixed(2)), '""', escapeCsv(currentCurrency), '""'].join(','));
-        rows.push([escapeCsv('Monthly Salary Budget'), '""', '""', escapeCsv('BUDGET'), '""', escapeCsv(salary.toFixed(2)), '""', escapeCsv(currentCurrency), '""'].join(','));
-        rows.push([escapeCsv('Generated At'), escapeCsv(new Date().toLocaleString()), '""', '""', '""', '""', '""', '""', escapeCsv('PocketPaisa Pro')].join(','));
-
-        // Byte Order Mark (\uFEFF) ensures Excel and Numbers render UTF-8 (Rupee ₹, accented text) without mojibake
-        const BOM = '\uFEFF';
-        const csvString = BOM + rows.join('\r\n');
-        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-
-        const now = new Date();
-        const dateTag = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-        const scopeTag = scope === 'filtered' && activeFilter !== 'all' ? `_${activeFilter}` : '';
-        const filename = `PocketPaisa_Ledger_${dateTag}${scopeTag}.csv`;
-
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(blob, filename);
-        } else {
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = filename;
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        if (typeof window.jspdf === 'undefined') {
+            showModalAlert(currentLang === 'hi' ? 'पीडीएफ इंजन लोड हो रहा है, कृपया थोड़ी देर बाद कोशिश करें!' : 'PDF engine is loading, please try again in a moment!');
+            return;
         }
 
+        // Initialize jsPDF (A4 Portrait, Unit: mm)
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        const currencySymbolForPdf = (currentCurrency === '₹') ? 'INR ' : `${currentCurrency} `;
+
+        // Calculate stats
+        let totalIncome = 0;
+        let totalExpenses = 0;
+        let numIncomeTx = 0;
+        let numExpenseTx = 0;
+        const categoryTotals = {};
+
+        dataset.forEach(tx => {
+            const amt = Math.abs(parseFloat(tx.amount) || 0);
+            if (tx.type === 'income') {
+                totalIncome += amt;
+                numIncomeTx++;
+            } else {
+                totalExpenses += amt;
+                numExpenseTx++;
+                const cat = (tx.category && tx.category.trim()) || (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
+                categoryTotals[cat] = (categoryTotals[cat] || 0) + amt;
+            }
+        });
+
+        const netLedgerFlow = totalIncome - totalExpenses;
+        const avgExpense = numExpenseTx > 0 ? (totalExpenses / numExpenseTx) : 0;
+        const budgetSpentPct = salary > 0 ? (totalExpenses / salary) * 100 : 0;
+
+        // Find top spending category
+        let topCategory = currentLang === 'hi' ? 'कोई नहीं' : 'None';
+        let topCategoryAmt = 0;
+        Object.entries(categoryTotals).forEach(([cat, amt]) => {
+            if (amt > topCategoryAmt) {
+                topCategoryAmt = amt;
+                topCategory = cat;
+            }
+        });
+        const topCategoryPct = totalExpenses > 0 ? (topCategoryAmt / totalExpenses) * 100 : 0;
+
+        // Suggested daily spend limit
+        const today = new Date();
+        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        const remainingDays = lastDay.getDate() - today.getDate() + 1;
+        const safeDailyAllowance = balance > 0 ? (balance / remainingDays) : 0;
+
+        // Set branding & metadata
+        const primaryColorHex = "#0d1527"; // Deep Midnight
+        const textMutedHex = "#64748b";     // Slate Muted
+
+        // Background / Accent Colors for tables
+        const primaryColorRGB = [13, 21, 39];
+        const accentGreenRGB = [16, 185, 129];
+        const accentRoseRGB = [244, 63, 94];
+
+        // Custom Header Helper
+        const addPageDecorations = (pdfDoc, pageNum, totalPages) => {
+            // Top Accent Band (Emerald)
+            pdfDoc.setFillColor(16, 185, 129);
+            pdfDoc.rect(0, 0, 210, 3.5, 'F');
+
+            // Header Section
+            pdfDoc.setFont('helvetica', 'bold');
+            pdfDoc.setFontSize(18);
+            pdfDoc.setTextColor(13, 21, 39);
+            pdfDoc.text('POCKETPAISA PRO', 14, 15);
+
+            pdfDoc.setFont('helvetica', 'normal');
+            pdfDoc.setFontSize(9);
+            pdfDoc.setTextColor(100, 116, 139);
+            pdfDoc.text('Personal Wealth Intelligence & Expense Statement', 14, 20);
+
+            // Right-aligned report details
+            pdfDoc.setFont('helvetica', 'bold');
+            pdfDoc.setFontSize(10);
+            pdfDoc.setTextColor(13, 21, 39);
+            const reportType = scope === 'filtered' ? 'FILTERED LEDGER STATEMENT' : 'COMPLETE ACCOUNT LEDGER';
+            pdfDoc.text(reportType, 196, 14, { align: 'right' });
+
+            pdfDoc.setFont('helvetica', 'normal');
+            pdfDoc.setFontSize(8.5);
+            pdfDoc.setTextColor(100, 116, 139);
+            pdfDoc.text(`Generated: ${new Date().toLocaleString()}`, 196, 19, { align: 'right' });
+            pdfDoc.text(`Currency Base: ${currentCurrency} (showing as ${currencySymbolForPdf.trim()})`, 196, 23, { align: 'right' });
+
+            // Thin Divider line
+            pdfDoc.setDrawColor(226, 232, 240);
+            pdfDoc.setLineWidth(0.4);
+            pdfDoc.line(14, 26, 196, 26);
+
+            // Footer
+            pdfDoc.setDrawColor(226, 232, 240);
+            pdfDoc.line(14, 282, 196, 282);
+
+            pdfDoc.setFont('helvetica', 'italic');
+            pdfDoc.setFontSize(7.5);
+            pdfDoc.setTextColor(148, 163, 184);
+            pdfDoc.text('100% Private, On-Device Statement. No data leaves your personal browser.', 14, 287);
+            pdfDoc.text('Crafted with precision by Rohit • PocketPaisa Pro', 14, 291);
+            pdfDoc.text(`Page ${pageNum} of ${totalPages}`, 196, 287, { align: 'right' });
+        };
+
+        // --- FIRST PAGE ---
+        addPageDecorations(doc, 1, 1);
+
+        let currentY = 32;
+
+        // Summary Title Banner
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(13, 21, 39);
+        doc.text('I. FINANCIAL METRICS SUMMARY', 14, currentY);
+        currentY += 4.5;
+
+        // Draw 3 beautiful columns/cards representing finances
+        const cardWidth = 55;
+        const cardHeight = 21;
+        const gap = 11;
+        const startX = 14;
+
+        // Card 1: Salary Budget / Limit
+        doc.setFillColor(248, 250, 252); // soft off-white
+        doc.setDrawColor(226, 232, 240);
+        doc.rect(startX, currentY, cardWidth, cardHeight, 'FD');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7.5);
+        doc.setTextColor(100, 116, 139);
+        doc.text(currentLang === 'hi' ? 'मासिक बजट / BUDGET' : 'MONTHLY BUDGET LIMIT', startX + 4, currentY + 5);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setTextColor(13, 21, 39);
+        doc.text(`${currencySymbolForPdf}${salary.toFixed(2)}`, startX + 4, currentY + 12);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(148, 163, 184);
+        doc.text(`${dataset.length} transactions recorded`, startX + 4, currentY + 17);
+
+        // Card 2: Total Spent This Statement
+        doc.setFillColor(254, 242, 242); // Soft warm rose tint
+        doc.setDrawColor(254, 202, 202);
+        doc.rect(startX + cardWidth + gap, currentY, cardWidth, cardHeight, 'FD');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7.5);
+        doc.setTextColor(239, 68, 68);
+        doc.text(currentLang === 'hi' ? 'कुल खर्च / EXPENSES' : 'TOTAL ACCUMULATED EXPENSES', startX + cardWidth + gap + 4, currentY + 5);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setTextColor(220, 38, 38);
+        doc.text(`${currencySymbolForPdf}${totalExpenses.toFixed(2)}`, startX + cardWidth + gap + 4, currentY + 12);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(248, 113, 113);
+        doc.text(`${numExpenseTx} expense items logged`, startX + cardWidth + gap + 4, currentY + 17);
+
+        // Card 3: Remaining Balance Available
+        const balanceIsSafe = balance >= 0;
+        doc.setFillColor(balanceIsSafe ? 240 : 254, balanceIsSafe ? 253 : 242, balanceIsSafe ? 250 : 242); // green tint or red tint
+        doc.setDrawColor(balanceIsSafe ? 187 : 254, balanceIsSafe ? 247 : 202, balanceIsSafe ? 208 : 202);
+        doc.rect(startX + (cardWidth * 2) + (gap * 2), currentY, cardWidth, cardHeight, 'FD');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7.5);
+        doc.setTextColor(balanceIsSafe ? 5 : 220, balanceIsSafe ? 150 : 38, balanceIsSafe ? 105 : 38);
+        doc.text(currentLang === 'hi' ? 'बची राशि / REMAINING' : 'REMAINING STATEMENT BALANCE', startX + (cardWidth * 2) + (gap * 2) + 4, currentY + 5);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setTextColor(balanceIsSafe ? 6 : 185, balanceIsSafe ? 95 : 28, balanceIsSafe ? 70 : 28);
+        doc.text(`${currencySymbolForPdf}${balance.toFixed(2)}`, startX + (cardWidth * 2) + (gap * 2) + 4, currentY + 12);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.setTextColor(balanceIsSafe ? 52 : 239, balanceIsSafe ? 211 : 68, balanceIsSafe ? 153 : 68);
+        doc.text(budgetSpentPct > 0 ? `${budgetSpentPct.toFixed(1)}% of budget utilized` : 'No expenses recorded yet', startX + (cardWidth * 2) + (gap * 2) + 4, currentY + 17);
+
+        currentY += cardHeight + 8;
+
+        // II. EXPENSE ANALYTICS BY CATEGORY
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(13, 21, 39);
+        doc.text('II. EXPENSE CATEGORY ANALYSIS', 14, currentY);
+        currentY += 4.5;
+
+        // Category breakdown data format for autotable
+        const categoryTableHead = [[
+            currentLang === 'hi' ? 'श्रेणी / Category' : 'Expense Category',
+            currentLang === 'hi' ? 'कुल राशि / Total Spent' : 'Total Spent',
+            currentLang === 'hi' ? 'हिस्सेदारी / Percentage' : 'Percentage Share',
+            currentLang === 'hi' ? 'बजट प्रभाव / Budget Impact' : 'Visual Budget Footprint'
+        ]];
+
+        const sortedCategories = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
+        const categoryTableBody = sortedCategories.map(([cat, amt]) => {
+            const pct = totalExpenses > 0 ? (amt / totalExpenses) * 100 : 0;
+            const barCharsFilled = Math.round(pct / 10);
+            const progressBarStr = '[' + '#'.repeat(barCharsFilled) + '.'.repeat(10 - barCharsFilled) + ']';
+            return [
+                cat,
+                `${currencySymbolForPdf}${amt.toFixed(2)}`,
+                `${pct.toFixed(1)}%`,
+                `${progressBarStr} (${pct.toFixed(0)}%)`
+            ];
+        });
+
+        if (categoryTableBody.length === 0) {
+            categoryTableBody.push([
+                currentLang === 'hi' ? 'कोई खर्च नहीं' : 'No expenses recorded',
+                `${currencySymbolForPdf}0.00`,
+                '0.0%',
+                '[..........] (0%)'
+            ]);
+        }
+
+        doc.autoTable({
+            startY: currentY,
+            head: categoryTableHead,
+            body: categoryTableBody,
+            margin: { left: 14, right: 14 },
+            theme: 'striped',
+            headStyles: { fillColor: primaryColorRGB, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8.5 },
+            styles: { fontSize: 8.5, font: 'helvetica' },
+            columnStyles: {
+                1: { fontStyle: 'bold', halign: 'right' },
+                2: { halign: 'right' },
+                3: { font: 'courier', fontStyle: 'bold' }
+            },
+            didDrawPage: (data) => {
+                currentY = data.cursor.y;
+            }
+        });
+
+        currentY += 8;
+
+        // III. REAL-TIME COMPREHENSIVE PERSONAL FINANCIAL ADVICE & ANALYSIS
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(13, 21, 39);
+        doc.text('III. SMART ON-DEVICE BUDGET INTELLIGENCE & ADVISORY', 14, currentY);
+        currentY += 5.5;
+
+        // Savings & Health Verdict Calculation
+        let healthVerdict = "EXCELLENT HEALTH";
+        let healthColor = [16, 185, 129]; // Emerald
+        let healthAdvice = "Your financial discipline is exemplary! You are retaining an outstanding portion of your budget and pacing your expenses exceptionally well.";
+
+        if (currentLang === 'hi') {
+            healthAdvice = "आपका वित्तीय अनुशासन अनुकरणीय है! आप अपने बजट का एक बड़ा हिस्सा सुरक्षित रख रहे हैं और अपने खर्चों का प्रबंधन बहुत अच्छी तरह से कर रहे हैं।";
+        }
+
+        if (budgetSpentPct > 95 || balance < 0) {
+            healthVerdict = currentLang === 'hi' ? "गंभीर बजट घाटा चेतावनी" : "CRITICAL DEFICIT ALERT";
+            healthColor = [244, 63, 94]; // Rose Red
+            healthAdvice = currentLang === 'hi' 
+                ? "चेतावनी: आपका खर्च निर्धारित बजट को पूरी तरह से पार कर चुका है। फिजूलखर्ची पर तत्काल रोक लगाने की सलाह दी जाती है।" 
+                : "CRITICAL LIMIT REACHED. Your spending has fully consumed your set budget. Immediate cost mitigation is highly recommended across luxury expenditures.";
+        } else if (budgetSpentPct >= 80) {
+            healthVerdict = currentLang === 'hi' ? "सावधानी की आवश्यकता" : "CAUTION REQUIRED";
+            healthColor = [245, 158, 11]; // Amber Orange
+            healthAdvice = currentLang === 'hi'
+                ? "आपका खर्च बजट सीमा के बेहद करीब है। शेष दिनों को सुरक्षित करने के लिए गैर-जरूरी खरीदारी को टाल दें।"
+                : "APPROACHING BUDGET EXHAUSTION. You have consumed over 80% of your allocated monthly limit. Defer non-essential purchases to preserve remaining liquidity.";
+        } else if (budgetSpentPct >= 50) {
+            healthVerdict = currentLang === 'hi' ? "सामान्य मध्यम खर्च" : "MODERATE SPENDING";
+            healthColor = [59, 130, 246]; // Blue
+            healthAdvice = currentLang === 'hi'
+                ? "आपका खर्च नियंत्रण में है। बाकी दिनों के लिए आवश्यक वस्तुओं को प्राथमिकता दें और बचत बनाए रखें।"
+                : "STABLE PACE. Your budget is in a healthy, moderate state. Proceed with steady caution and prioritize high-essential purchases for the rest of the period.";
+        }
+
+        // Draw Verdict Banner
+        doc.setFillColor(248, 250, 252);
+        doc.setDrawColor(226, 232, 240);
+        doc.rect(14, currentY, 182, 38, 'FD');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text(currentLang === 'hi' ? 'ऑन-डिवाइस वित्तीय विश्लेषण :' : 'ON-DEVICE FINANCIAL ANALYTICS:', 18, currentY + 5.5);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10.5);
+        doc.setTextColor(healthColor[0], healthColor[1], healthColor[2]);
+        doc.text(healthVerdict, 18, currentY + 11.5);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        doc.setTextColor(71, 85, 105);
+        
+        // Multi-line wrap for dynamic customized advice
+        const adviceLines = doc.splitTextToSize(healthAdvice, 174);
+        doc.text(adviceLines, 18, currentY + 16.5);
+
+        // Core Financial Recommendations
+        const recList = currentLang === 'hi' ? [
+            `1. आपका सबसे बड़ा खर्च "${topCategory}" श्रेणी में हुआ है जो कुल खर्च का ${topCategoryPct.toFixed(1)}% (${currencySymbolForPdf}${topCategoryAmt.toFixed(2)}) है। इस श्रेणी में नियंत्रण करें।`,
+            `2. शेष ${remainingDays} दिनों के लिए सुरक्षित दैनिक खर्च सीमा ${currencySymbolForPdf}${safeDailyAllowance.toFixed(2)} है ताकि बची हुई राशि ${currencySymbolForPdf}${balance.toFixed(2)} सुरक्षित रहे।`,
+            `3. आपके ${numExpenseTx} खर्चों के आधार पर प्रति लेनदेन औसत खर्च ${currencySymbolForPdf}${avgExpense.toFixed(2)} है। इसे कम करके भारी मासिक बचत की जा सकती है।`
+        ] : [
+            `1. Top expense category is "${topCategory}" with total spent of ${currencySymbolForPdf}${topCategoryAmt.toFixed(2)} (${topCategoryPct.toFixed(1)}% of total expenses). Trim leakage here first.`,
+            `2. Safe daily spending limit is estimated at ${currencySymbolForPdf}${safeDailyAllowance.toFixed(2)} to sustain your remaining wallet balance of ${currencySymbolForPdf}${balance.toFixed(2)} across the next ${remainingDays} days.`,
+            `3. Average transaction size is ${currencySymbolForPdf}${avgExpense.toFixed(2)} based on ${numExpenseTx} expenses. Reducing frequency of low-value online transactions can lead to massive long-term compound savings.`
+        ];
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.setTextColor(13, 21, 39);
+        doc.text(currentLang === 'hi' ? 'बचत सुधार एवं सुझाव कार्य योजना :' : 'ACTIONABLE IMPROVEMENT BLUEPRINT:', 18, currentY + 26);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.setTextColor(71, 85, 105);
+        doc.text(recList[0], 18, currentY + 30);
+        doc.text(recList[1], 18, currentY + 33.5);
+
+        currentY += 44;
+
+        // IV. DETAILED TRANSACTION LEDGER
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(13, 21, 39);
+        doc.text(currentLang === 'hi' ? 'IV. विस्तृत खाता बही (TRANSACTION LEDGER)' : 'IV. COMPLETE ACCOUNT TRANSACTION LEDGER', 14, currentY);
+        currentY += 4.5;
+
+        const ledgerHeaders = [[
+            'No.',
+            currentLang === 'hi' ? 'तारीख / Date' : 'Date & Time',
+            currentLang === 'hi' ? 'प्रकार / Type' : 'Type',
+            currentLang === 'hi' ? 'श्रेणी / Description' : 'Category / Description',
+            currentLang === 'hi' ? 'रकम / Amount' : 'Amount'
+        ]];
+
+        const ledgerBody = dataset.map((tx, index) => {
+            let dateStr = tx.date || '';
+            if (tx.timestamp) {
+                dateStr = new Date(tx.timestamp).toLocaleString();
+            }
+            const typeStr = tx.type === 'income' ? 'INCOME' : 'EXPENSE';
+            const prefix = tx.type === 'income' ? '+' : '-';
+            const amtStr = `${prefix}${currencySymbolForPdf}${Math.abs(parseFloat(tx.amount) || 0).toFixed(2)}`;
+            return [
+                index + 1,
+                dateStr,
+                typeStr,
+                (tx.category || '').trim() || (tx.type === 'income' ? 'Income' : 'Expense'),
+                amtStr
+            ];
+        });
+
+        doc.autoTable({
+            startY: currentY,
+            head: ledgerHeaders,
+            body: ledgerBody,
+            margin: { left: 14, right: 14 },
+            theme: 'grid',
+            headStyles: { fillColor: primaryColorRGB, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 },
+            styles: { fontSize: 7.5, font: 'helvetica' },
+            columnStyles: {
+                0: { halign: 'center', cellWidth: 10 },
+                1: { cellWidth: 42 },
+                2: { fontStyle: 'bold', cellWidth: 22 },
+                3: { fontStyle: 'normal' },
+                4: { font: 'courier', fontStyle: 'bold', halign: 'right', cellWidth: 36 }
+            },
+            didDrawPage: (data) => {
+                currentY = data.cursor.y;
+            },
+            willDrawCell: (data) => {
+                // Style type and amount column colors elegantly
+                if (data.column.index === 2) {
+                    const textVal = data.cell.text[0];
+                    if (textVal === 'INCOME') {
+                        doc.setTextColor(16, 185, 129); // emerald
+                    } else {
+                        doc.setTextColor(239, 68, 68); // light rose red
+                    }
+                }
+                if (data.column.index === 4) {
+                    const textVal = data.cell.text[0];
+                    if (textVal.startsWith('+')) {
+                        doc.setTextColor(5, 150, 105); // deep emerald
+                    } else if (textVal.startsWith('-')) {
+                        doc.setTextColor(185, 28, 28); // deep crimson red
+                    }
+                }
+            }
+        });
+
+        // Loop through pages to apply accurate "Page X of Y" retrospectively!
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            addPageDecorations(doc, i, totalPages);
+        }
+
+        // Generate Filename matching brand standards
+        const nowTag = new Date();
+        const dateString = `${nowTag.getFullYear()}-${String(nowTag.getMonth() + 1).padStart(2, '0')}-${String(nowTag.getDate()).padStart(2, '0')}`;
+        const scopeTag = scope === 'filtered' && activeFilter !== 'all' ? `_${activeFilter}` : '';
+        const filename = `PocketPaisa_Pro_Statement_${dateString}${scopeTag}.pdf`;
+
+        // Save PDF natively
+        doc.save(filename);
+
         const successMsg = currentLang === 'hi'
-            ? `CSV फ़ाइल डाउनलोड हो गई! (${dataset.length} रिकॉर्ड सहेजे गए)`
-            : `Exported ${dataset.length} transactions to CSV!`;
+            ? `पीडीएफ लेजर रिपोर्ट डाउनलोड हो गई! (${dataset.length} रिकॉर्ड सहेजे गए)`
+            : `Downloaded professional PDF ledger statement containing ${dataset.length} transactions!`;
+        
         showToastNotification(successMsg);
     }
 
     // Expose Bridge for External & Floating Overlay Services
     window.PocketPaisaBridge = {
-        addTransaction: (type, amt, cat) => addTransaction(type, amt, cat),
-        exportTransactionsToCSV: (scope) => exportTransactionsToCSV(scope),
+        addTransaction: (type, amt, cat, acct) => addTransaction(type, amt, cat, acct),
+        exportTransactionsToCSV: (scope) => exportTransactionsToPDF(scope),
+        exportTransactionsToPDF: (scope) => exportTransactionsToPDF(scope),
         openExportModal: () => openExportModal(),
         switchChartTab: (tab) => switchChartTab(tab),
         renderTrendChart: () => renderTrendChart(),
