@@ -1,0 +1,9 @@
+{
+  "appId": "com.pocketpaisa.pro",
+  "appName": "PocketPaisa Pro",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true
+  }
+}

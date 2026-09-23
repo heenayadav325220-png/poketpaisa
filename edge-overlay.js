@@ -429,6 +429,15 @@
         state.isOpen = false;
         if (backdropEl) backdropEl.classList.remove('is-open');
         panelEl.classList.remove('is-open');
+
+        // Fire native Android Bridge event to auto-hide native overlay window
+        if (window.AndroidOverlayBridge && typeof window.AndroidOverlayBridge.closeOverlay === 'function') {
+            try {
+                window.AndroidOverlayBridge.closeOverlay();
+            } catch (e) {
+                console.warn("[Bridge] Error calling native closeOverlay", e);
+            }
+        }
     }
 
     /**

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Semi-transparent emerald green matching PocketPaisa Pro -->
+    <solid android:color="#7310B981" />
+    <!-- Rounded corners on the left side (for right dock) or fully rounded -->
+    <corners
+        android:topLeftRadius="12dp"
+        android:bottomLeftRadius="12dp"
+        android:topRightRadius="0dp"
+        android:bottomRightRadius="0dp" />
+    <stroke
+        android:width="1dp"
+        android:color="#B3FFFFFF" />
+</shape>
