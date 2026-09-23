@@ -11,10 +11,12 @@
     <meta name="google-site-verification" content="dw3QRR89B6z0EFgVHjmKcMzHkIZO3S9763s3pr0I3i8" />
     <meta name="description" content="PocketPaisa Pro - Professional personal finance, salary budget management, and expense analytics." />
     <meta property="og:title" content="PocketPaisa Pro - Smart Budget & Expense Tracker" />
-    <meta property="og:description" content="Track your income, budget, and monthly expenses with intelligent real-time analytics.like professional" />
-    <meta property="og:image" content="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" />
+    <meta property="og:description" content="Track your income, budget, and monthly expenses with intelligent real-time analytics." />
+    <meta property="og:image" content="/logo.jpg" />
 
-    <link rel="icon" type="image/jpeg" href="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="alternate icon" type="image/jpeg" href="/logo.jpg" />
+    <link rel="apple-touch-icon" href="/logo.jpg" />
 
     <title>PocketPaisa Pro · Smart Finance Tracker</title>
 
@@ -163,7 +165,7 @@
             align-items: center;
             padding: calc(env(safe-area-inset-top, 24px) + 28px) 24px calc(env(safe-area-inset-bottom, 24px) + 32px);
             box-sizing: border-box;
-            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s ease;
+            transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s ease;
             user-select: none;
             overflow: hidden;
             cursor: pointer;
@@ -171,7 +173,7 @@
 
         .splash-screen.splash-dismissed {
             opacity: 0;
-            transform: scale(1.04);
+            transform: scale(1.03);
             pointer-events: none;
             visibility: hidden;
         }
@@ -1451,7 +1453,7 @@
     <div class="splash-content">
         <div class="splash-logo-container">
             <div class="splash-logo-glow-ring"></div>
-            <img src="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" alt="PocketPaisa Pro" class="splash-logo-img" referrerPolicy="no-referrer">
+            <img src="/logo.jpg" onerror="this.onerror=null; this.src='/logo.svg';" alt="PocketPaisa Pro" class="splash-logo-img">
         </div>
 
         <div class="splash-title-box">
@@ -1484,7 +1486,7 @@
     <div class="navbar-inner">
         <!-- Brand Lockup with Professional Classic Logo -->
         <div class="brand-lockup">
-            <img src="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" alt="PocketPaisa Logo" class="brand-logo-img" referrerPolicy="no-referrer">
+            <img src="/logo.jpg" onerror="this.onerror=null; this.src='/logo.svg';" alt="PocketPaisa Logo" class="brand-logo-img">
             <div class="brand-text">
                 <h1>PocketPaisa <span class="brand-pro-tag">PRO</span></h1>
             </div>
@@ -1885,7 +1887,7 @@
         requestAnimationFrame(() => {
             setTimeout(() => {
                 if (fill) fill.style.width = '100%';
-            }, 60);
+            }, 40);
         });
 
         // Function to dismiss splash with smooth transition
@@ -1896,16 +1898,26 @@
             splash.classList.add('splash-dismissed');
             setTimeout(() => {
                 splash.style.display = 'none';
-            }, 650);
+                if (splash.parentNode) splash.parentNode.removeChild(splash);
+            }, 380);
         }
 
-        // Auto dismiss after 1.8 seconds
-        setTimeout(dismissSplash, 1850);
+        // Auto dismiss at exactly 2.1 seconds (2-3 second window)
+        const autoTimer = setTimeout(dismissSplash, 2100);
 
-        // Allow instant tap to dismiss after initial 350ms
-        setTimeout(() => {
-            splash.addEventListener('click', dismissSplash);
-        }, 350);
+        // Instant tap/touch to skip anytime
+        splash.addEventListener('click', () => {
+            clearTimeout(autoTimer);
+            dismissSplash();
+        }, { once: true });
+
+        splash.addEventListener('touchstart', () => {
+            clearTimeout(autoTimer);
+            dismissSplash();
+        }, { passive: true, once: true });
+
+        // Failsafe timer (max 2.7s) to guarantee it never hangs
+        setTimeout(dismissSplash, 2700);
     }
 
     function init() {

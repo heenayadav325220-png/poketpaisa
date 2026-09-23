@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="40%" stop-color="#061c14" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Emerald Border Glow -->
+    <linearGradient id="borderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="50%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Emblem Shield Gradient -->
+    <linearGradient id="shieldGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Gold Accent Highlight -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="40%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+
+    <!-- Metallic Shine -->
+    <linearGradient id="shineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filters -->
+    <filter id="shadowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.6" />
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#10b981" flood-opacity="0.45" />
+    </filter>
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- App Icon Squircle Background -->
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#bgGrad)" stroke="url(#borderGlow)" stroke-width="8" />
+
+  <!-- Inner Soft Inset Glow -->
+  <rect x="36" y="36" width="440" height="440" rx="96" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+
+  <!-- Shield Base with Glow -->
+  <g filter="url(#shadowFilter)">
+    <!-- Digital Wallet Shield Shape -->
+    <path d="M 256,100 
+             C 340,100 376,128 384,188 
+             C 384,284 316,368 256,408 
+             C 196,368 128,284 128,188 
+             C 136,128 172,100 256,100 Z" 
+          fill="url(#shieldGrad)" 
+          stroke="url(#goldGrad)" 
+          stroke-width="6" />
+
+    <!-- Top Metallic Bevel Highlight -->
+    <path d="M 256,102 
+             C 336,102 370,128 378,184 
+             C 340,196 296,204 256,204 
+             C 216,204 172,196 134,184 
+             C 142,128 176,102 256,102 Z" 
+          fill="url(#shineGrad)" />
+  </g>
+
+  <!-- Indian Rupee (₹) + Wealth Arc Symbol -->
+  <g filter="url(#glowFilter)">
+    <!-- Top Horizontal Bar -->
+    <rect x="194" y="166" width="124" height="20" rx="10" fill="#ffffff" />
+    <!-- Secondary Bar -->
+    <rect x="194" y="202" width="94" height="18" rx="9" fill="#ffffff" />
+    
+    <!-- Central Curve and Stem -->
+    <path d="M 234,166 
+             L 234,258 
+             C 282,258 296,236 296,212 
+             C 296,186 280,166 234,166 Z" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="20" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+          
+    <!-- Dynamic Diagonal Cashflow Leg -->
+    <path d="M 226,252 
+             L 294,342" 
+          stroke="url(#goldGrad)" 
+          stroke-width="22" 
+          stroke-linecap="round" />
+  </g>
+
+  <!-- Sparkle Accent in Top Right of Emblem -->
+  <polygon points="348,154 353,168 367,173 353,178 348,192 343,178 329,173 343,168" fill="url(#goldGrad)" />
+  <circle cx="172" cy="300" r="4" fill="#34d399" opacity="0.8" />
+  <circle cx="340" cy="270" r="5" fill="#34d399" opacity="0.6" />
+</svg>

@@ -247,7 +247,8 @@
         panelEl.innerHTML = `
             <!-- Panel Header -->
             <div class="edge-panel-header">
-                <div class="edge-panel-brand">
+                <div class="edge-panel-brand" style="display: flex; align-items: center; gap: 8px;">
+                    <img src="/logo.svg" alt="PocketPaisa" style="width: 22px; height: 22px; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 6px rgba(16,185,129,0.3);">
                     <h4>PocketPaisa</h4>
                     <span class="edge-service-beacon">
                         <span class="edge-beacon-dot"></span>
@@ -524,8 +525,8 @@
         permModalEl.innerHTML = `
             <div class="android-perm-sheet" role="alertdialog">
                 <div class="android-perm-header">
-                    <div class="android-perm-app-icon">
-                        ${shieldIcon}
+                    <div class="android-perm-app-icon" style="background: transparent; box-shadow: none;">
+                        <img src="/logo.svg" alt="PocketPaisa Pro" style="width: 44px; height: 44px; border-radius: 12px; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
                     </div>
                     <div class="android-perm-title">
                         <h3>Display over other apps</h3>
