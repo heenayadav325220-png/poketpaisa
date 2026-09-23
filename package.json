@@ -7,7 +7,7 @@
     "dev": "node server.js",
     "start": "node server.js",
     "lint": "node --check server.js",
-    "build": "echo 'Build complete'"
+    "build": "mkdir -p www && cp index.html icons.js edge-overlay.js edge-overlay.css favicon.jpg logo.jpg logo.svg script.js style.css www/"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.2",
