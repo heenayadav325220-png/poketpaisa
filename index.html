@@ -148,202 +148,6 @@
             font-size: 16px !important;
         }
 
-        /* ========================================================
-           FULL-SCREEN LUXURY FLASH / SPLASH SCREEN
-           ======================================================== */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at 50% 36%, #0f1c30 0%, #060a12 100%);
-            z-index: 9999999;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: calc(env(safe-area-inset-top, 24px) + 28px) 24px calc(env(safe-area-inset-bottom, 24px) + 32px);
-            box-sizing: border-box;
-            transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s ease;
-            user-select: none;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .splash-screen.splash-dismissed {
-            opacity: 0;
-            transform: scale(1.03);
-            pointer-events: none;
-            visibility: hidden;
-        }
-
-        .splash-glow {
-            position: absolute;
-            top: 36%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(5, 150, 105, 0.08) 50%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(48px);
-            pointer-events: none;
-            animation: splashPulse 3.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes splashPulse {
-            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.55; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.95; }
-        }
-
-        .splash-content {
-            margin: auto 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .splash-logo-container {
-            position: relative;
-            width: 106px;
-            height: 106px;
-            margin-bottom: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .splash-logo-glow-ring {
-            position: absolute;
-            inset: -4px;
-            border-radius: 28px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.7) 0%, rgba(52, 211, 153, 0.2) 50%, rgba(245, 158, 11, 0.5) 100%);
-            filter: blur(10px);
-            z-index: 1;
-            animation: ringRotate 7s linear infinite;
-        }
-
-        @keyframes ringRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .splash-logo-img {
-            position: relative;
-            z-index: 2;
-            width: 98px;
-            height: 98px;
-            border-radius: 24px;
-            object-fit: cover;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(16, 185, 129, 0.4);
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            animation: logoFloat 2.8s ease-in-out infinite alternate;
-        }
-
-        @keyframes logoFloat {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-7px); }
-        }
-
-        .splash-title-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .splash-title {
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin: 0;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .splash-pro-badge {
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #ffffff;
-            letter-spacing: 0.08em;
-            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
-        }
-
-        .splash-tagline {
-            font-size: 14px;
-            color: #94a3b8;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-            margin: 0;
-            max-width: 300px;
-        }
-
-        .splash-loader-bar {
-            width: 170px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 99px;
-            overflow: hidden;
-            margin-top: 26px;
-            position: relative;
-        }
-
-        .splash-loader-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 99px;
-            background: linear-gradient(90deg, #10b981, #34d399, #10b981);
-            transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .splash-footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 9px;
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .splash-security-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #cbd5e1;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            padding: 6px 14px;
-            border-radius: 99px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .splash-credit {
-            font-size: 11px;
-            color: #64748b;
-            letter-spacing: 0.03em;
-            margin: 0;
-        }
-
-        .splash-credit strong {
-            color: #10b981;
-            font-weight: 700;
-        }
-
         /* Sticky Top Navigation Bar */
         .top-navbar {
             background: var(--bg-surface);
@@ -979,8 +783,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             width: 100%;
+            gap: 8px;
+        }
+
+        .chart-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
         }
 
         .chart-header h3 {
@@ -991,6 +803,56 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        .chart-nav-tabs {
+            display: inline-flex;
+            background: var(--bg-subtle);
+            padding: 2px;
+            border-radius: var(--radius-sm);
+            gap: 2px;
+            border: 1px solid var(--border-primary);
+            flex-shrink: 0;
+        }
+
+        .chart-nav-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 9px;
+            font-size: 11px;
+            font-weight: 700;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .chart-nav-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .chart-nav-tab.active {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chart-subview {
+            width: 100%;
+        }
+
+        .chart-subhead-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            width: 100%;
         }
 
         .chart-month-badge {
@@ -1008,19 +870,20 @@
         .chart-total-summary {
             font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--bg-subtle);
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: var(--radius-sm);
-            width: 100%;
+            gap: 8px;
+            flex: 1;
         }
 
         .chart-total-summary strong {
             color: var(--accent-rose);
-            font-size: 15px;
+            font-size: 14px;
             font-family: 'JetBrains Mono', monospace;
             font-weight: 800;
         }
@@ -1040,6 +903,179 @@
             margin: 0 auto;
             max-width: 100%;
             height: auto;
+        }
+
+        /* 6-Month Trend Component Styling */
+        .trend-kpi-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .trend-kpi-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .trend-kpi-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trend-kpi-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trend-kpi-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .trend-kpi-pill.growth {
+            color: var(--accent-rose);
+        }
+
+        .trend-kpi-pill.reduction {
+            color: var(--accent-green);
+        }
+
+        .trend-kpi-pill.neutral {
+            color: var(--text-muted);
+        }
+
+        .trend-chart-container {
+            position: relative;
+            width: 100%;
+            min-height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .trend-chart-container svg {
+            width: 100%;
+            height: auto;
+            max-height: 220px;
+            display: block;
+            overflow: visible;
+        }
+
+        .trend-axis text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            fill: var(--text-muted);
+            user-select: none;
+        }
+
+        .trend-axis line, .trend-axis path {
+            stroke: var(--border-primary);
+        }
+
+        .trend-grid line {
+            stroke: var(--border-primary);
+            stroke-opacity: 0.6;
+            stroke-dasharray: 3, 3;
+        }
+
+        .trend-months-strip {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .trend-month-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 6px 3px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .trend-month-card:hover {
+            border-color: var(--accent-rose);
+            transform: translateY(-1px);
+        }
+
+        .trend-month-card.current {
+            border-color: var(--accent-rose);
+            background: rgba(244, 63, 94, 0.08);
+        }
+
+        .trend-month-card.active-hover {
+            border-color: var(--accent-rose);
+            box-shadow: 0 0 0 1px var(--accent-rose);
+        }
+
+        .trend-month-name {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .trend-month-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trend-month-badge {
+            font-size: 8.5px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 2px;
+            padding: 1px 2px;
+            display: inline-block;
+        }
+
+        .trend-month-badge.growth {
+            color: var(--accent-rose);
+        }
+
+        .trend-month-badge.reduction {
+            color: var(--accent-green);
+        }
+
+        .trend-month-badge.neutral {
+            color: var(--text-muted);
         }
 
         .chart-tooltip {
@@ -1130,10 +1166,64 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 12px;
             width: 100%;
             flex-wrap: wrap;
+        }
+
+        .passbook-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .passbook-count-badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .passbook-actions-cluster {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-export-csv {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.08);
+            color: var(--accent-green);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
+            height: 32px;
+        }
+
+        .btn-export-csv:hover {
+            background: rgba(16, 185, 129, 0.18);
+            border-color: var(--accent-green);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-export-csv:active {
+            transform: scale(0.96);
         }
 
         .filter-tabs {
@@ -1144,13 +1234,13 @@
             gap: 2px;
             border: 1px solid var(--border-primary);
             width: 100%;
-            max-width: 240px;
+            max-width: 210px;
         }
 
         .filter-tab {
             flex: 1;
-            padding: 6px 8px;
-            font-size: 12px;
+            padding: 5px 8px;
+            font-size: 11px;
             font-weight: 800;
             border: none;
             background: transparent;
@@ -1167,19 +1257,173 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .passbook-search-row {
+            position: relative;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .passbook-search-box {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .passbook-search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--text-muted);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+
         .passbook-search {
             width: 100%;
             background: var(--bg-subtle);
             border: 1px solid var(--border-primary);
             border-radius: var(--radius-sm);
-            padding: 10px 12px;
+            padding: 10px 12px 10px 36px;
             color: var(--text-primary);
             outline: none;
-            margin-bottom: 12px;
+            font-size: 13px;
         }
 
         .passbook-search:focus {
             border-color: var(--accent-green);
+        }
+
+        /* App Toast Notification */
+        .app-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(90px);
+            background: rgba(15, 23, 42, 0.95);
+            color: #ffffff;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 16px rgba(16, 185, 129, 0.25);
+            padding: 11px 18px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 999999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 90vw;
+            box-sizing: border-box;
+        }
+
+        .app-toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .app-toast-icon {
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* Custom Modal Extensions */
+        .custom-app-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .export-modal-box {
+            max-width: 380px !important;
+            padding: 24px 20px !important;
+            text-align: left !important;
+        }
+
+        .export-modal-icon {
+            color: var(--accent-green);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            margin-bottom: 14px;
+        }
+
+        .export-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin: 16px 0;
+        }
+
+        .export-option-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s ease;
+            width: 100%;
+            color: var(--text-primary);
+        }
+
+        .export-option-btn:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .export-option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .export-option-btn.primary-export-btn {
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .export-opt-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .export-opt-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .export-opt-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .transaction-list {
@@ -1443,40 +1687,6 @@
 </head>
 <body>
 
-<!-- ========================================================
-     ULTRA-PROFESSIONAL FULL-SCREEN FLASH / SPLASH SCREEN
-     ======================================================== -->
-<div id="splashScreen" class="splash-screen" title="Tap to continue">
-    <!-- Ambient Aurora Glow Behind Logo -->
-    <div class="splash-glow"></div>
-    
-    <div class="splash-content">
-        <div class="splash-logo-container">
-            <div class="splash-logo-glow-ring"></div>
-            <img src="/logo.jpg" onerror="this.onerror=null; this.src='/logo.svg';" alt="PocketPaisa Pro" class="splash-logo-img">
-        </div>
-
-        <div class="splash-title-box">
-            <h1 class="splash-title">PocketPaisa <span class="splash-pro-badge">PRO</span></h1>
-            <p class="splash-tagline" id="splashTagline">Smart Wealth & Budget Intelligence</p>
-        </div>
-
-        <!-- Sleek Animated Financial Progress Line -->
-        <div class="splash-loader-bar">
-            <div class="splash-loader-fill" id="splashLoaderFill"></div>
-        </div>
-    </div>
-
-    <!-- Splash Bottom Text -->
-    <div class="splash-footer">
-        <div class="splash-security-tag">
-            <script>document.write(Icons.shieldCheck('svg-icon-sm'));</script>
-            <span id="splashSecurityText">100% Private · On-Device Financial Intelligence</span>
-        </div>
-        <p class="splash-credit" id="splashCreditText">Crafted with precision by <strong>Rohit</strong> • PocketPaisa Pro</p>
-    </div>
-</div>
-
 <!-- Alert Sound Effects -->
 <audio id="sirenSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto" loop></audio>
 <audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
@@ -1569,6 +1779,10 @@
             <button type="button" class="btn-utility" onclick="toggleDarkMode()">
                 <span id="drawerThemeIcon"><script>document.write(Icons.themeSwitch('svg-icon-md'));</script></span>
                 <span>Theme Toggle</span>
+            </button>
+            <button type="button" class="btn-utility btn-export-csv-drawer" onclick="closeSettings(); openExportModal();" id="drawerExportCsvBtn">
+                <script>document.write(Icons.fileSpreadsheet('svg-icon-md'));</script>
+                <span id="langDrawerExportCsv">Export CSV Ledger</span>
             </button>
             <button type="button" class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">
                 <script>document.write(Icons.trash('svg-icon-md'));</script>
@@ -1698,47 +1912,100 @@
         <!-- Right Column: Analytics & Ledger -->
         <div class="dashboard-col">
             
-            <!-- D3.js Monthly Expense Visualization -->
+            <!-- D3.js Monthly Expense Visualization & 6-Month Trend Component -->
             <div class="chart-section" id="chartSection">
                 <div class="chart-header">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <script>document.write(Icons.chart('svg-icon-md'));</script>
-                        <h3 id="langChartTitle">Current Month Expenses</h3>
+                    <div class="chart-header-left">
+                        <span id="chartHeaderIcon"><script>document.write(Icons.chart('svg-icon-md'));</script></span>
+                        <h3 id="langChartTitle">Expense Analytics</h3>
                     </div>
-                    <span id="chartMonthBadge" class="chart-month-badge">September 2026</span>
-                </div>
-                <div id="chartTotalSummary" class="chart-total-summary">
-                    <span id="langChartTotalLabel">Total Expense:</span>
-                    <strong id="chartTotalAmount" class="tabular-number">₹0.00</strong>
-                </div>
-                
-                <div id="pieChartContainer" class="pie-chart-container"></div>
-                
-                <div id="chartEmptyState" class="chart-empty-state" style="display:none;">
-                    <div style="margin-bottom: 8px; color: var(--text-muted);">
-                        <script>document.write(Icons.emptyChart('svg-icon-xl'));</script>
+                    <div class="chart-nav-tabs">
+                        <button type="button" class="chart-nav-tab active" id="tabChartBreakdown" onclick="switchChartTab('breakdown')" title="Category Breakdown">
+                            <script>document.write(Icons.chart('svg-icon-xs'));</script>
+                            <span id="langTabBreakdown">Breakdown</span>
+                        </button>
+                        <button type="button" class="chart-nav-tab" id="tabChartTrend" onclick="switchChartTab('trend')" title="6-Month Spending Trend">
+                            <script>document.write(Icons.lineChart('svg-icon-xs'));</script>
+                            <span id="langTabTrend">6M Trend</span>
+                        </button>
                     </div>
-                    <p id="langChartEmpty">No expenses recorded for this month yet.</p>
                 </div>
 
-                <div id="chartLegend" class="chart-legend"></div>
+                <!-- SUBVIEW 1: Current Month Donut Breakdown -->
+                <div id="chartViewBreakdown" class="chart-subview">
+                    <div class="chart-subhead-row">
+                        <span id="chartMonthBadge" class="chart-month-badge">September 2026</span>
+                        <div id="chartTotalSummary" class="chart-total-summary">
+                            <span id="langChartTotalLabel">Total Expense:</span>
+                            <strong id="chartTotalAmount" class="tabular-number">₹0.00</strong>
+                        </div>
+                    </div>
+                    
+                    <div id="pieChartContainer" class="pie-chart-container"></div>
+                    
+                    <div id="chartEmptyState" class="chart-empty-state" style="display:none;">
+                        <div style="margin-bottom: 8px; color: var(--text-muted);">
+                            <script>document.write(Icons.emptyChart('svg-icon-xl'));</script>
+                        </div>
+                        <p id="langChartEmpty">No expenses recorded for this month yet.</p>
+                    </div>
+
+                    <div id="chartLegend" class="chart-legend"></div>
+                </div>
+
+                <!-- SUBVIEW 2: 6-Month Expense Trend (D3.js Trend Line) -->
+                <div id="chartViewTrend" class="chart-subview" style="display:none;">
+                    <div class="trend-kpi-bar">
+                        <div class="trend-kpi-cell">
+                            <span class="trend-kpi-label" id="langTrendLatestLabel">Current Month</span>
+                            <span class="trend-kpi-val tabular-number" id="trendLatestVal">₹0.00</span>
+                        </div>
+                        <div class="trend-kpi-cell">
+                            <span class="trend-kpi-label" id="langTrendAvgLabel">6M Monthly Avg</span>
+                            <span class="trend-kpi-val tabular-number" id="trendAvgVal">₹0.00</span>
+                        </div>
+                        <div class="trend-kpi-cell">
+                            <span class="trend-kpi-label" id="langTrendChangeLabel">MoM Shift</span>
+                            <span class="trend-kpi-pill neutral" id="trendChangeBadge">
+                                <span id="trendChangeIcon"><script>document.write(Icons.trendingUp('svg-icon-xs'));</script></span>
+                                <span id="trendChangeText">0.0%</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="trendChartContainer" class="trend-chart-container"></div>
+
+                    <div id="trendMonthsStrip" class="trend-months-strip"></div>
+                </div>
             </div>
 
             <!-- Passbook / Transaction Feed -->
             <div class="history-section">
                 <div class="passbook-toolbar">
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="passbook-title-wrap">
                         <script>document.write(Icons.receipt('svg-icon-md'));</script>
                         <h3 id="langPassbookLabel" style="font-size: 14px; font-weight: 800;">Transaction Passbook</h3>
+                        <span class="passbook-count-badge" id="passbookCountBadge">0</span>
                     </div>
-                    <div class="filter-tabs">
-                        <button type="button" class="filter-tab active" onclick="setPassbookFilter('all', this)" id="filterTabAll">All</button>
-                        <button type="button" class="filter-tab" onclick="setPassbookFilter('expense', this)" id="filterTabExp">Expense</button>
-                        <button type="button" class="filter-tab" onclick="setPassbookFilter('income', this)" id="filterTabInc">Income</button>
+                    <div class="passbook-actions-cluster">
+                        <div class="filter-tabs">
+                            <button type="button" class="filter-tab active" onclick="setPassbookFilter('all', this)" id="filterTabAll">All</button>
+                            <button type="button" class="filter-tab" onclick="setPassbookFilter('expense', this)" id="filterTabExp">Expense</button>
+                            <button type="button" class="filter-tab" onclick="setPassbookFilter('income', this)" id="filterTabInc">Income</button>
+                        </div>
+                        <button type="button" class="btn-export-csv" onclick="openExportModal()" id="btnExportCsv" title="Export transactions to CSV for Excel/Sheets">
+                            <script>document.write(Icons.download('svg-icon-sm'));</script>
+                            <span id="langExportCsvBtn">Export CSV</span>
+                        </button>
                     </div>
                 </div>
 
-                <input type="text" id="passbookSearch" class="passbook-search" placeholder="Search by category..." oninput="renderTransactionList()">
+                <div class="passbook-search-row">
+                    <div class="passbook-search-box">
+                        <span class="passbook-search-icon"><script>document.write(Icons.search('svg-icon-sm'));</script></span>
+                        <input type="text" id="passbookSearch" class="passbook-search" placeholder="Search by category..." oninput="renderTransactionList()">
+                    </div>
+                </div>
 
                 <ul class="transaction-list" id="transactionList"></ul>
             </div>
@@ -1782,6 +2049,44 @@
     </div>
 </div>
 
+<!-- CSV Export Options Modal -->
+<div id="exportCsvModal" class="custom-app-modal" onclick="if(event.target===this) closeExportModal()">
+    <div class="modal-box export-modal-box">
+        <div class="export-modal-icon">
+            <script>document.write(Icons.fileSpreadsheet('svg-icon-lg'));</script>
+        </div>
+        <h4 id="exportModalTitle" style="font-size: 16px; font-weight: 800; margin: 0 0 6px 0; color: var(--text-primary);">Export CSV Ledger</h4>
+        <p id="exportModalSubtitle" style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">Download your transaction history in spreadsheet format (ready for Excel, Google Sheets, & Numbers).</p>
+        
+        <div class="export-options-list">
+            <button type="button" class="export-option-btn primary-export-btn" onclick="executeExport('all')">
+                <div class="export-opt-content">
+                    <span class="export-opt-title" id="exportAllTitle">Export All Records</span>
+                    <span class="export-opt-meta" id="exportAllCount">All transactions</span>
+                </div>
+                <script>document.write(Icons.download('svg-icon-sm'));</script>
+            </button>
+            <button type="button" class="export-option-btn" id="exportFilteredBtn" onclick="executeExport('filtered')">
+                <div class="export-opt-content">
+                    <span class="export-opt-title" id="exportFilteredTitle">Export Filtered View</span>
+                    <span class="export-opt-meta" id="exportFilteredCount">Matching active filters</span>
+                </div>
+                <script>document.write(Icons.download('svg-icon-sm'));</script>
+            </button>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 14px; justify-content: flex-end;">
+            <button type="button" class="modal-btn" onclick="closeExportModal()" id="exportModalCancelBtn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Toast Notification -->
+<div id="appToast" class="app-toast">
+    <span class="app-toast-icon"><script>document.write(Icons.shieldCheck('svg-icon-md'));</script></span>
+    <span id="appToastText">Export completed!</span>
+</div>
+
 <script>
     // State Persistence
     let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
@@ -1791,6 +2096,7 @@
     let currentCurrency = localStorage.getItem('web_currency') || '₹';
     let currentLang = localStorage.getItem('web_lang') || 'hi';
     let activeFilter = 'all';
+    let currentChartTab = localStorage.getItem('web_chart_tab') || 'breakdown';
 
     // DOM Elements
     const balanceDisplay = document.getElementById('balanceDisplay');
@@ -1828,7 +2134,7 @@
             resetBtn: "ऐप रीसेट करें",
             confirmReset: "क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?",
             alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!",
-            chartTitle: "इस महीने के खर्च (श्रेणी अनुसार)",
+            chartTitle: "खर्च विश्लेषण (Analytics)",
             chartTotalLabel: "कुल खर्च:",
             chartEmpty: "इस महीने के लिए कोई खर्च रिकॉर्ड नहीं है।",
             otherExpense: "अन्य खर्च",
@@ -1837,7 +2143,25 @@
             settingsTitle: "सेटिंग्स (Settings)",
             edgeLaunchLabel: "एज क्विक लॉन्च (Edge Launch)",
             splashTagline: "स्मार्ट बजट और वित्तीय प्रबंधन",
-            splashSecurity: "100% सुरक्षित · आपका व्यक्तिगत वित्तीय साथी"
+            splashSecurity: "100% सुरक्षित · आपका व्यक्तिगत वित्तीय साथी",
+            tabBreakdown: "श्रेणी अनुसार",
+            tabTrend: "6M ट्रेंड",
+            trendLatestLabel: "इस महीने का खर्च",
+            trendAvgLabel: "6 महीने का औसत",
+            trendChangeLabel: "माह-दर-माह",
+            trendReduction: "कमी (बचत)",
+            trendGrowth: "बढ़ोतरी",
+            trendStable: "समान खर्च",
+            trendVsPrev: "बनाम पिछला माह",
+            trendEmpty: "पिछले 6 महीनों में कोई खर्च दर्ज नहीं है।",
+            exportCsvBtn: "CSV एक्सपोर्ट",
+            exportDrawerBtn: "CSV लेजर एक्सपोर्ट",
+            exportModalTitle: "CSV लेजर एक्सपोर्ट",
+            exportModalSubtitle: "लेनदेन का पूरा इतिहास एक्सेल और स्प्रेडशीट फॉर्मेट (CSV) में डाउनलोड करें।",
+            exportAllTitle: "सभी लेनदेन एक्सपोर्ट करें",
+            exportFilteredTitle: "फ़िल्टर किए गए रिकॉर्ड",
+            exportSuccessToast: "CSV फ़ाइल सफलतापूर्वक डाउनलोड हो गई!",
+            noTxToExport: "एक्सपोर्ट करने के लिए कोई लेनदेन नहीं मिला!"
         },
         en: {
             salaryLabel: "Monthly Salary/Limit",
@@ -1854,7 +2178,7 @@
             resetBtn: "Reset App Data",
             confirmReset: "Are you sure you want to clear all app data and history?",
             alertReset: "App data reset successfully!",
-            chartTitle: "Current Month Expenses by Category",
+            chartTitle: "Expense Analytics",
             chartTotalLabel: "Total Expense:",
             chartEmpty: "No expenses recorded for this month yet.",
             otherExpense: "Other Expense",
@@ -1863,62 +2187,27 @@
             settingsTitle: "Settings",
             edgeLaunchLabel: "Edge Quick Launch",
             splashTagline: "Smart Wealth & Budget Intelligence",
-            splashSecurity: "100% Private · On-Device Financial Intelligence"
+            splashSecurity: "100% Private · On-Device Financial Intelligence",
+            tabBreakdown: "Breakdown",
+            tabTrend: "6M Trend",
+            trendLatestLabel: "Current Month",
+            trendAvgLabel: "6M Monthly Avg",
+            trendChangeLabel: "MoM Shift",
+            trendReduction: "Spending Reduction",
+            trendGrowth: "Spending Growth",
+            trendStable: "Stable Spending",
+            trendVsPrev: "vs prev month",
+            trendEmpty: "No expense records in the last 6 months.",
+            exportCsvBtn: "Export CSV",
+            exportDrawerBtn: "Export CSV Ledger",
+            exportModalTitle: "Export CSV Ledger",
+            exportModalSubtitle: "Download full ledger in spreadsheet format for Excel, Google Sheets, & Numbers.",
+            exportAllTitle: "Export All Records",
+            exportFilteredTitle: "Export Filtered View",
+            exportSuccessToast: "CSV ledger exported successfully!",
+            noTxToExport: "No transactions available to export!"
         }
     };
-
-    function initSplashScreen() {
-        const splash = document.getElementById('splashScreen');
-        const fill = document.getElementById('splashLoaderFill');
-        const tagline = document.getElementById('splashTagline');
-        const securityText = document.getElementById('splashSecurityText');
-        const creditText = document.getElementById('splashCreditText');
-
-        if (!splash) return;
-
-        // Apply localization to splash screen
-        if (currentLang === 'hi') {
-            if (tagline) tagline.innerText = "स्मार्ट बजट और वित्तीय प्रबंधन";
-            if (securityText) securityText.innerText = "100% सुरक्षित · आपका व्यक्तिगत वित्तीय साथी";
-            if (creditText) creditText.innerHTML = "रोहित द्वारा निर्मित • <strong>PocketPaisa Pro</strong>";
-        }
-
-        // Trigger progress bar filling smoothly
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                if (fill) fill.style.width = '100%';
-            }, 40);
-        });
-
-        // Function to dismiss splash with smooth transition
-        let dismissed = false;
-        function dismissSplash() {
-            if (dismissed) return;
-            dismissed = true;
-            splash.classList.add('splash-dismissed');
-            setTimeout(() => {
-                splash.style.display = 'none';
-                if (splash.parentNode) splash.parentNode.removeChild(splash);
-            }, 380);
-        }
-
-        // Auto dismiss at exactly 2.1 seconds (2-3 second window)
-        const autoTimer = setTimeout(dismissSplash, 2100);
-
-        // Instant tap/touch to skip anytime
-        splash.addEventListener('click', () => {
-            clearTimeout(autoTimer);
-            dismissSplash();
-        }, { once: true });
-
-        splash.addEventListener('touchstart', () => {
-            clearTimeout(autoTimer);
-            dismissSplash();
-        }, { passive: true, once: true });
-
-        // Failsafe timer (max 2.7s) to guarantee it never hangs
-        setTimeout(dismissSplash, 2700);
-    }
 
     function init() {
         if (isDarkMode) {
@@ -1931,7 +2220,6 @@
         document.getElementById('currencySelect').value = currentCurrency;
         document.getElementById('languageSelect').value = currentLang;
         updateUI();
-        initSplashScreen();
     }
 
     function toggleSettings(event) {
@@ -2250,6 +2538,448 @@
         });
     }
 
+    // D3.js 6-Month Expense Trend Line Chart
+    function renderTrendChart() {
+        const container = document.getElementById('trendChartContainer');
+        const monthsStrip = document.getElementById('trendMonthsStrip');
+        const t = translationsDict[currentLang];
+        if (!container) return;
+
+        container.innerHTML = '';
+        if (monthsStrip) monthsStrip.innerHTML = '';
+
+        if (typeof d3 === 'undefined') {
+            container.innerHTML = '<p style="font-size:12px; color:var(--text-muted);">Loading D3 visualization...</p>';
+            return;
+        }
+
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+
+        const monthNamesShortEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const monthNamesShortHi = ["जन", "फ़र", "मार्च", "अप्रै", "मई", "जून", "जुला", "अग", "सितं", "अक्टू", "नव", "दिसं"];
+        const monthNamesFullEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const monthNamesFullHi = ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+
+        const trendData = [];
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(currentYear, currentMonth - i, 1);
+            const y = d.getFullYear();
+            const m = d.getMonth();
+            trendData.push({
+                key: `${y}-${m}`,
+                year: y,
+                month: m,
+                label: currentLang === 'hi' ? monthNamesShortHi[m] : monthNamesShortEn[m],
+                fullLabel: `${currentLang === 'hi' ? monthNamesFullHi[m] : monthNamesFullEn[m]} ${y}`,
+                isCurrent: (i === 0),
+                total: 0,
+                count: 0
+            });
+        }
+
+        // Aggregate expense transactions
+        transactions.forEach(tr => {
+            if (tr.type !== 'expense') return;
+            let d = null;
+            if (tr.timestamp) {
+                d = new Date(tr.timestamp);
+            } else if (tr.date) {
+                d = new Date(tr.date);
+            }
+            if (!d || isNaN(d.getTime())) return;
+
+            const y = d.getFullYear();
+            const m = d.getMonth();
+            const target = trendData.find(item => item.year === y && item.month === m);
+            if (target) {
+                target.total += Math.abs(parseFloat(tr.amount) || 0);
+                target.count += 1;
+            }
+        });
+
+        // Compute MoM percentage change and differences
+        for (let i = 0; i < trendData.length; i++) {
+            if (i === 0) {
+                trendData[i].pctChange = null;
+                trendData[i].diff = 0;
+            } else {
+                const prev = trendData[i - 1].total;
+                const curr = trendData[i].total;
+                trendData[i].diff = curr - prev;
+                if (prev === 0) {
+                    trendData[i].pctChange = curr > 0 ? 100 : 0;
+                } else {
+                    trendData[i].pctChange = ((curr - prev) / prev) * 100;
+                }
+            }
+        }
+
+        const currentMonthData = trendData[trendData.length - 1];
+        const prevMonthData = trendData[trendData.length - 2];
+        const totalSixMonth = trendData.reduce((acc, d) => acc + d.total, 0);
+        const avgSixMonth = totalSixMonth / 6;
+
+        // Update KPI Strip
+        const latestValEl = document.getElementById('trendLatestVal');
+        const avgValEl = document.getElementById('trendAvgVal');
+        const changeBadge = document.getElementById('trendChangeBadge');
+        const changeIcon = document.getElementById('trendChangeIcon');
+        const changeText = document.getElementById('trendChangeText');
+
+        if (latestValEl) latestValEl.innerText = `${currentCurrency}${currentMonthData.total.toFixed(2)}`;
+        if (avgValEl) avgValEl.innerText = `${currentCurrency}${avgSixMonth.toFixed(2)}`;
+
+        const momDiff = currentMonthData.diff;
+        const momPct = currentMonthData.pctChange;
+
+        if (changeBadge && changeIcon && changeText) {
+            changeBadge.className = 'trend-kpi-pill';
+            if (momDiff > 0) {
+                changeBadge.classList.add('growth');
+                changeIcon.innerHTML = Icons.trendingUp('svg-icon-xs');
+                changeText.innerText = `+${momPct.toFixed(1)}%`;
+                changeBadge.title = `${t.trendGrowth}: +${currentCurrency}${momDiff.toFixed(2)} ${t.trendVsPrev}`;
+            } else if (momDiff < 0) {
+                changeBadge.classList.add('reduction');
+                changeIcon.innerHTML = Icons.trendingDown('svg-icon-xs');
+                changeText.innerText = `${momPct.toFixed(1)}%`;
+                changeBadge.title = `${t.trendReduction}: -${currentCurrency}${Math.abs(momDiff).toFixed(2)} ${t.trendVsPrev}`;
+            } else {
+                changeBadge.classList.add('neutral');
+                changeIcon.innerHTML = '―';
+                changeText.innerText = `0.0%`;
+                changeBadge.title = t.trendStable;
+            }
+        }
+
+        // SVG Dimensions & Margins
+        const width = 340;
+        const height = 180;
+        const margin = { top: 22, right: 18, bottom: 28, left: 44 };
+        const innerWidth = width - margin.left - margin.right;
+        const innerHeight = height - margin.top - margin.bottom;
+
+        // Create Tooltip DOM
+        const tooltip = document.createElement('div');
+        tooltip.className = 'chart-tooltip';
+        container.appendChild(tooltip);
+
+        const svg = d3.select(container)
+            .append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .attr('preserveAspectRatio', 'xMidYMid meet');
+
+        // Color theme definition
+        const isUp = momDiff > 0;
+        const isDown = momDiff < 0;
+        const primaryTrendColor = isDown ? '#10b981' : (isUp ? '#f43f5e' : (isDarkMode ? '#38bdf8' : '#0284c7'));
+
+        const defs = svg.append('defs');
+        const gradient = defs.append('linearGradient')
+            .attr('id', 'trendAreaGradient')
+            .attr('x1', '0%').attr('y1', '0%')
+            .attr('x2', '0%').attr('y2', '100%');
+
+        gradient.append('stop')
+            .attr('offset', '0%')
+            .attr('stop-color', primaryTrendColor)
+            .attr('stop-opacity', isDarkMode ? 0.35 : 0.22);
+
+        gradient.append('stop')
+            .attr('offset', '100%')
+            .attr('stop-color', primaryTrendColor)
+            .attr('stop-opacity', 0.0);
+
+        const g = svg.append('g')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        // Scales
+        const xScale = d3.scalePoint()
+            .domain(trendData.map(d => d.key))
+            .range([0, innerWidth])
+            .padding(0.08);
+
+        const maxTotal = d3.max(trendData, d => d.total) || 100;
+        const yScale = d3.scaleLinear()
+            .domain([0, maxTotal * 1.18])
+            .range([innerHeight, 0])
+            .nice();
+
+        // Horizontal Grid & Y-Ticks
+        const yTicks = yScale.ticks(4);
+        const gridGroup = g.append('g').attr('class', 'trend-grid');
+
+        yTicks.forEach(tickVal => {
+            const yPos = yScale(tickVal);
+            
+            gridGroup.append('line')
+                .attr('x1', 0)
+                .attr('x2', innerWidth)
+                .attr('y1', yPos)
+                .attr('y2', yPos)
+                .style('stroke', isDarkMode ? 'rgba(255, 255, 255, 0.07)' : 'rgba(0, 0, 0, 0.06)')
+                .style('stroke-dasharray', '3,3');
+
+            let formattedTick = `${currentCurrency}${tickVal}`;
+            if (tickVal >= 1000) {
+                formattedTick = `${currentCurrency}${(tickVal / 1000).toFixed(tickVal % 1000 === 0 ? 0 : 1)}k`;
+            }
+
+            g.append('text')
+                .attr('x', -8)
+                .attr('y', yPos + 3)
+                .attr('text-anchor', 'end')
+                .style('font-size', '9px')
+                .style('font-family', "'JetBrains Mono', monospace")
+                .style('font-weight', '500')
+                .style('fill', isDarkMode ? '#94a3b8' : '#64748b')
+                .style('user-select', 'none')
+                .text(formattedTick);
+        });
+
+        // Area Generator & Path
+        const area = d3.area()
+            .x(d => xScale(d.key))
+            .y0(innerHeight)
+            .y1(d => yScale(d.total))
+            .curve(d3.curveMonotoneX);
+
+        g.append('path')
+            .datum(trendData)
+            .attr('fill', 'url(#trendAreaGradient)')
+            .attr('d', area);
+
+        // Line Generator & Path
+        const line = d3.line()
+            .x(d => xScale(d.key))
+            .y(d => yScale(d.total))
+            .curve(d3.curveMonotoneX);
+
+        g.append('path')
+            .datum(trendData)
+            .attr('fill', 'none')
+            .attr('stroke', primaryTrendColor)
+            .attr('stroke-width', 2.5)
+            .attr('stroke-linecap', 'round')
+            .attr('stroke-linejoin', 'round')
+            .attr('d', line);
+
+        // Interactive vertical crosshair guide
+        const crosshair = g.append('line')
+            .attr('y1', 0)
+            .attr('y2', innerHeight)
+            .style('stroke', isDarkMode ? '#64748b' : '#94a3b8')
+            .style('stroke-width', '1px')
+            .style('stroke-dasharray', '2,2')
+            .style('opacity', 0)
+            .style('pointer-events', 'none');
+
+        // Month Labels & Points
+        const pointsGroup = g.append('g').attr('class', 'trend-points');
+        const pointElements = [];
+
+        trendData.forEach((d) => {
+            const cx = xScale(d.key);
+            const cy = yScale(d.total);
+
+            // Month text below axis
+            g.append('text')
+                .attr('x', cx)
+                .attr('y', innerHeight + 16)
+                .attr('text-anchor', 'middle')
+                .style('font-size', d.isCurrent ? '10px' : '9.5px')
+                .style('font-family', "'Plus Jakarta Sans', sans-serif")
+                .style('font-weight', d.isCurrent ? '800' : '600')
+                .style('fill', d.isCurrent ? (isDarkMode ? '#f8fafc' : '#0f172a') : (isDarkMode ? '#94a3b8' : '#64748b'))
+                .style('user-select', 'none')
+                .text(d.label);
+
+            if (d.isCurrent) {
+                g.append('circle')
+                    .attr('cx', cx)
+                    .attr('cy', innerHeight + 22)
+                    .attr('r', 2)
+                    .style('fill', primaryTrendColor);
+            }
+
+            const circle = pointsGroup.append('circle')
+                .attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', d.isCurrent ? 5 : 4)
+                .style('fill', isDarkMode ? '#0f172a' : '#ffffff')
+                .style('stroke', primaryTrendColor)
+                .style('stroke-width', d.isCurrent ? 2.5 : 2)
+                .style('cursor', 'pointer')
+                .style('transition', 'all 0.15s ease');
+
+            pointElements.push(circle);
+        });
+
+        // Hover & Inspection Handlers
+        function highlightMonth(idx) {
+            const d = trendData[idx];
+            if (!d) return;
+
+            const cx = xScale(d.key);
+            const cy = yScale(d.total);
+
+            crosshair
+                .attr('x1', cx)
+                .attr('x2', cx)
+                .style('opacity', 1);
+
+            pointElements.forEach((p, i) => {
+                if (i === idx) {
+                    p.attr('r', 6.5)
+                     .style('stroke-width', 3)
+                     .style('fill', primaryTrendColor);
+                } else {
+                    p.attr('r', trendData[i].isCurrent ? 5 : 4)
+                     .style('stroke-width', trendData[i].isCurrent ? 2.5 : 2)
+                     .style('fill', isDarkMode ? '#0f172a' : '#ffffff');
+                }
+            });
+
+            if (monthsStrip) {
+                const cards = monthsStrip.querySelectorAll('.trend-month-card');
+                cards.forEach((c, i) => {
+                    if (i === idx) c.classList.add('active-hover');
+                    else c.classList.remove('active-hover');
+                });
+            }
+
+            let shiftBadgeHtml = '';
+            if (d.pctChange !== null) {
+                const shiftColor = d.diff > 0 ? '#fb7185' : (d.diff < 0 ? '#34d399' : '#94a3b8');
+                const shiftArrow = d.diff > 0 ? '▲' : (d.diff < 0 ? '▼' : '―');
+                const shiftText = `${shiftArrow} ${d.diff > 0 ? '+' : ''}${d.pctChange.toFixed(1)}%`;
+                shiftBadgeHtml = `<div style="margin-top:2px; font-size:10px; font-weight:700; color:${shiftColor};">${shiftText} ${currentLang === 'hi' ? 'पिछले माह से' : 'vs prev'}</div>`;
+            } else {
+                shiftBadgeHtml = `<div style="margin-top:2px; font-size:10px; color:#94a3b8;">${currentLang === 'hi' ? 'प्रारंभिक आधार' : 'Base Period'}</div>`;
+            }
+
+            tooltip.style.opacity = '1';
+            tooltip.innerHTML = `
+                <div style="font-weight:700; margin-bottom:2px; font-size:11px;">${d.fullLabel}</div>
+                <div style="font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:800; color:#fb7185;">${currentCurrency}${d.total.toFixed(2)}</div>
+                <div style="font-size:10px; color:rgba(255,255,255,0.7);">${d.count} ${d.count === 1 ? 'transaction' : 'transactions'}</div>
+                ${shiftBadgeHtml}
+            `;
+
+            const posX = margin.left + cx;
+            const posY = margin.top + cy;
+            tooltip.style.left = `${(posX / width) * 100}%`;
+            tooltip.style.top = `${Math.max(10, posY - 28)}px`;
+            tooltip.style.transform = 'translate(-50%, -100%)';
+        }
+
+        function clearHighlight() {
+            crosshair.style.opacity = 0;
+            tooltip.style.opacity = 0;
+            pointElements.forEach((p, i) => {
+                p.attr('r', trendData[i].isCurrent ? 5 : 4)
+                 .style('stroke-width', trendData[i].isCurrent ? 2.5 : 2)
+                 .style('fill', isDarkMode ? '#0f172a' : '#ffffff');
+            });
+            if (monthsStrip) {
+                const cards = monthsStrip.querySelectorAll('.trend-month-card');
+                cards.forEach(c => c.classList.remove('active-hover'));
+            }
+        }
+
+        // Overlay columns for easy touch & hover
+        const colWidth = innerWidth / (trendData.length - 1);
+        trendData.forEach((d, idx) => {
+            const cx = xScale(d.key);
+            const x0 = idx === 0 ? 0 : cx - colWidth / 2;
+            const w0 = (idx === 0 || idx === trendData.length - 1) ? colWidth / 2 : colWidth;
+
+            g.append('rect')
+                .attr('x', x0)
+                .attr('y', 0)
+                .attr('width', w0)
+                .attr('height', innerHeight + 20)
+                .style('fill', 'transparent')
+                .style('cursor', 'pointer')
+                .on('mouseenter', () => highlightMonth(idx))
+                .on('mouseleave', () => clearHighlight())
+                .on('touchstart', (e) => {
+                    e.preventDefault();
+                    highlightMonth(idx);
+                });
+        });
+
+        // Render Mini Months Strip below chart
+        if (monthsStrip) {
+            trendData.forEach((d, idx) => {
+                const card = document.createElement('div');
+                card.className = `trend-month-card ${d.isCurrent ? 'current' : ''}`;
+                
+                let badgeClass = 'neutral';
+                let badgeText = '0%';
+                if (d.diff > 0) {
+                    badgeClass = 'growth';
+                    badgeText = `+${d.pctChange.toFixed(0)}%`;
+                } else if (d.diff < 0) {
+                    badgeClass = 'reduction';
+                    badgeText = `${d.pctChange.toFixed(0)}%`;
+                }
+
+                let dispAmt = `${currentCurrency}${d.total.toFixed(0)}`;
+                if (d.total >= 1000) {
+                    dispAmt = `${currentCurrency}${(d.total / 1000).toFixed(1)}k`;
+                }
+
+                card.innerHTML = `
+                    <span class="trend-month-name">${d.label}</span>
+                    <span class="trend-month-amount tabular-number">${dispAmt}</span>
+                    <span class="trend-month-badge ${badgeClass}">${badgeText}</span>
+                `;
+
+                card.addEventListener('mouseenter', () => highlightMonth(idx));
+                card.addEventListener('mouseleave', () => clearHighlight());
+                card.addEventListener('click', () => highlightMonth(idx));
+
+                monthsStrip.appendChild(card);
+            });
+        }
+    }
+
+    // Chart Mode Switching (Donut Breakdown vs 6-Month Trend Line)
+    function switchChartTab(tab) {
+        currentChartTab = tab;
+        localStorage.setItem('web_chart_tab', tab);
+        renderActiveChart();
+    }
+
+    function renderActiveChart() {
+        const btnBreakdown = document.getElementById('tabChartBreakdown');
+        const btnTrend = document.getElementById('tabChartTrend');
+        const viewBreakdown = document.getElementById('chartViewBreakdown');
+        const viewTrend = document.getElementById('chartViewTrend');
+        const headerIcon = document.getElementById('chartHeaderIcon');
+
+        if (currentChartTab === 'trend') {
+            if (btnBreakdown) btnBreakdown.classList.remove('active');
+            if (btnTrend) btnTrend.classList.add('active');
+            if (viewBreakdown) viewBreakdown.style.display = 'none';
+            if (viewTrend) viewTrend.style.display = 'block';
+            if (headerIcon) headerIcon.innerHTML = Icons.lineChart('svg-icon-md');
+            renderTrendChart();
+        } else {
+            if (btnBreakdown) btnBreakdown.classList.add('active');
+            if (btnTrend) btnTrend.classList.remove('active');
+            if (viewBreakdown) viewBreakdown.style.display = 'block';
+            if (viewTrend) viewTrend.style.display = 'none';
+            if (headerIcon) headerIcon.innerHTML = Icons.chart('svg-icon-md');
+            renderExpenseChart();
+        }
+    }
+
     function renderTransactionList() {
         const query = (document.getElementById('passbookSearch')?.value || '').toLowerCase().trim();
         transactionList.innerHTML = '';
@@ -2259,6 +2989,11 @@
             if (query && !t.category.toLowerCase().includes(query)) return false;
             return true;
         });
+
+        const countBadge = document.getElementById('passbookCountBadge');
+        if (countBadge) {
+            countBadge.innerText = filtered.length;
+        }
 
         if (filtered.length === 0) {
             const emptyLi = document.createElement('li');
@@ -2329,6 +3064,39 @@
         if (document.getElementById('langLabelEdgeLaunch')) {
             document.getElementById('langLabelEdgeLaunch').innerText = t.edgeLaunchLabel || "Edge Quick Launch";
         }
+        if (document.getElementById('langExportCsvBtn')) {
+            document.getElementById('langExportCsvBtn').innerText = t.exportCsvBtn || "Export CSV";
+        }
+        if (document.getElementById('langDrawerExportCsv')) {
+            document.getElementById('langDrawerExportCsv').innerText = t.exportDrawerBtn || "Export CSV Ledger";
+        }
+        if (document.getElementById('exportModalTitle')) {
+            document.getElementById('exportModalTitle').innerText = t.exportModalTitle || "Export CSV Ledger";
+        }
+        if (document.getElementById('exportModalSubtitle')) {
+            document.getElementById('exportModalSubtitle').innerText = t.exportModalSubtitle || "Download transaction history in spreadsheet format.";
+        }
+        if (document.getElementById('exportAllTitle')) {
+            document.getElementById('exportAllTitle').innerText = t.exportAllTitle || "Export All Records";
+        }
+        if (document.getElementById('exportFilteredTitle')) {
+            document.getElementById('exportFilteredTitle').innerText = t.exportFilteredTitle || "Export Filtered View";
+        }
+        if (document.getElementById('langTabBreakdown')) {
+            document.getElementById('langTabBreakdown').innerText = t.tabBreakdown || "Breakdown";
+        }
+        if (document.getElementById('langTabTrend')) {
+            document.getElementById('langTabTrend').innerText = t.tabTrend || "6M Trend";
+        }
+        if (document.getElementById('langTrendLatestLabel')) {
+            document.getElementById('langTrendLatestLabel').innerText = t.trendLatestLabel || "Current Month";
+        }
+        if (document.getElementById('langTrendAvgLabel')) {
+            document.getElementById('langTrendAvgLabel').innerText = t.trendAvgLabel || "6M Monthly Avg";
+        }
+        if (document.getElementById('langTrendChangeLabel')) {
+            document.getElementById('langTrendChangeLabel').innerText = t.trendChangeLabel || "MoM Shift";
+        }
 
         // Quick badges
         if (amountCurrencyPrefix) {
@@ -2390,7 +3158,7 @@
         localStorage.setItem('web_balance_v2', balance);
         localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
 
-        renderExpenseChart();
+        renderActiveChart();
 
         if (window.EdgeOverlayService && typeof window.EdgeOverlayService.syncWithApp === 'function') {
             window.EdgeOverlayService.syncWithApp();
@@ -2446,14 +3214,221 @@
         updateUI();
     }
 
+    // App Toast Feedback
+    let toastTimer = null;
+    function showToastNotification(message, duration = 3200) {
+        const toast = document.getElementById('appToast');
+        const text = document.getElementById('appToastText');
+        if (!toast || !text) return;
+        text.innerText = message;
+        toast.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, duration);
+    }
+
+    // Export Options Modal Controls
+    function openExportModal() {
+        if (!transactions || transactions.length === 0) {
+            showModalAlert(translationsDict[currentLang].noTxToExport || 'No transactions available to export!');
+            return;
+        }
+
+        const query = (document.getElementById('passbookSearch')?.value || '').toLowerCase().trim();
+        const filteredList = transactions.filter((t) => {
+            if (activeFilter !== 'all' && t.type !== activeFilter) return false;
+            if (query && !t.category.toLowerCase().includes(query)) return false;
+            return true;
+        });
+
+        const modal = document.getElementById('exportCsvModal');
+        const allCountEl = document.getElementById('exportAllCount');
+        const filteredBtn = document.getElementById('exportFilteredBtn');
+        const filteredCountEl = document.getElementById('exportFilteredCount');
+
+        if (allCountEl) {
+            allCountEl.innerText = `${transactions.length} ${currentLang === 'hi' ? 'कुल रिकॉर्ड्स' : 'total records'}`;
+        }
+
+        // If filter or search is active and differs from all
+        if ((activeFilter !== 'all' || query) && filteredList.length !== transactions.length) {
+            if (filteredBtn) filteredBtn.style.display = 'flex';
+            if (filteredCountEl) {
+                const filterDesc = activeFilter !== 'all' ? activeFilter.toUpperCase() : 'SEARCH';
+                filteredCountEl.innerText = `${filteredList.length} ${currentLang === 'hi' ? 'रिकॉर्ड्स' : 'records'} (${filterDesc})`;
+            }
+        } else {
+            if (filteredBtn) filteredBtn.style.display = 'none';
+        }
+
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeExportModal() {
+        const modal = document.getElementById('exportCsvModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function executeExport(scope) {
+        closeExportModal();
+        exportTransactionsToCSV(scope);
+    }
+
+    // Robust CSV Generation conforming to RFC 4180 with UTF-8 BOM
+    function exportTransactionsToCSV(scope = 'all') {
+        if (!transactions || transactions.length === 0) {
+            showModalAlert(translationsDict[currentLang].noTxToExport || 'No transactions available to export!');
+            return;
+        }
+
+        let dataset = transactions;
+        if (scope === 'filtered') {
+            const query = (document.getElementById('passbookSearch')?.value || '').toLowerCase().trim();
+            dataset = transactions.filter((t) => {
+                if (activeFilter !== 'all' && t.type !== activeFilter) return false;
+                if (query && !t.category.toLowerCase().includes(query)) return false;
+                return true;
+            });
+        }
+
+        if (dataset.length === 0) {
+            showModalAlert(currentLang === 'hi' ? 'कोई मेल खाने वाला लेनदेन नहीं मिला!' : 'No matching transactions found to export!');
+            return;
+        }
+
+        // Helper to escape values according to RFC 4180
+        const escapeCsv = (val) => {
+            if (val === null || val === undefined) return '""';
+            const str = String(val).replace(/"/g, '""');
+            return `"${str}"`;
+        };
+
+        const headers = [
+            "Record_No",
+            "Transaction_Date",
+            "Transaction_Time",
+            "Type",
+            "Category",
+            "Amount",
+            "Net_Flow",
+            "Currency",
+            "Timestamp"
+        ];
+
+        const rows = [];
+        rows.push(headers.map(escapeCsv).join(','));
+
+        let cumulativeNet = 0;
+        let totalIncome = 0;
+        let totalExpense = 0;
+
+        dataset.forEach((tx, idx) => {
+            let dateObj = null;
+            if (tx.timestamp) {
+                dateObj = new Date(tx.timestamp);
+            } else if (tx.date) {
+                dateObj = new Date(tx.date);
+            }
+            if (!dateObj || isNaN(dateObj.getTime())) {
+                dateObj = new Date();
+            }
+
+            const yyyy = dateObj.getFullYear();
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}-${mm}-${dd}`;
+            
+            const hours = String(dateObj.getHours()).padStart(2, '0');
+            const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+            const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+            const timeStr = `${hours}:${minutes}:${seconds}`;
+
+            const isIncome = tx.type === 'income';
+            const amt = Math.abs(parseFloat(tx.amount) || 0);
+
+            if (isIncome) {
+                totalIncome += amt;
+                cumulativeNet += amt;
+            } else {
+                totalExpense += amt;
+                cumulativeNet -= amt;
+            }
+
+            const netAmountFormatted = isIncome ? `+${amt.toFixed(2)}` : `-${amt.toFixed(2)}`;
+            const categoryClean = (tx.category || (isIncome ? 'Income' : 'Expense')).trim();
+
+            const row = [
+                idx + 1,
+                dateStr,
+                timeStr,
+                isIncome ? 'INCOME' : 'EXPENSE',
+                categoryClean,
+                amt.toFixed(2),
+                netAmountFormatted,
+                currentCurrency,
+                tx.timestamp || dateObj.getTime()
+            ];
+
+            rows.push(row.map(escapeCsv).join(','));
+        });
+
+        // Financial Summary Block for instant spreadsheet insights
+        rows.push('');
+        rows.push([escapeCsv('=== POCKETPAISA FINANCIAL SUMMARY ==='), '""', '""', '""', '""', '""', '""', '""', '""'].join(','));
+        rows.push([escapeCsv('Total Records Exported'), '""', '""', '""', '""', escapeCsv(dataset.length), '""', '""', '""'].join(','));
+        rows.push([escapeCsv('Total Income'), '""', '""', escapeCsv('INCOME'), '""', escapeCsv(totalIncome.toFixed(2)), escapeCsv(`+${totalIncome.toFixed(2)}`), escapeCsv(currentCurrency), '""'].join(','));
+        rows.push([escapeCsv('Total Expenses'), '""', '""', escapeCsv('EXPENSE'), '""', escapeCsv(totalExpense.toFixed(2)), escapeCsv(`-${totalExpense.toFixed(2)}`), escapeCsv(currentCurrency), '""'].join(','));
+        rows.push([escapeCsv('Net Ledger Impact'), '""', '""', escapeCsv('NET'), '""', escapeCsv(Math.abs(cumulativeNet).toFixed(2)), escapeCsv((cumulativeNet >= 0 ? '+' : '') + cumulativeNet.toFixed(2)), escapeCsv(currentCurrency), '""'].join(','));
+        rows.push([escapeCsv('Current App Balance'), '""', '""', escapeCsv('BALANCE'), '""', escapeCsv(balance.toFixed(2)), '""', escapeCsv(currentCurrency), '""'].join(','));
+        rows.push([escapeCsv('Monthly Salary Budget'), '""', '""', escapeCsv('BUDGET'), '""', escapeCsv(salary.toFixed(2)), '""', escapeCsv(currentCurrency), '""'].join(','));
+        rows.push([escapeCsv('Generated At'), escapeCsv(new Date().toLocaleString()), '""', '""', '""', '""', '""', '""', escapeCsv('PocketPaisa Pro')].join(','));
+
+        // Byte Order Mark (\uFEFF) ensures Excel and Numbers render UTF-8 (Rupee ₹, accented text) without mojibake
+        const BOM = '\uFEFF';
+        const csvString = BOM + rows.join('\r\n');
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+
+        const now = new Date();
+        const dateTag = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        const scopeTag = scope === 'filtered' && activeFilter !== 'all' ? `_${activeFilter}` : '';
+        const filename = `PocketPaisa_Ledger_${dateTag}${scopeTag}.csv`;
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        const successMsg = currentLang === 'hi'
+            ? `CSV फ़ाइल डाउनलोड हो गई! (${dataset.length} रिकॉर्ड सहेजे गए)`
+            : `Exported ${dataset.length} transactions to CSV!`;
+        showToastNotification(successMsg);
+    }
+
     // Expose Bridge for External & Floating Overlay Services
     window.PocketPaisaBridge = {
         addTransaction: (type, amt, cat) => addTransaction(type, amt, cat),
+        exportTransactionsToCSV: (scope) => exportTransactionsToCSV(scope),
+        openExportModal: () => openExportModal(),
+        switchChartTab: (tab) => switchChartTab(tab),
+        renderTrendChart: () => renderTrendChart(),
         getState: () => ({
             salary: salary,
             balance: balance,
             currentCurrency: currentCurrency,
             currentLang: currentLang,
+            currentChartTab: currentChartTab,
             transactions: transactions
         }),
         updateUI: () => updateUI(),
