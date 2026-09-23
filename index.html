@@ -39,15 +39,14 @@
     <link rel="stylesheet" href="edge-overlay.css">
 
     <style>
-        .svg-icon {
+        .svg-icon, .svg-icon-xs, .svg-icon-sm, .svg-icon-md, .svg-icon-lg, .svg-icon-xl {
             display: inline-block;
             vertical-align: middle;
-            width: 18px;
-            height: 18px;
             stroke-width: 2;
             flex-shrink: 0;
             line-height: 1;
         }
+        .svg-icon { width: 18px; height: 18px; }
         .svg-icon-xs { width: 12px; height: 12px; }
         .svg-icon-sm { width: 14px; height: 14px; }
         .svg-icon-md { width: 18px; height: 18px; }
@@ -2267,7 +2266,7 @@
 <div id="customModal">
     <div class="modal-box">
         <div class="modal-icon" id="customModalIcon">
-            <script>document.write(Icons.info('svg-icon-xl'));</script>
+            <span data-icon="info" data-icon-class="svg-icon-xl"></span>
         </div>
         <p id="customModalText"></p>
         <div class="modal-actions">
@@ -2281,7 +2280,7 @@
 <div id="exportCsvModal" class="custom-app-modal" onclick="if(event.target===this) closeExportModal()">
     <div class="modal-box export-modal-box">
         <div class="export-modal-icon">
-            <script>document.write(Icons.filePdf('svg-icon-lg'));</script>
+            <span data-icon="filePdf" data-icon-class="svg-icon-lg"></span>
         </div>
         <h4 id="exportModalTitle" style="font-size: 16px; font-weight: 800; margin: 0 0 6px 0; color: var(--text-primary);">Download PDF Ledger Statement</h4>
         <p id="exportModalSubtitle" style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">Download a beautifully formatted, professional PDF statement containing your financial analysis, budget progress, and transaction ledger.</p>
@@ -2292,7 +2291,7 @@
                     <span class="export-opt-title" id="exportAllTitle">Export All Records (PDF)</span>
                     <span class="export-opt-meta" id="exportAllCount">All transactions</span>
                 </div>
-                <script>document.write(Icons.download('svg-icon-sm'));</script>
+                <span data-icon="download" data-icon-class="svg-icon-sm"></span>
             </button>
             <button type="button" class="export-option-btn" id="exportFilteredBtn" onclick="executePdfExport('filtered')">
                 <div class="export-opt-content">
@@ -2507,7 +2506,10 @@
         }
         document.querySelectorAll('[data-icon]').forEach(el => {
             const iconName = el.getAttribute('data-icon');
-            const iconClass = el.getAttribute('data-icon-class') || 'svg-icon';
+            let iconClass = el.getAttribute('data-icon-class') || 'svg-icon';
+            if (!iconClass.includes('svg-icon')) {
+                iconClass = 'svg-icon ' + iconClass;
+            }
             if (Icons[iconName]) {
                 el.innerHTML = Icons[iconName](iconClass);
             }
@@ -2518,15 +2520,38 @@
         injectIcons();
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
-            if (themeToggleIcon) themeToggleIcon.innerHTML = Icons.sun ? Icons.sun('svg-icon-md') : '';
+            if (themeToggleIcon) themeToggleIcon.innerHTML = (Icons.sun ? Icons.sun('svg-icon svg-icon-md') : '');
         } else {
             document.body.classList.remove('dark-mode');
-            if (themeToggleIcon) themeToggleIcon.innerHTML = Icons.moon ? Icons.moon('svg-icon-md') : '';
+            if (themeToggleIcon) themeToggleIcon.innerHTML = (Icons.moon ? Icons.moon('svg-icon svg-icon-md') : '');
         }
         const currencySel = document.getElementById('currencySelect');
         if (currencySel) currencySel.value = currentCurrency;
         const langSel = document.getElementById('languageSelect');
         if (langSel) langSel.value = currentLang;
+
+        // Bind keyboard 'Enter' key presses to proper form action callbacks (robust keyboard/mobile UX!)
+        const bindEnterKey = (inputId, actionCallback) => {
+            const inputEl = document.getElementById(inputId);
+            if (inputEl) {
+                inputEl.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        actionCallback();
+                    }
+                });
+            }
+        };
+
+        bindEnterKey('salaryInput', () => setSalary());
+        bindEnterKey('smartInput', () => parseSmartText());
+        bindEnterKey('amount', () => addTransaction('expense'));
+        bindEnterKey('category', () => addTransaction('expense'));
+        bindEnterKey('catLimitName', () => saveCategoryBudget());
+        bindEnterKey('catLimitAmt', () => saveCategoryBudget());
+        bindEnterKey('goalInputName', () => saveSavingsGoal());
+        bindEnterKey('goalInputTarget', () => saveSavingsGoal());
+
         updateUI();
         renderAdvisorWelcome();
     }

@@ -39,15 +39,14 @@
     <link rel="stylesheet" href="edge-overlay.css">
 
     <style>
-        .svg-icon {
+        .svg-icon, .svg-icon-xs, .svg-icon-sm, .svg-icon-md, .svg-icon-lg, .svg-icon-xl {
             display: inline-block;
             vertical-align: middle;
-            width: 18px;
-            height: 18px;
             stroke-width: 2;
             flex-shrink: 0;
             line-height: 1;
         }
+        .svg-icon { width: 18px; height: 18px; }
         .svg-icon-xs { width: 12px; height: 12px; }
         .svg-icon-sm { width: 14px; height: 14px; }
         .svg-icon-md { width: 18px; height: 18px; }
@@ -1771,17 +1770,17 @@
             <!-- Quick Currency Pill -->
             <button type="button" class="currency-pill-btn" onclick="toggleSettings(event)" title="Change Currency">
                 <span id="quickCurrencyBadge" class="tabular-number">₹</span>
-                <script>document.write(Icons.chevronDown('svg-icon-xs'));</script>
+                <span data-icon="chevronDown" data-icon-class="svg-icon-xs"></span>
             </button>
 
             <!-- Dark Mode Toggle Button -->
             <button type="button" class="icon-btn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
-                <span id="themeToggleIcon"><script>document.write(Icons.moon('svg-icon-md'));</script></span>
+                <span id="themeToggleIcon" data-icon="moon" data-icon-class="svg-icon-md"></span>
             </button>
 
             <!-- Settings Menu Trigger (Gear Icon) -->
             <button type="button" class="icon-btn three-dot-btn" id="gearSettingsBtn" onclick="toggleSettings(event)" title="Settings & Options" aria-label="Settings">
-                <script>document.write(Icons.gear('svg-icon-md'));</script>
+                <span data-icon="gear" data-icon-class="svg-icon-md"></span>
             </button>
         </div>
     </div>
@@ -1792,11 +1791,11 @@
     <div class="settings-modal-card" onclick="event.stopPropagation()">
         <div class="settings-modal-header">
             <div style="display: flex; align-items: center; gap: 8px;">
-                <script>document.write(Icons.gear('svg-icon-lg'));</script>
+                <span data-icon="gear" data-icon-class="svg-icon-lg"></span>
                 <h3 id="settingsModalHeading" style="font-size: 16px; font-weight: 800; margin: 0; color: var(--text-primary);">Settings</h3>
             </div>
             <button type="button" class="settings-close-btn" onclick="toggleSettings(event)" aria-label="Close Settings">
-                <script>document.write(Icons.close('svg-icon-sm'));</script>
+                <span data-icon="close" data-icon-class="svg-icon-sm"></span>
             </button>
         </div>
 
@@ -1841,15 +1840,15 @@
 
         <div class="top-utility-bar">
             <button type="button" class="btn-utility" onclick="toggleDarkMode()">
-                <span id="drawerThemeIcon"><script>document.write(Icons.themeSwitch('svg-icon-md'));</script></span>
+                <span id="drawerThemeIcon" data-icon="themeSwitch" data-icon-class="svg-icon-md"></span>
                 <span>Theme Toggle</span>
             </button>
             <button type="button" class="btn-utility btn-export-csv-drawer" onclick="closeSettings(); openExportModal();" id="drawerExportCsvBtn">
-                <script>document.write(Icons.fileSpreadsheet('svg-icon-md'));</script>
+                <span data-icon="fileSpreadsheet" data-icon-class="svg-icon-md"></span>
                 <span id="langDrawerExportCsv">Export CSV Ledger</span>
             </button>
             <button type="button" class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">
-                <script>document.write(Icons.trash('svg-icon-md'));</script>
+                <span data-icon="trash" data-icon-class="svg-icon-md"></span>
                 <span>Reset App Data</span>
             </button>
         </div>
@@ -1859,11 +1858,11 @@
 <!-- Alert Banners -->
 <div class="banner-container">
     <div class="warning-banner warn-95" id="warn95Banner" style="display: none;">
-        <script>if (window.Icons) document.write(Icons.warning('svg-icon-md'));</script>
+        <span data-icon="warning" data-icon-class="svg-icon-md"></span>
         <span id="warn95Text">WARNING: You have spent 95% of your Budget!</span>
     </div>
     <div class="warning-banner warn-over" id="warnOverBanner" style="display: none;">
-        <script>if (window.Icons) document.write(Icons.siren('svg-icon-md'));</script>
+        <span data-icon="siren" data-icon-class="svg-icon-md"></span>
         <span id="warnOverText">CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!</span>
     </div>
 </div>
@@ -1929,7 +1928,7 @@
             <div class="fin-card">
                 <div class="fin-card-header">
                     <h2 class="fin-card-title">
-                        <script>document.write(Icons.composer('svg-icon-md'));</script>
+                        <span data-icon="composer" data-icon-class="svg-icon-md"></span>
                         <span id="langComposerTitle">Record Transaction</span>
                     </h2>
                 </div>
@@ -1963,27 +1962,27 @@
                     <!-- Fast Category Shortcut Chips with Custom Handcrafted SVGs -->
                     <div class="category-presets" id="categoryPresets">
                         <span class="category-chip" onclick="quickFillCategory('Food & Dining')">
-                            <script>document.write(Icons.food('svg-icon-sm'));</script>
+                            <span data-icon="food" data-icon-class="svg-icon-sm"></span>
                             <span>Food</span>
                         </span>
                         <span class="category-chip" onclick="quickFillCategory('Groceries')">
-                            <script>document.write(Icons.groceries('svg-icon-sm'));</script>
+                            <span data-icon="groceries" data-icon-class="svg-icon-sm"></span>
                             <span>Groceries</span>
                         </span>
                         <span class="category-chip" onclick="quickFillCategory('Transport')">
-                            <script>document.write(Icons.transport('svg-icon-sm'));</script>
+                            <span data-icon="transport" data-icon-class="svg-icon-sm"></span>
                             <span>Fuel / Cab</span>
                         </span>
                         <span class="category-chip" onclick="quickFillCategory('Rent & Bills')">
-                            <script>document.write(Icons.rent('svg-icon-sm'));</script>
+                            <span data-icon="rent" data-icon-class="svg-icon-sm"></span>
                             <span>Rent</span>
                         </span>
                         <span class="category-chip" onclick="quickFillCategory('Shopping')">
-                            <script>document.write(Icons.shopping('svg-icon-sm'));</script>
+                            <span data-icon="shopping" data-icon-class="svg-icon-sm"></span>
                             <span>Shopping</span>
                         </span>
                         <span class="category-chip" onclick="quickFillCategory('Salary')">
-                            <script>document.write(Icons.salary('svg-icon-sm'));</script>
+                            <span data-icon="salary" data-icon-class="svg-icon-sm"></span>
                             <span>Salary</span>
                         </span>
                     </div>
@@ -2007,11 +2006,11 @@
 
                 <div class="btn-container">
                     <button type="button" class="btn-action btn-income" onclick="addTransaction('income')" id="langIncomeBtn">
-                        <script>document.write(Icons.income('svg-icon-sm'));</script>
+                        <span data-icon="income" data-icon-class="svg-icon-sm"></span>
                         <span>Add Income</span>
                     </button>
                     <button type="button" class="btn-action btn-expense" onclick="addTransaction('expense')" id="langExpenseBtn">
-                        <script>document.write(Icons.expense('svg-icon-sm'));</script>
+                        <span data-icon="expense" data-icon-class="svg-icon-sm"></span>
                         <span>Expense</span>
                     </button>
                 </div>
@@ -2021,7 +2020,7 @@
             <div class="fin-card">
                 <div class="fin-card-header" style="margin-bottom: 10px; gap: 8px;">
                     <h2 class="fin-card-title">
-                        <script>document.write(Icons.warning('svg-icon-md'));</script>
+                        <span data-icon="warning" data-icon-class="svg-icon-md"></span>
                         <span id="langCatBudgetsTitle">Category Budget Limits</span>
                     </h2>
                     <button type="button" class="btn-set" onclick="toggleCatBudgetForm()" style="min-height: unset; height: 26px; padding: 2px 8px; font-size: 11px;" id="btnManageCatLimits">
@@ -2058,7 +2057,7 @@
                 <div class="fin-card-header" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-primary); padding-bottom: 10px;">
                     <h2 class="fin-card-title" style="display: flex; align-items: center; gap: 8px; font-weight: 800;">
                         <span id="advisorBotIcon" style="color: var(--accent-green); display: flex; align-items: center;">
-                            <script>document.write(Icons.info('svg-icon-md'));</script>
+                            <span data-icon="info" data-icon-class="svg-icon-md"></span>
                         </span>
                         <span id="langAdvisorTitle">PocketPaisa Voice Advisor</span>
                     </h2>
@@ -2114,16 +2113,16 @@
             <div class="chart-section" id="chartSection">
                 <div class="chart-header">
                     <div class="chart-header-left">
-                        <span id="chartHeaderIcon"><script>document.write(Icons.chart('svg-icon-md'));</script></span>
+                        <span id="chartHeaderIcon" data-icon="chart" data-icon-class="svg-icon-md"></span>
                         <h3 id="langChartTitle">Expense Analytics</h3>
                     </div>
                     <div class="chart-nav-tabs">
                         <button type="button" class="chart-nav-tab active" id="tabChartBreakdown" onclick="switchChartTab('breakdown')" title="Category Breakdown">
-                            <script>document.write(Icons.chart('svg-icon-xs'));</script>
+                            <span data-icon="chart" data-icon-class="svg-icon-xs"></span>
                             <span id="langTabBreakdown">Breakdown</span>
                         </button>
                         <button type="button" class="chart-nav-tab" id="tabChartTrend" onclick="switchChartTab('trend')" title="6-Month Spending Trend">
-                            <script>document.write(Icons.lineChart('svg-icon-xs'));</script>
+                            <span data-icon="lineChart" data-icon-class="svg-icon-xs"></span>
                             <span id="langTabTrend">6M Trend</span>
                         </button>
                     </div>
@@ -2143,7 +2142,7 @@
                     
                     <div id="chartEmptyState" class="chart-empty-state" style="display:none;">
                         <div style="margin-bottom: 8px; color: var(--text-muted);">
-                            <script>document.write(Icons.emptyChart('svg-icon-xl'));</script>
+                            <span data-icon="emptyChart" data-icon-class="svg-icon-xl"></span>
                         </div>
                         <p id="langChartEmpty">No expenses recorded for this month yet.</p>
                     </div>
@@ -2165,7 +2164,7 @@
                         <div class="trend-kpi-cell">
                             <span class="trend-kpi-label" id="langTrendChangeLabel">MoM Shift</span>
                             <span class="trend-kpi-pill neutral" id="trendChangeBadge">
-                                <span id="trendChangeIcon"><script>document.write(Icons.trendingUp('svg-icon-xs'));</script></span>
+                                <span id="trendChangeIcon" data-icon="trendingUp" data-icon-class="svg-icon-xs"></span>
                                 <span id="trendChangeText">0.0%</span>
                             </span>
                         </div>
@@ -2181,7 +2180,7 @@
             <div class="fin-card">
                 <div class="fin-card-header" style="margin-bottom: 10px; gap: 8px;">
                     <h2 class="fin-card-title">
-                        <script>document.write(Icons.piggy('svg-icon-md'));</script>
+                        <span data-icon="piggy" data-icon-class="svg-icon-md"></span>
                         <span id="langSavingsGoalsTitle">Smart Savings Goals</span>
                     </h2>
                     <button type="button" class="btn-set" onclick="toggleSavingsGoalForm()" style="min-height: unset; height: 26px; padding: 2px 8px; font-size: 11px;" id="btnNewGoal">
@@ -2211,7 +2210,7 @@
             <div class="history-section">
                 <div class="passbook-toolbar">
                     <div class="passbook-title-wrap">
-                        <script>document.write(Icons.receipt('svg-icon-md'));</script>
+                        <span data-icon="receipt" data-icon-class="svg-icon-md"></span>
                         <h3 id="langPassbookLabel" style="font-size: 14px; font-weight: 800;">Transaction Passbook</h3>
                         <span class="passbook-count-badge" id="passbookCountBadge">0</span>
                     </div>
@@ -2222,7 +2221,7 @@
                             <button type="button" class="filter-tab" onclick="setPassbookFilter('income', this)" id="filterTabInc">Income</button>
                         </div>
                         <button type="button" class="btn-export-csv" onclick="openExportModal()" id="btnExportCsv" title="Download professional PDF ledger statement">
-                            <script>document.write(Icons.filePdf('svg-icon-sm'));</script>
+                            <span data-icon="filePdf" data-icon-class="svg-icon-sm"></span>
                             <span id="langExportCsvBtn">Export PDF</span>
                         </button>
                     </div>
@@ -2230,7 +2229,7 @@
 
                 <div class="passbook-search-row">
                     <div class="passbook-search-box">
-                        <span class="passbook-search-icon"><script>document.write(Icons.search('svg-icon-sm'));</script></span>
+                        <span class="passbook-search-icon"><span data-icon="search" data-icon-class="svg-icon-sm"></span></span>
                         <input type="text" id="passbookSearch" class="passbook-search" placeholder="Search by category..." oninput="renderTransactionList()">
                     </div>
                 </div>
@@ -2252,11 +2251,11 @@
         </div>
         <div class="footer-links">
             <a href="https://instagram.com/rohit._yadav14" target="_blank" rel="noopener noreferrer" class="contact-pill" title="Instagram Profile">
-                <script>document.write(Icons.instagram('svg-icon-sm'));</script>
+                <span data-icon="instagram" data-icon-class="svg-icon-sm"></span>
                 <span>@rohit._yadav14</span>
             </a>
             <a href="mailto:yadavrohityadav331@gmail.com" class="contact-pill" title="Email Developer">
-                <script>document.write(Icons.mail('svg-icon-sm'));</script>
+                <span data-icon="mail" data-icon-class="svg-icon-sm"></span>
                 <span>yadavrohityadav331@gmail.com</span>
             </a>
         </div>
@@ -2267,7 +2266,7 @@
 <div id="customModal">
     <div class="modal-box">
         <div class="modal-icon" id="customModalIcon">
-            <script>document.write(Icons.info('svg-icon-xl'));</script>
+            <span data-icon="info" data-icon-class="svg-icon-xl"></span>
         </div>
         <p id="customModalText"></p>
         <div class="modal-actions">
@@ -2281,7 +2280,7 @@
 <div id="exportCsvModal" class="custom-app-modal" onclick="if(event.target===this) closeExportModal()">
     <div class="modal-box export-modal-box">
         <div class="export-modal-icon">
-            <script>document.write(Icons.filePdf('svg-icon-lg'));</script>
+            <span data-icon="filePdf" data-icon-class="svg-icon-lg"></span>
         </div>
         <h4 id="exportModalTitle" style="font-size: 16px; font-weight: 800; margin: 0 0 6px 0; color: var(--text-primary);">Download PDF Ledger Statement</h4>
         <p id="exportModalSubtitle" style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.45;">Download a beautifully formatted, professional PDF statement containing your financial analysis, budget progress, and transaction ledger.</p>
@@ -2292,14 +2291,14 @@
                     <span class="export-opt-title" id="exportAllTitle">Export All Records (PDF)</span>
                     <span class="export-opt-meta" id="exportAllCount">All transactions</span>
                 </div>
-                <script>document.write(Icons.download('svg-icon-sm'));</script>
+                <span data-icon="download" data-icon-class="svg-icon-sm"></span>
             </button>
             <button type="button" class="export-option-btn" id="exportFilteredBtn" onclick="executePdfExport('filtered')">
                 <div class="export-opt-content">
                     <span class="export-opt-title" id="exportFilteredTitle">Export Filtered View (PDF)</span>
                     <span class="export-opt-meta" id="exportFilteredCount">Matching active filters</span>
                 </div>
-                <script>document.write(Icons.download('svg-icon-sm'));</script>
+                <span data-icon="download" data-icon-class="svg-icon-sm"></span>
             </button>
         </div>
 
@@ -2311,7 +2310,7 @@
 
 <!-- Floating Toast Notification -->
 <div id="appToast" class="app-toast">
-    <span class="app-toast-icon"><script>document.write(Icons.shieldCheck('svg-icon-md'));</script></span>
+    <span class="app-toast-icon"><span data-icon="shieldCheck" data-icon-class="svg-icon-md"></span></span>
     <span id="appToastText">Export completed!</span>
 </div>
 
@@ -2353,6 +2352,11 @@
     } catch (e) {
         console.error("Failed to parse account balances", e);
         accountBalances = { bank: balance, cash: 0.00, credit: 0.00 };
+    }
+    if (accountBalances) {
+        accountBalances.bank = parseFloat(accountBalances.bank) || 0.00;
+        accountBalances.cash = parseFloat(accountBalances.cash) || 0.00;
+        accountBalances.credit = parseFloat(accountBalances.credit) || 0.00;
     }
     let selectedComposerAccount = 'bank';
 
@@ -2495,18 +2499,59 @@
         }
     };
 
+    function injectIcons() {
+        if (typeof Icons === 'undefined') {
+            console.warn("Icons dictionary is not defined yet.");
+            return;
+        }
+        document.querySelectorAll('[data-icon]').forEach(el => {
+            const iconName = el.getAttribute('data-icon');
+            let iconClass = el.getAttribute('data-icon-class') || 'svg-icon';
+            if (!iconClass.includes('svg-icon')) {
+                iconClass = 'svg-icon ' + iconClass;
+            }
+            if (Icons[iconName]) {
+                el.innerHTML = Icons[iconName](iconClass);
+            }
+        });
+    }
+
     function init() {
+        injectIcons();
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
-            if (themeToggleIcon) themeToggleIcon.innerHTML = Icons.sun ? Icons.sun('svg-icon-md') : '';
+            if (themeToggleIcon) themeToggleIcon.innerHTML = (Icons.sun ? Icons.sun('svg-icon svg-icon-md') : '');
         } else {
             document.body.classList.remove('dark-mode');
-            if (themeToggleIcon) themeToggleIcon.innerHTML = Icons.moon ? Icons.moon('svg-icon-md') : '';
+            if (themeToggleIcon) themeToggleIcon.innerHTML = (Icons.moon ? Icons.moon('svg-icon svg-icon-md') : '');
         }
         const currencySel = document.getElementById('currencySelect');
         if (currencySel) currencySel.value = currentCurrency;
         const langSel = document.getElementById('languageSelect');
         if (langSel) langSel.value = currentLang;
+
+        // Bind keyboard 'Enter' key presses to proper form action callbacks (robust keyboard/mobile UX!)
+        const bindEnterKey = (inputId, actionCallback) => {
+            const inputEl = document.getElementById(inputId);
+            if (inputEl) {
+                inputEl.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        actionCallback();
+                    }
+                });
+            }
+        };
+
+        bindEnterKey('salaryInput', () => setSalary());
+        bindEnterKey('smartInput', () => parseSmartText());
+        bindEnterKey('amount', () => addTransaction('expense'));
+        bindEnterKey('category', () => addTransaction('expense'));
+        bindEnterKey('catLimitName', () => saveCategoryBudget());
+        bindEnterKey('catLimitAmt', () => saveCategoryBudget());
+        bindEnterKey('goalInputName', () => saveSavingsGoal());
+        bindEnterKey('goalInputTarget', () => saveSavingsGoal());
+
         updateUI();
         renderAdvisorWelcome();
     }

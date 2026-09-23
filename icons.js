@@ -253,3 +253,6 @@ const Icons = {
             <path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>
         </svg>`
 };
+
+window.Icons = Icons;
+
