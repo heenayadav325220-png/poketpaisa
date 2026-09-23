@@ -14,10 +14,12 @@
     const STORAGE_KEY_Y = 'pocketpaisa_edge_y_pos';
     const STORAGE_KEY_ONBOARDED = 'pocketpaisa_edge_onboarded';
 
+    const isNative = !!(window.AndroidOverlayBridge || window.Capacitor);
+
     // State
     const state = {
-        enabled: localStorage.getItem(STORAGE_KEY_ENABLED) === 'true',
-        permission: localStorage.getItem(STORAGE_KEY_PERM) || 'unprompted', // 'granted' | 'denied' | 'unprompted'
+        enabled: localStorage.getItem(STORAGE_KEY_ENABLED) !== 'false', // Default to true!
+        permission: localStorage.getItem(STORAGE_KEY_PERM) || (isNative ? 'unprompted' : 'granted'), // Default to granted on web!
         side: localStorage.getItem(STORAGE_KEY_SIDE) || 'right',
         yPos: parseFloat(localStorage.getItem(STORAGE_KEY_Y)) || 0.45, // fraction of screen height
         isOpen: false,
