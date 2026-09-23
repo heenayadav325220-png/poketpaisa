@@ -1,0 +1,8 @@
+{
+  "name": "PocketPaisa Pro",
+  "description": "Personal finance and budget tracker for managing income, expenses, and salary.",
+  "prompt": "Personal finance and budget tracker for managing income, expenses, and salary.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

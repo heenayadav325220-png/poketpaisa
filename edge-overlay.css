@@ -1,0 +1,837 @@
+/**
+ * PocketPaisa Pro - Edge Overlay & Quick Launch Panel Styles
+ * High-Performance, GPU-Accelerated, Zero-Jank Float System
+ */
+
+/* ========================================================
+   1. MINIMAL PILL-SHAPED EDGE HANDLE
+   ======================================================== */
+.edge-overlay-handle {
+    position: fixed;
+    top: 0;
+    width: 8px;
+    height: 60px;
+    z-index: 99998;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    border-radius: 8px 0 0 8px;
+    background: rgba(16, 185, 129, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1), 
+                background 0.2s ease, 
+                box-shadow 0.2s ease;
+    will-change: transform;
+}
+
+.edge-overlay-handle.side-right {
+    right: 0;
+    border-radius: 10px 0 0 10px;
+    border-left: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.edge-overlay-handle.side-left {
+    left: 0;
+    border-radius: 0 10px 10px 0;
+    border-right: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.edge-overlay-handle:hover,
+.edge-overlay-handle:active {
+    width: 14px;
+    background: rgba(16, 185, 129, 0.85);
+    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.5);
+}
+
+.edge-overlay-handle.is-dragging {
+    cursor: grabbing;
+    width: 15px;
+    background: var(--accent-green, #10b981);
+    box-shadow: 0 6px 22px rgba(16, 185, 129, 0.65);
+    transition: none; /* Instant 60fps tracking during drag */
+}
+
+/* Grip Indicator inside handle */
+.edge-handle-grip {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+.edge-handle-grip span {
+    display: block;
+    width: 2.5px;
+    height: 7px;
+    border-radius: 3px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================================
+   2. FLOATING QUICK LAUNCH PANEL (SLIDE-OVER OVERLAY)
+   ======================================================== */
+.edge-panel-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 999990;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+}
+
+.edge-panel-backdrop.is-open {
+    display: block;
+    opacity: 1;
+}
+
+.edge-quick-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 325px;
+    max-width: 88vw;
+    z-index: 999995;
+    background: var(--bg-surface-elevated, #ffffff);
+    color: var(--text-primary, #0f172a);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+    border-left: 1px solid var(--border-primary, #e2e8f0);
+}
+
+body.dark-mode .edge-quick-panel {
+    background: #151d2e;
+    border-color: #2b3648;
+}
+
+.edge-quick-panel.side-right {
+    right: 0;
+    transform: translateX(105%);
+}
+
+.edge-quick-panel.side-left {
+    left: 0;
+    transform: translateX(-105%);
+    border-left: none;
+    border-right: 1px solid var(--border-primary, #e2e8f0);
+}
+
+.edge-quick-panel.is-open {
+    transform: translateX(0) !important;
+}
+
+/* Panel Header */
+.edge-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--border-primary, #e2e8f0);
+    background: var(--bg-surface, #ffffff);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+body.dark-mode .edge-panel-header {
+    background: #182234;
+    border-color: #2b3648;
+}
+
+.edge-panel-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.edge-panel-brand h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text-primary, #0f172a);
+}
+
+.edge-service-beacon {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--accent-green-subtle, rgba(16, 185, 129, 0.12));
+    color: var(--accent-green, #10b981);
+}
+
+.edge-beacon-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-green, #10b981);
+    box-shadow: 0 0 6px var(--accent-green, #10b981);
+    animation: beaconPulse 1.8s infinite;
+}
+
+@keyframes beaconPulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.4); opacity: 1; }
+}
+
+.edge-panel-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.edge-panel-btn {
+    background: var(--bg-subtle, #f1f5f9);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    color: var(--text-secondary, #64748b);
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.edge-panel-btn:hover, .edge-panel-btn:active {
+    color: var(--text-primary, #0f172a);
+    background: var(--bg-surface-elevated, #ffffff);
+    border-color: var(--accent-green, #10b981);
+}
+
+/* Mini Snapshot Banner */
+.edge-snapshot-card {
+    margin: 12px 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+}
+
+body.dark-mode .edge-snapshot-card {
+    background: #1b2538;
+    border-color: #2b3648;
+}
+
+.edge-snapshot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.edge-snapshot-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-secondary, #64748b);
+    letter-spacing: 0.03em;
+}
+
+.edge-snapshot-balance {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--accent-green, #10b981);
+}
+
+.edge-mini-progress {
+    width: 100%;
+    height: 4px;
+    background: var(--bg-subtle, #f1f5f9);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.edge-mini-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-green, #10b981);
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Quick Record Form */
+.edge-composer-body {
+    padding: 0 14px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.edge-type-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    background: var(--bg-subtle, #f1f5f9);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary, #e2e8f0);
+}
+
+body.dark-mode .edge-type-switch {
+    background: #121927;
+    border-color: #2b3648;
+}
+
+.edge-type-btn {
+    border: none;
+    background: transparent;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary, #64748b);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+}
+
+.edge-type-btn.active.btn-exp {
+    background: var(--accent-rose, #f43f5e);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(244, 63, 94, 0.3);
+}
+
+.edge-type-btn.active.btn-inc {
+    background: var(--accent-green, #10b981);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+.edge-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.edge-input-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary, #64748b);
+}
+
+.edge-amount-input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.edge-currency-sym {
+    position: absolute;
+    left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-muted, #94a3b8);
+    pointer-events: none;
+}
+
+.edge-amount-input {
+    width: 100%;
+    padding: 10px 12px 10px 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary, #e2e8f0);
+    background: var(--bg-surface, #ffffff);
+    color: var(--text-primary, #0f172a);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    font-weight: 800;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+
+body.dark-mode .edge-amount-input {
+    background: #111723;
+    border-color: #2b3648;
+}
+
+.edge-amount-input:focus {
+    border-color: var(--accent-green, #10b981);
+}
+
+.edge-category-input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary, #e2e8f0);
+    background: var(--bg-surface, #ffffff);
+    color: var(--text-primary, #0f172a);
+    font-size: 13px;
+    font-weight: 600;
+    outline: none;
+    box-sizing: border-box;
+}
+
+body.dark-mode .edge-category-input {
+    background: #111723;
+    border-color: #2b3648;
+}
+
+.edge-category-input:focus {
+    border-color: var(--accent-green, #10b981);
+}
+
+/* Category Quick Chips */
+.edge-chips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.edge-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 4px;
+    border-radius: 6px;
+    background: var(--bg-subtle, #f1f5f9);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    color: var(--text-secondary, #64748b);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.dark-mode .edge-chip {
+    background: #162030;
+    border-color: #2b3648;
+}
+
+.edge-chip:hover, .edge-chip:active {
+    background: var(--accent-green-subtle, rgba(16, 185, 129, 0.12));
+    border-color: var(--accent-green, #10b981);
+    color: var(--accent-green, #10b981);
+}
+
+/* Submit Action Button */
+.edge-submit-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent-green, #10b981);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    transition: transform 0.12s ease, background-color 0.15s ease;
+}
+
+.edge-submit-btn:active {
+    transform: scale(0.98);
+}
+
+.edge-submit-btn.btn-expense-mode {
+    background: var(--accent-rose, #f43f5e);
+    box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35);
+}
+
+/* Instant Toast Notification inside Quick Panel */
+.edge-toast {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 7px;
+    background: var(--accent-green-subtle, rgba(16, 185, 129, 0.14));
+    border: 1px solid var(--accent-green, #10b981);
+    color: var(--accent-green, #10b981);
+    font-size: 12px;
+    font-weight: 700;
+    animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================
+   3. ANDROID SYSTEM_ALERT_WINDOW PERMISSION SHEET
+   ======================================================== */
+.android-perm-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 9999999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.android-perm-sheet {
+    background: var(--bg-surface-elevated, #ffffff);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    border-radius: 18px;
+    max-width: 350px;
+    width: 100%;
+    padding: 22px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+    animation: sheetPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.dark-mode .android-perm-sheet {
+    background: #182234;
+    border-color: #2e3b50;
+    color: #f1f5f9;
+}
+
+@keyframes sheetPop {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.android-perm-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.android-perm-app-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--accent-green, #10b981);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    flex-shrink: 0;
+}
+
+.android-perm-title h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary, #0f172a);
+}
+
+body.dark-mode .android-perm-title h3 {
+    color: #ffffff;
+}
+
+.android-perm-tag {
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-green, #10b981);
+}
+
+.android-perm-body {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary, #64748b);
+    margin-bottom: 16px;
+}
+
+body.dark-mode .android-perm-body {
+    color: #94a3b8;
+}
+
+/* System Permission Switch Control */
+.android-switch-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-subtle, #f1f5f9);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    margin-bottom: 16px;
+}
+
+body.dark-mode .android-switch-box {
+    background: #111723;
+    border-color: #243044;
+}
+
+.android-switch-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary, #0f172a);
+}
+
+body.dark-mode .android-switch-text {
+    color: #f1f5f9;
+}
+
+/* Switch styling */
+.switch-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-primary, #cbd5e1);
+    transition: 0.2s;
+    border-radius: 24px;
+}
+
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.2s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+input:checked + .switch-slider {
+    background-color: var(--accent-green, #10b981);
+}
+
+input:checked + .switch-slider:before {
+    transform: translateX(20px);
+}
+
+.android-perm-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.android-btn {
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s ease;
+}
+
+.android-btn-cancel {
+    background: transparent;
+    color: var(--text-secondary, #64748b);
+}
+
+.android-btn-cancel:hover {
+    background: var(--bg-subtle, #f1f5f9);
+    color: var(--text-primary, #0f172a);
+}
+
+.android-btn-allow {
+    background: var(--accent-green, #10b981);
+    color: #ffffff;
+}
+
+.android-btn-allow:hover {
+    background: #059669;
+}
+
+/* ========================================================
+   4. FIRST LAUNCH ONBOARDING TOAST (NON-BLOCKING)
+   ======================================================== */
+.edge-onboard-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(140%);
+    width: 90%;
+    max-width: 380px;
+    z-index: 99990;
+    background: var(--bg-surface-elevated, #ffffff);
+    border: 1.5px solid var(--accent-green, #10b981);
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.dark-mode .edge-onboard-toast {
+    background: #1a2336;
+}
+
+.edge-onboard-toast.is-visible {
+    transform: translateX(-50%) translateY(0);
+}
+
+.edge-onboard-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.edge-onboard-info p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary, #0f172a);
+    line-height: 1.35;
+}
+
+body.dark-mode .edge-onboard-info p {
+    color: #f1f5f9;
+}
+
+.edge-onboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.edge-onboard-btn-enable {
+    background: var(--accent-green, #10b981);
+    color: #ffffff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.edge-onboard-btn-dismiss {
+    background: transparent;
+    color: var(--text-secondary, #64748b);
+    border: none;
+    padding: 6px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ========================================================
+   5. SETTINGS SCREEN ROW STYLES
+   ======================================================== */
+.edge-settings-toggle-row {
+    background: var(--bg-subtle, #f8fafc);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+}
+
+body.dark-mode .edge-settings-toggle-row {
+    background: #151d2c;
+    border-color: #2b3648;
+}
+
+.edge-perm-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-primary, #e2e8f0);
+}
+
+body.dark-mode .edge-perm-badge {
+    background: #1b263b;
+    border-color: #2e3c54;
+}
+
+.edge-perm-badge.granted {
+    color: var(--accent-green, #10b981);
+    border-color: rgba(16, 185, 129, 0.35);
+}
+
+.edge-perm-badge.denied {
+    color: var(--text-muted, #94a3b8);
+}
+
+.edge-side-switch-btn {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-primary, #e2e8f0);
+    color: var(--text-primary, #0f172a);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+body.dark-mode .edge-side-switch-btn {
+    background: #1b263b;
+    border-color: #2e3c54;
+    color: #f1f5f9;
+}
+
+.edge-side-switch-btn:hover {
+    border-color: var(--accent-green, #10b981);
+}

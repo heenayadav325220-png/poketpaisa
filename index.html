@@ -2,389 +2,1795 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#0d1527">
     
     <meta name="google-site-verification" content="dw3QRR89B6z0EFgVHjmKcMzHkIZO3S9763s3pr0I3i8" />
+    <meta name="description" content="PocketPaisa Pro - Professional personal finance, salary budget management, and expense analytics." />
+    <meta property="og:title" content="PocketPaisa Pro - Smart Budget & Expense Tracker" />
+    <meta property="og:description" content="Track your income, budget, and monthly expenses with intelligent real-time analytics." />
+    <meta property="og:image" content="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" />
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%232ecc71;stop-opacity:1' /><stop offset='100%' style='stop-color:%2327ae60;stop-opacity:1' /></linearGradient></defs><rect width='100' height='100' rx='20' fill='url(%23grad)'/><path d='M30 40 L30 70 Q30 80 40 80 L60 80 Q70 80 70 70 L70 40 Q70 30 60 30 L40 30 Q30 30 30 40 Z' fill='white' opacity='0.3'/><path d='M35 45 L65 45 L65 70 Q65 75 60 75 L40 75 Q35 75 35 70 Z' fill='white'/><circle cx='50' cy='55' r='6' fill='%232ecc71'/><rect x='40' y='62' width='20' height='3' rx='1.5' fill='%232ecc71'/></svg>" />
+    <link rel="icon" type="image/jpeg" href="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" />
 
-    <title>PocketPaisa Pro </title>
+    <title>PocketPaisa Pro · Smart Finance Tracker</title>
+
+    <!-- Professional Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- D3.js Engine -->
+    <script src="/vendor/d3.min.js"></script>
+    <script>
+        if (typeof d3 === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/d3@7"><\/script>');
+        }
+    </script>
+
+    <!-- Professional Handcrafted Vector Icon System -->
+    <script src="/icons.js"></script>
+
+    <!-- Edge Overlay & Quick Launch Stylesheet -->
+    <link rel="stylesheet" href="/edge-overlay.css">
+
     <style>
-        * {
+        .svg-icon {
+            display: inline-block;
+            vertical-align: middle;
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .svg-icon-xs { width: 12px; height: 12px; }
+        .svg-icon-sm { width: 14px; height: 14px; }
+        .svg-icon-md { width: 18px; height: 18px; }
+        .svg-icon-lg { width: 22px; height: 22px; }
+        .svg-icon-xl { width: 32px; height: 32px; }
+        .btn-action .svg-icon { width: 18px; height: 18px; }
+
+        :root {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-elevated: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --border-primary: #e2e8f0;
+            --border-subtle: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --accent-green-subtle: rgba(16, 185, 129, 0.08);
+            --accent-rose: #f43f5e;
+            --accent-rose-hover: #e11d48;
+            --accent-rose-subtle: rgba(244, 63, 94, 0.08);
+            --accent-amber: #f59e0b;
+            --accent-amber-subtle: rgba(245, 158, 11, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+            --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+        }
+
+        body.dark-mode {
+            --bg-body: #090d16;
+            --bg-surface: #111827;
+            --bg-surface-elevated: #1a2234;
+            --bg-subtle: #1e293b;
+            --border-primary: #1f293d;
+            --border-subtle: #172033;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --accent-green-hover: #34d399;
+            --accent-green-subtle: rgba(16, 185, 129, 0.15);
+            --accent-rose: #fb7185;
+            --accent-rose-hover: #f43f5e;
+            --accent-rose-subtle: rgba(251, 113, 133, 0.15);
+            --accent-amber: #fbbf24;
+            --accent-amber-subtle: rgba(251, 191, 36, 0.15);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 16px 32px -4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Essential Reset & Viewport Fixes */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         body {
-            background-color: #f0f3f7;
-            color: #333;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .tabular-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Enforce 16px font-size on inputs to prevent iOS automatic zoom */
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+
+        /* ========================================================
+           FULL-SCREEN LUXURY FLASH / SPLASH SCREEN
+           ======================================================== */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 36%, #0f1c30 0%, #060a12 100%);
+            z-index: 9999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: calc(env(safe-area-inset-top, 24px) + 28px) 24px calc(env(safe-area-inset-bottom, 24px) + 32px);
+            box-sizing: border-box;
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s ease;
+            user-select: none;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .splash-screen.splash-dismissed {
+            opacity: 0;
+            transform: scale(1.04);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .splash-glow {
+            position: absolute;
+            top: 36%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(5, 150, 105, 0.08) 50%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(48px);
+            pointer-events: none;
+            animation: splashPulse 3.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes splashPulse {
+            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.55; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.95; }
+        }
+
+        .splash-content {
+            margin: auto 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .splash-logo-container {
+            position: relative;
+            width: 106px;
+            height: 106px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .splash-logo-glow-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.7) 0%, rgba(52, 211, 153, 0.2) 50%, rgba(245, 158, 11, 0.5) 100%);
+            filter: blur(10px);
+            z-index: 1;
+            animation: ringRotate 7s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .splash-logo-img {
+            position: relative;
+            z-index: 2;
+            width: 98px;
+            height: 98px;
+            border-radius: 24px;
+            object-fit: cover;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(16, 185, 129, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            animation: logoFloat 2.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-7px); }
+        }
+
+        .splash-title-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .splash-title {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .splash-pro-badge {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .splash-tagline {
+            font-size: 14px;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            margin: 0;
+            max-width: 300px;
+        }
+
+        .splash-loader-bar {
+            width: 170px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+            overflow: hidden;
+            margin-top: 26px;
             position: relative;
         }
 
-        /* डार्क मोड के लिए स्पेशल कलर्स */
-        body.dark-mode {
-            background-color: #1a252f;
-            color: #f5f6fa;
-        }
-        body.dark-mode .app-container {
-            background: #2c3e50;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        body.dark-mode .input-group input, body.dark-mode .settings-menu select {
-            background-color: #34495e;
-            border: 1px solid #455a64;
-            color: white;
-        }
-        body.dark-mode .transaction-item {
-            background: #34495e;
-            color: white;
-        }
-        body.dark-mode .input-group style-bg {
-            background: #34495e !important;
+        .splash-loader-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #10b981, #34d399, #10b981);
+            transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .app-container {
-            background: white;
+        .splash-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 9px;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .splash-security-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 6px 14px;
+            border-radius: 99px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .splash-credit {
+            font-size: 11px;
+            color: #64748b;
+            letter-spacing: 0.03em;
+            margin: 0;
+        }
+
+        .splash-credit strong {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* Sticky Top Navigation Bar */
+        .top-navbar {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
             width: 100%;
-            max-width: 480px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            flex-shrink: 1;
+            min-width: 0;
+            user-select: none;
+        }
+
+        .brand-logo-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.28);
+            border: 1.5px solid rgba(16, 185, 129, 0.35);
+            flex-shrink: 0;
+        }
+
+        .brand-text h1 {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .brand-pro-tag {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 5px;
+            border-radius: 4px;
+            background: var(--accent-green-subtle);
+            color: var(--accent-green);
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .currency-pill-btn {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            height: 36px;
+            padding: 0 10px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .currency-pill-btn:hover, .currency-pill-btn:active {
+            border-color: var(--accent-green);
+            background: var(--bg-surface-elevated);
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover, .icon-btn:active {
+            color: var(--text-primary);
+            border-color: var(--accent-green);
+            background: var(--bg-surface-elevated);
+        }
+
+        /* Settings Modal Overlay - Centered, Never Clipped */
+        .settings-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .settings-modal-card {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 360px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            animation: settingsPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes settingsPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .settings-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .settings-close-btn {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-close-btn:hover, .settings-close-btn:active {
+            background: var(--border-primary);
+            color: var(--text-primary);
+        }
+
+        .settings-row {
+            margin-bottom: 14px;
+        }
+
+        .settings-row label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .settings-row select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-primary);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            font-size: 14px !important;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .settings-row select:focus {
+            border-color: var(--accent-green);
+        }
+
+        .top-utility-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .btn-utility {
+            width: 100%;
+            padding: 11px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-primary);
+            background: var(--bg-subtle);
+            color: var(--text-primary);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-utility:hover, .btn-utility:active {
+            background: var(--border-primary);
+        }
+
+        .btn-reset-data {
+            color: var(--accent-rose);
+            border-color: var(--accent-rose-subtle);
+            background: var(--accent-rose-subtle);
+        }
+
+        .btn-reset-data:hover, .btn-reset-data:active {
+            background: rgba(244, 63, 94, 0.15);
+        }
+
+        /* Warning Banners */
+        .banner-container {
+            max-width: 1200px;
+            margin: 12px auto 0;
+            padding: 0 16px;
+            width: 100%;
+        }
+
+        .warning-banner {
+            display: none;
+            padding: 11px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            word-break: break-word;
+        }
+
+        .warn-95 {
+            background: var(--accent-amber-subtle);
+            border: 1px solid var(--accent-amber);
+            color: var(--accent-amber);
+        }
+
+        .warn-over {
+            background: var(--accent-rose-subtle);
+            border: 1px solid var(--accent-rose);
+            color: var(--accent-rose);
+        }
+
+        /* Main Application Workspace */
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 16px;
+            flex: 1;
+        }
+
+        .dashboard-grid-main {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 20px;
+            align-items: start;
+            width: 100%;
+        }
+
+        @media (max-width: 960px) {
+            .dashboard-grid-main {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .app-container {
+                padding: 12px 14px;
+            }
+        }
+
+        .dashboard-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        /* Fintech Card Component */
+        .fin-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
             position: relative;
         }
 
-        /* तीन डॉट मेनू और हेडर का स्टाइल */
-        .header-area {
+        @media (max-width: 480px) {
+            .fin-card {
+                padding: 16px 14px;
+                border-radius: var(--radius-md);
+            }
+        }
+
+        .fin-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .fin-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Balance Hero Card */
+        .balance-hero-card {
+            background: linear-gradient(145deg, var(--bg-surface) 0%, var(--bg-subtle) 100%);
+            border: 1px solid var(--border-primary);
+            position: relative;
+        }
+
+        .hero-metrics-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .metric-block {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .metric-value-primary {
+            font-size: clamp(22px, 6vw, 30px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            line-height: 1.15;
+            word-break: break-all;
+        }
+
+        .metric-value-secondary {
+            font-size: clamp(16px, 4.5vw, 22px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-secondary);
+            line-height: 1.2;
+            word-break: break-all;
+        }
+
+        /* Budget Meter Bar */
+        .budget-meter-wrap {
+            margin-top: 12px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-primary);
+            width: 100%;
+        }
+
+        .budget-meter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .budget-progress-track {
+            height: 8px;
+            background: var(--border-primary);
+            border-radius: 99px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .budget-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 99px;
+            background: var(--accent-green);
+            transition: width 0.4s ease, background-color 0.3s ease;
+        }
+
+        /* Salary Management Box */
+        .salary-management-box {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-top: 14px;
+            width: 100%;
+        }
+
+        .salary-input-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+            width: 100%;
+        }
+
+        @media (max-width: 400px) {
+            .salary-input-row {
+                flex-direction: column;
+            }
+        }
+
+        .fin-input {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 11px 12px;
+            color: var(--text-primary);
+            font-weight: 600;
+            outline: none;
+            width: 100%;
+            min-width: 0;
+            transition: border-color 0.2s ease;
+        }
+
+        .fin-input:focus {
+            border-color: var(--accent-green);
+        }
+
+        .btn-set {
+            background: var(--text-primary);
+            color: var(--bg-surface);
+            border: none;
+            padding: 11px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark-mode .btn-set {
+            background: var(--accent-green);
+            color: #ffffff;
+        }
+
+        .btn-set:active {
+            transform: scale(0.98);
+        }
+
+        /* Quick Transaction Composer */
+        .input-group {
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .amount-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .amount-currency-prefix {
+            position: absolute;
+            left: 14px;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-muted);
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .fin-input-amount {
+            padding-left: 36px !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+        }
+
+        /* Category Preset Chips */
+        .category-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .category-chip {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .category-chip:active {
+            transform: scale(0.96);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .btn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 13px 12px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+            min-height: 48px;
+            width: 100%;
+            transition: transform 0.12s ease;
+        }
+
+        .btn-action:active {
+            transform: scale(0.97);
+        }
+
+        .btn-income {
+            background: #10b981;
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-expense {
+            background: #f43f5e;
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(244, 63, 94, 0.25);
+        }
+
+        /* D3 Monthly Expense Donut Section */
+        .chart-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .chart-section {
+                padding: 16px 14px;
+                border-radius: var(--radius-md);
+            }
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .chart-header h3 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chart-month-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            font-weight: 700;
+            border: 1px solid var(--border-primary);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .chart-total-summary {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-subtle);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            width: 100%;
+        }
+
+        .chart-total-summary strong {
+            color: var(--accent-rose);
+            font-size: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+        }
+
+        .pie-chart-container {
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            margin-bottom: 20px;
+            min-height: 200px;
+            width: 100%;
         }
 
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        body.dark-mode h2 {
-            color: #f1c40f;
+        .pie-chart-container svg {
+            overflow: visible;
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
         }
 
-        .three-dot-btn {
+        .chart-tooltip {
             position: absolute;
-            right: 0;
-            background: none;
-            border: none;
-            color: #2c3e50;
-            font-size: 24px;
+            pointer-events: none;
+            background: rgba(15, 23, 42, 0.94);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: opacity 0.15s ease-out;
+            opacity: 0;
+            z-index: 10;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .chart-empty-state {
+            text-align: center;
+            padding: 30px 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 14px;
+            width: 100%;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 9px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-primary);
             cursor: pointer;
-            padding: 5px;
-            width: auto;
-        }
-        body.dark-mode .three-dot-btn { color: white; }
-
-        /* सेटिंग्स पैनल (स्लाइडर मेनू) */
-        .settings-menu {
-            display: none;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        }
-        body.dark-mode .settings-menu {
-            background: #34495e;
-            border-color: #455a64;
+            user-select: none;
+            max-width: 100%;
         }
 
-        .settings-row {
+        .legend-color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            color: var(--accent-rose);
+        }
+
+        .legend-percent {
+            color: var(--text-muted);
+        }
+
+        /* Passbook / Activity Section */
+        .history-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .history-section {
+                padding: 16px 14px;
+                border-radius: var(--radius-md);
+            }
+        }
+
+        .passbook-toolbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-        }
-        .settings-row:last-child { margin-bottom: 0; }
-        .settings-row label { font-size: 13px; font-weight: 600; }
-        .settings-row select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; outline: none; }
-
-        /* पुराने फीचर्स के बटनों का स्टाइल */
-        .top-utility-bar {
-            display: flex;
-            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 12px;
             width: 100%;
-            gap: 10px;
-        }
-        .btn-utility {
-            padding: 8px 12px;
-            font-size: 12px;
-            border-radius: 6px;
-            background-color: #7f8c8d;
-            color: white;
-            font-weight: normal;
-        }
-        .btn-reset-data {
-            background-color: #c0392b;
+            flex-wrap: wrap;
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
-            text-align: center;
-        }
-
-        .balance-card { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        .salary-card { background: linear-gradient(135deg, #3498db, #2980b9); }
-
-        .card p { font-size: 12px; opacity: 0.9; text-transform: uppercase; }
-        .card h3 { font-size: 20px; margin-top: 5px; }
-
-        .warning-banner {
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .warn-95 { background-color: #f39c12; }
-        .warn-over {
-            background-color: #e74c3c;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .input-group { margin-bottom: 12px; }
-        .input-group label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-        }
-        body.dark-mode .input-group label { color: #bdc3c7; }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .input-group input:focus { border-color: #3498db; }
-
-        .btn-container {
+        .filter-tabs {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            margin-bottom: 25px;
+            background: var(--bg-subtle);
+            padding: 3px;
+            border-radius: var(--radius-sm);
+            gap: 2px;
+            border: 1px solid var(--border-primary);
+            width: 100%;
+            max-width: 240px;
         }
 
-        button {
+        .filter-tab {
             flex: 1;
-            padding: 12px;
+            padding: 6px 8px;
+            font-size: 12px;
+            font-weight: 800;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 5px;
             cursor: pointer;
-            color: white;
-            transition: transform 0.1s;
+            text-align: center;
+            user-select: none;
         }
 
-        button:active { transform: scale(0.98); }
-        .btn-income { background-color: #2ecc71; }
-        .btn-expense { background-color: #e74c3c; }
-        .btn-set { background-color: #34495e; width: 100%; margin-top: 5px; }
-
-        .history-section h3 {
-            font-size: 15px;
-            color: #7f8c8d;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
+        .filter-tab.active {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
         }
-        body.dark-mode .history-section h3 { color: #bdc3c7; border-bottom-color: #455a64; }
+
+        .passbook-search {
+            width: 100%;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            color: var(--text-primary);
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .passbook-search:focus {
+            border-color: var(--accent-green);
+        }
 
         .transaction-list {
             list-style: none;
-            max-height: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 440px;
             overflow-y: auto;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            background: #f8f9fa;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            font-size: 14px;
-            border-left: 5px solid #ccc;
+            padding: 10px 12px;
+            background: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-primary);
+            width: 100%;
+            gap: 8px;
         }
 
-        .transaction-item.income-type { border-left-color: #2ecc71; }
-        .transaction-item.expense-type { border-left-color: #e74c3c; }
+        .transaction-item.income-type {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .transaction-item.expense-type {
+            border-left: 4px solid var(--accent-rose);
+        }
+
+        .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .tx-icon-bubble {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .income-type .tx-icon-bubble {
+            background: var(--accent-green-subtle);
+            color: var(--accent-green);
+        }
+
+        .expense-type .tx-icon-bubble {
+            background: var(--accent-rose-subtle);
+            color: var(--accent-rose);
+        }
+
+        .tx-details {
+            min-width: 0;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .tx-details strong {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tx-details small {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tx-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .tx-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
 
         .delete-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             font-size: 12px;
-            margin-left: 10px;
+            flex-shrink: 0;
         }
 
+        .delete-btn:active {
+            color: var(--accent-rose);
+            background: var(--accent-rose-subtle);
+        }
+
+        /* Footer & Support Information */
         .footer-contact {
-            background: #2c3e50;
-            color: white;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-primary);
+            color: var(--text-secondary);
             width: 100%;
-            max-width: 480px;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 14px;
-            line-height: 1.6;
+            padding: 24px 16px;
+            margin-top: auto;
         }
 
-        .footer-contact h4 { margin-bottom: 8px; color: #f1c40f; font-size: 16px; }
-        .footer-contact p { opacity: 0.9; margin: 4px 0; }
-        .footer-contact a { color: #3498db; text-decoration: none; font-weight: bold; }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .footer-brand h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .footer-brand p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .contact-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-primary);
+            padding: 7px 11px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .contact-pill:active {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* In-App Dialog Modal */
+        #customModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .modal-box {
+            background: var(--bg-surface-elevated);
+            color: var(--text-primary);
+            padding: 22px 18px;
+            border-radius: var(--radius-lg);
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-primary);
+            animation: modalPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #customModalText {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 11px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            min-height: 44px;
+        }
+
+        #customModalOk {
+            background: var(--accent-green);
+            color: #ffffff;
+        }
+
+        #customModalCancel {
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-primary);
+        }
     </style>
 </head>
 <body>
 
+<!-- ========================================================
+     ULTRA-PROFESSIONAL FULL-SCREEN FLASH / SPLASH SCREEN
+     ======================================================== -->
+<div id="splashScreen" class="splash-screen" title="Tap to continue">
+    <!-- Ambient Aurora Glow Behind Logo -->
+    <div class="splash-glow"></div>
+    
+    <div class="splash-content">
+        <div class="splash-logo-container">
+            <div class="splash-logo-glow-ring"></div>
+            <img src="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" alt="PocketPaisa Pro" class="splash-logo-img" referrerPolicy="no-referrer">
+        </div>
+
+        <div class="splash-title-box">
+            <h1 class="splash-title">PocketPaisa <span class="splash-pro-badge">PRO</span></h1>
+            <p class="splash-tagline" id="splashTagline">Smart Wealth & Budget Intelligence</p>
+        </div>
+
+        <!-- Sleek Animated Financial Progress Line -->
+        <div class="splash-loader-bar">
+            <div class="splash-loader-fill" id="splashLoaderFill"></div>
+        </div>
+    </div>
+
+    <!-- Splash Bottom Text -->
+    <div class="splash-footer">
+        <div class="splash-security-tag">
+            <script>document.write(Icons.shieldCheck('svg-icon-sm'));</script>
+            <span id="splashSecurityText">100% Private · On-Device Financial Intelligence</span>
+        </div>
+        <p class="splash-credit" id="splashCreditText">Crafted with precision by <strong>Rohit</strong> • PocketPaisa Pro</p>
+    </div>
+</div>
+
+<!-- Alert Sound Effects -->
 <audio id="sirenSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto" loop></audio>
 <audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 
-<div class="app-container">
-    
-    <div class="header-area">
-        <h2>💰 PocketPaisa Pro</h2>
-        <button class="three-dot-btn" onclick="toggleSettings()">⋮</button>
-    </div>
+<!-- Sticky Top Navigation Bar -->
+<header class="top-navbar">
+    <div class="navbar-inner">
+        <!-- Brand Lockup with Professional Classic Logo -->
+        <div class="brand-lockup">
+            <img src="/src/assets/images/pocketpaisa_logo_1790132393212.jpg" alt="PocketPaisa Logo" class="brand-logo-img" referrerPolicy="no-referrer">
+            <div class="brand-text">
+                <h1>PocketPaisa <span class="brand-pro-tag">PRO</span></h1>
+            </div>
+        </div>
 
-    <div class="settings-menu" id="settingsMenu">
+        <!-- Utility Controls (Compact & 100% On-Screen) -->
+        <div class="nav-controls">
+            <!-- Quick Currency Pill -->
+            <button type="button" class="currency-pill-btn" onclick="toggleSettings(event)" title="Change Currency">
+                <span id="quickCurrencyBadge" class="tabular-number">₹</span>
+                <script>document.write(Icons.chevronDown('svg-icon-xs'));</script>
+            </button>
+
+            <!-- Dark Mode Toggle Button -->
+            <button type="button" class="icon-btn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+                <span id="themeToggleIcon"><script>document.write(Icons.moon('svg-icon-md'));</script></span>
+            </button>
+
+            <!-- Settings Menu Trigger (Gear Icon) -->
+            <button type="button" class="icon-btn three-dot-btn" id="gearSettingsBtn" onclick="toggleSettings(event)" title="Settings & Options" aria-label="Settings">
+                <script>document.write(Icons.gear('svg-icon-md'));</script>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Global Settings Modal Dialog (Fixed, Never Clipped, Centered on Any Screen) -->
+<div class="settings-modal-overlay" id="settingsMenu" onclick="closeSettings(event)">
+    <div class="settings-modal-card" onclick="event.stopPropagation()">
+        <div class="settings-modal-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <script>document.write(Icons.gear('svg-icon-lg'));</script>
+                <h3 id="settingsModalHeading" style="font-size: 16px; font-weight: 800; margin: 0; color: var(--text-primary);">Settings</h3>
+            </div>
+            <button type="button" class="settings-close-btn" onclick="toggleSettings(event)" aria-label="Close Settings">
+                <script>document.write(Icons.close('svg-icon-sm'));</script>
+            </button>
+        </div>
+
         <div class="settings-row">
-            <label id="langLabelCurrency">Select Currency:</label>
+            <label id="langLabelCurrency" for="currencySelect">Select Currency:</label>
             <select id="currencySelect" onchange="changeCurrency()">
-                <option value="₹">INR (₹)</option>
-                <option value="$">USD ($)</option>
-                <option value="€">EUR (€)</option>
-                <option value="£">GBP (£)</option>
+                <option value="₹">INR (₹) - Indian Rupee</option>
+                <option value="$">USD ($) - US Dollar</option>
+                <option value="€">EUR (€) - Euro</option>
+                <option value="£">GBP (£) - British Pound</option>
             </select>
         </div>
+
         <div class="settings-row">
-            <label id="langLabelLanguage">Select Language:</label>
+            <label id="langLabelLanguage" for="languageSelect">Select Language:</label>
             <select id="languageSelect" onchange="changeLanguage()">
                 <option value="hi">Hindi (हिंदी)</option>
-                <option value="en">English</option>
+                <option value="en">English (US)</option>
             </select>
         </div>
-        <hr style="margin: 12px 0; opacity: 0.2;">
+
+        <!-- Edge Quick Launch Feature Control -->
+        <div class="edge-settings-toggle-row">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <label id="langLabelEdgeLaunch" style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-primary); cursor: pointer;" onclick="document.getElementById('edgeQuickLaunchToggle').click()">
+                    Edge Quick Launch
+                </label>
+                <label class="switch-toggle" style="margin: 0;">
+                    <input type="checkbox" id="edgeQuickLaunchToggle" onchange="window.EdgeOverlayService.toggleFromSettings(this.checked)">
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                <span id="edgePermissionBadge" class="edge-perm-badge">Permission: Required</span>
+                <button type="button" class="edge-side-switch-btn" onclick="window.EdgeOverlayService.switchSide()" id="edgeSideBtn" title="Switch Edge Side">
+                    Side: Right
+                </button>
+            </div>
+        </div>
+
+        <hr style="margin: 14px 0; border: none; border-top: 1px solid var(--border-primary);">
+
         <div class="top-utility-bar">
-            <button class="btn-utility" onclick="toggleDarkMode()"> 👁‍🗨  Dark Mode</button>
-            <button class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">🗑️ Reset App</button>
+            <button type="button" class="btn-utility" onclick="toggleDarkMode()">
+                <span id="drawerThemeIcon"><script>document.write(Icons.themeSwitch('svg-icon-md'));</script></span>
+                <span>Theme Toggle</span>
+            </button>
+            <button type="button" class="btn-utility btn-reset-data" onclick="resetAllData()" id="langResetBtn">
+                <script>document.write(Icons.trash('svg-icon-md'));</script>
+                <span>Reset App Data</span>
+            </button>
         </div>
     </div>
+</div>
 
+<!-- Alert Banners -->
+<div class="banner-container">
     <div class="warning-banner warn-95" id="warn95Banner">
-        ⚠️ WARNING: You have spent 95% of your Budget!
+        <script>document.write(Icons.warning('svg-icon-md'));</script>
+        <span id="warn95Text">WARNING: You have spent 95% of your Budget!</span>
     </div>
     <div class="warning-banner warn-over" id="warnOverBanner">
-        🚨 CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!
-    </div>
-
-    <div class="dashboard-grid">
-        <div class="card salary-card">
-            <p id="langSalaryLabel">Monthly Salary/Limit</p>
-            <h3 id="salaryDisplay">₹0.00</h3>
-        </div>
-        <div class="card balance-card" id="balanceCard">
-            <p id="langBalanceLabel">Remaining Balance</p>
-            <h3 id="balanceDisplay">₹0.00</h3>
-        </div>
-    </div>
-
-    <div class="input-group" id="salaryBox" style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-        <label for="salaryInput" id="langSetSalaryLabel">Set/Change Monthly Salary:</label>
-        <input type="number" id="salaryInput" placeholder="Enter amount">
-        <button class="btn-set" onclick="setSalary()" id="langUpdateSalaryBtn">Update Salary</button>
-    </div>
-
-    <div class="input-group">
-        <label for="amount" id="langAmountLabel">Amount</label>
-        <input type="number" id="amount" placeholder="e.g. 500">
-    </div>
-    <div class="input-group">
-        <label for="category" id="langCategoryLabel">Category / Description</label>
-        <input type="text" id="category" placeholder="e.g. Food, Bike, Tophy">
-    </div>
-
-    <div class="btn-container">
-        <button class="btn-income" onclick="addTransaction('income')" id="langIncomeBtn">+ Add Income</button>
-        <button class="btn-expense" onclick="addTransaction('expense')" id="langExpenseBtn">- Expense</button>
-    </div>
-
-    <div class="history-section">
-        <h3 id="langPassbookLabel">Transaction Passbook</h3>
-        <ul class="transaction-list" id="transactionList"></ul>
+        <script>document.write(Icons.siren('svg-icon-md'));</script>
+        <span id="warnOverText">CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!</span>
     </div>
 </div>
 
-<div class="footer-contact">
-    <h4>👨‍💻 App Developer & Owner</h4>
-    <p><strong>Name:</strong> Rohit</p>
-    <p><strong>Call/WhatsApp:</strong> +91 7073282818</p>
-    <p><strong>Instagram:</strong> <a href="https://instagram.com/rohit.Yadav.1.4" target="_blank" style="color: #3498db;">@rohit.Yadav.1.4</a></p>
-    <p><strong>Gmail:</strong> <a href="mailto:yadavrohityadav331@gmail.com" style="color: #3498db;">yadavrohityadav331@gmail.com</a></p>
-    <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">© 2026 PocketPaisa Pro. All Rights Reserved.</p>
+<!-- Main Application Workspace -->
+<main class="app-container">
+    <div class="dashboard-grid-main">
+        
+        <!-- Left Column: Financial State & Action Composer -->
+        <div class="dashboard-col">
+            
+            <!-- Hero Balance & Limit Card -->
+            <div class="fin-card balance-hero-card" id="balanceCard">
+                <div class="hero-metrics-row">
+                    <div class="metric-block">
+                        <span class="metric-label" id="langBalanceLabel">Remaining Balance</span>
+                        <div class="metric-value-primary tabular-number" id="balanceDisplay">₹0.00</div>
+                    </div>
+                    <div class="metric-block" style="text-align: right;">
+                        <span class="metric-label" id="langSalaryLabel">Monthly Salary/Limit</span>
+                        <div class="metric-value-secondary tabular-number" id="salaryDisplay">₹0.00</div>
+                    </div>
+                </div>
+
+                <!-- Budget Health Progress Bar -->
+                <div class="budget-meter-wrap">
+                    <div class="budget-meter-header">
+                        <span id="budgetSpentLabel">Budget Utilization</span>
+                        <span id="budgetSpentPercent" class="tabular-number">0%</span>
+                    </div>
+                    <div class="budget-progress-track">
+                        <div class="budget-progress-fill" id="budgetProgressBar"></div>
+                    </div>
+                </div>
+
+                <!-- Inline Salary Setter Box -->
+                <div class="salary-management-box" id="salaryBox">
+                    <label for="salaryInput" id="langSetSalaryLabel" style="font-size: 11px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase;">Set/Change Monthly Salary:</label>
+                    <div class="salary-input-row">
+                        <input type="number" id="salaryInput" class="fin-input tabular-number" placeholder="Enter salary e.g. 50000" step="any" inputmode="decimal">
+                        <button type="button" class="btn-set" onclick="setSalary()" id="langUpdateSalaryBtn">Update Salary</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Transaction Composer -->
+            <div class="fin-card">
+                <div class="fin-card-header">
+                    <h2 class="fin-card-title">
+                        <script>document.write(Icons.composer('svg-icon-md'));</script>
+                        <span id="langComposerTitle">Record Transaction</span>
+                    </h2>
+                </div>
+
+                <div class="input-group">
+                    <label for="amount" id="langAmountLabel">Amount</label>
+                    <div class="amount-input-container">
+                        <span class="amount-currency-prefix" id="amountCurrencyPrefix">₹</span>
+                        <input type="number" id="amount" class="fin-input fin-input-amount" placeholder="0.00" step="any" inputmode="decimal">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="category" id="langCategoryLabel">Category / Description</label>
+                    <input type="text" id="category" class="fin-input" placeholder="e.g. Groceries, Fuel, Coffee">
+                    
+                    <!-- Fast Category Shortcut Chips with Custom Handcrafted SVGs -->
+                    <div class="category-presets" id="categoryPresets">
+                        <span class="category-chip" onclick="quickFillCategory('Food & Dining')">
+                            <script>document.write(Icons.food('svg-icon-sm'));</script>
+                            <span>Food</span>
+                        </span>
+                        <span class="category-chip" onclick="quickFillCategory('Groceries')">
+                            <script>document.write(Icons.groceries('svg-icon-sm'));</script>
+                            <span>Groceries</span>
+                        </span>
+                        <span class="category-chip" onclick="quickFillCategory('Transport')">
+                            <script>document.write(Icons.transport('svg-icon-sm'));</script>
+                            <span>Fuel / Cab</span>
+                        </span>
+                        <span class="category-chip" onclick="quickFillCategory('Rent & Bills')">
+                            <script>document.write(Icons.rent('svg-icon-sm'));</script>
+                            <span>Rent</span>
+                        </span>
+                        <span class="category-chip" onclick="quickFillCategory('Shopping')">
+                            <script>document.write(Icons.shopping('svg-icon-sm'));</script>
+                            <span>Shopping</span>
+                        </span>
+                        <span class="category-chip" onclick="quickFillCategory('Salary')">
+                            <script>document.write(Icons.salary('svg-icon-sm'));</script>
+                            <span>Salary</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn-action btn-income" onclick="addTransaction('income')" id="langIncomeBtn">
+                        <script>document.write(Icons.income('svg-icon-sm'));</script>
+                        <span>Add Income</span>
+                    </button>
+                    <button type="button" class="btn-action btn-expense" onclick="addTransaction('expense')" id="langExpenseBtn">
+                        <script>document.write(Icons.expense('svg-icon-sm'));</script>
+                        <span>Expense</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Analytics & Ledger -->
+        <div class="dashboard-col">
+            
+            <!-- D3.js Monthly Expense Visualization -->
+            <div class="chart-section" id="chartSection">
+                <div class="chart-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <script>document.write(Icons.chart('svg-icon-md'));</script>
+                        <h3 id="langChartTitle">Current Month Expenses</h3>
+                    </div>
+                    <span id="chartMonthBadge" class="chart-month-badge">September 2026</span>
+                </div>
+                <div id="chartTotalSummary" class="chart-total-summary">
+                    <span id="langChartTotalLabel">Total Expense:</span>
+                    <strong id="chartTotalAmount" class="tabular-number">₹0.00</strong>
+                </div>
+                
+                <div id="pieChartContainer" class="pie-chart-container"></div>
+                
+                <div id="chartEmptyState" class="chart-empty-state" style="display:none;">
+                    <div style="margin-bottom: 8px; color: var(--text-muted);">
+                        <script>document.write(Icons.emptyChart('svg-icon-xl'));</script>
+                    </div>
+                    <p id="langChartEmpty">No expenses recorded for this month yet.</p>
+                </div>
+
+                <div id="chartLegend" class="chart-legend"></div>
+            </div>
+
+            <!-- Passbook / Transaction Feed -->
+            <div class="history-section">
+                <div class="passbook-toolbar">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <script>document.write(Icons.receipt('svg-icon-md'));</script>
+                        <h3 id="langPassbookLabel" style="font-size: 14px; font-weight: 800;">Transaction Passbook</h3>
+                    </div>
+                    <div class="filter-tabs">
+                        <button type="button" class="filter-tab active" onclick="setPassbookFilter('all', this)" id="filterTabAll">All</button>
+                        <button type="button" class="filter-tab" onclick="setPassbookFilter('expense', this)" id="filterTabExp">Expense</button>
+                        <button type="button" class="filter-tab" onclick="setPassbookFilter('income', this)" id="filterTabInc">Income</button>
+                    </div>
+                </div>
+
+                <input type="text" id="passbookSearch" class="passbook-search" placeholder="Search by category..." oninput="renderTransactionList()">
+
+                <ul class="transaction-list" id="transactionList"></ul>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<!-- Professional Footer & Contact -->
+<footer class="footer-contact">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <h4>PocketPaisa Pro</h4>
+            <p>© 2026 PocketPaisa Pro · Crafted by Rohit</p>
+        </div>
+        <div class="footer-links">
+            <a href="https://instagram.com/rohit._yadav14" target="_blank" rel="noopener noreferrer" class="contact-pill" title="Instagram Profile">
+                <script>document.write(Icons.instagram('svg-icon-sm'));</script>
+                <span>@rohit._yadav14</span>
+            </a>
+            <a href="mailto:yadavrohityadav331@gmail.com" class="contact-pill" title="Email Developer">
+                <script>document.write(Icons.mail('svg-icon-sm'));</script>
+                <span>yadavrohityadav331@gmail.com</span>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- In-App Dialog Modal -->
+<div id="customModal">
+    <div class="modal-box">
+        <div class="modal-icon" id="customModalIcon">
+            <script>document.write(Icons.info('svg-icon-xl'));</script>
+        </div>
+        <p id="customModalText"></p>
+        <div class="modal-actions">
+            <button type="button" id="customModalCancel" class="modal-btn">Cancel</button>
+            <button type="button" id="customModalOk" class="modal-btn">OK</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-
-<script>
+    // State Persistence
     let salary = parseFloat(localStorage.getItem('web_salary_v2')) || 0.00;
     let balance = parseFloat(localStorage.getItem('web_balance_v2')) || 0.00;
     let transactions = JSON.parse(localStorage.getItem('web_transactions_v2')) || [];
     let isDarkMode = localStorage.getItem('web_dark_mode') === 'true';
-    
     let currentCurrency = localStorage.getItem('web_currency') || '₹';
     let currentLang = localStorage.getItem('web_lang') || 'hi';
+    let activeFilter = 'all';
 
+    // DOM Elements
     const balanceDisplay = document.getElementById('balanceDisplay');
     const salaryDisplay = document.getElementById('salaryDisplay');
     const warn95Banner = document.getElementById('warn95Banner');
@@ -395,10 +1801,15 @@
     const salaryInput = document.getElementById('salaryInput');
     const salaryBox = document.getElementById('salaryBox');
     const settingsMenu = document.getElementById('settingsMenu');
-    
     const sirenSound = document.getElementById('sirenSound');
     const warningSound = document.getElementById('warningSound');
+    const themeToggleIcon = document.getElementById('themeToggleIcon');
+    const amountCurrencyPrefix = document.getElementById('amountCurrencyPrefix');
+    const quickCurrencyBadge = document.getElementById('quickCurrencyBadge');
+    const budgetProgressBar = document.getElementById('budgetProgressBar');
+    const budgetSpentPercent = document.getElementById('budgetSpentPercent');
 
+    // Multi-Language Dictionary
     const translationsDict = {
         hi: {
             salaryLabel: "मासिक वेतन / सीमा",
@@ -407,14 +1818,24 @@
             updateBtn: "वेतन अपडेट करें",
             amountLabel: "राशि",
             categoryLabel: "श्रेणी / विवरण",
-            incomeBtn: "+ आय जोड़ें",
-            expenseBtn: "- खर्च जोड़ें",
+            incomeBtn: "आय जोड़ें",
+            expenseBtn: "खर्च जोड़ें",
             passbookLabel: "लेनदेन पासबुक",
             currencyLabel: "मुद्रा चुनें:",
             languageLabel: "भाषा चुनें:",
-            resetBtn: "🗑️ ऐप रीसेट करें",
+            resetBtn: "ऐप रीसेट करें",
             confirmReset: "क्या आप सच में ऐप का सारा डेटा और इतिहास साफ़ करना चाहते हैं?",
-            alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!"
+            alertReset: "ऐप डेटा सफलतापूर्वक रीसेट कर दिया गया है!",
+            chartTitle: "इस महीने के खर्च (श्रेणी अनुसार)",
+            chartTotalLabel: "कुल खर्च:",
+            chartEmpty: "इस महीने के लिए कोई खर्च रिकॉर्ड नहीं है।",
+            otherExpense: "अन्य खर्च",
+            composerTitle: "नया लेनदेन दर्ज करें",
+            budgetUtilization: "बजट उपयोग",
+            settingsTitle: "सेटिंग्स (Settings)",
+            edgeLaunchLabel: "एज क्विक लॉन्च (Edge Launch)",
+            splashTagline: "स्मार्ट बजट और वित्तीय प्रबंधन",
+            splashSecurity: "100% सुरक्षित · आपका व्यक्तिगत वित्तीय साथी"
         },
         en: {
             salaryLabel: "Monthly Salary/Limit",
@@ -423,31 +1844,99 @@
             updateBtn: "Update Salary",
             amountLabel: "Amount",
             categoryLabel: "Category / Description",
-            incomeBtn: "+ Add Income",
-            expenseBtn: "- Add Expense",
+            incomeBtn: "Add Income",
+            expenseBtn: "Add Expense",
             passbookLabel: "Transaction Passbook",
             currencyLabel: "Select Currency:",
             languageLabel: "Select Language:",
-            resetBtn: "🗑️ Reset App",
+            resetBtn: "Reset App Data",
             confirmReset: "Are you sure you want to clear all app data and history?",
-            alertReset: "App data reset successfully!"
+            alertReset: "App data reset successfully!",
+            chartTitle: "Current Month Expenses by Category",
+            chartTotalLabel: "Total Expense:",
+            chartEmpty: "No expenses recorded for this month yet.",
+            otherExpense: "Other Expense",
+            composerTitle: "Record Transaction",
+            budgetUtilization: "Budget Utilization",
+            settingsTitle: "Settings",
+            edgeLaunchLabel: "Edge Quick Launch",
+            splashTagline: "Smart Wealth & Budget Intelligence",
+            splashSecurity: "100% Private · On-Device Financial Intelligence"
         }
     };
+
+    function initSplashScreen() {
+        const splash = document.getElementById('splashScreen');
+        const fill = document.getElementById('splashLoaderFill');
+        const tagline = document.getElementById('splashTagline');
+        const securityText = document.getElementById('splashSecurityText');
+        const creditText = document.getElementById('splashCreditText');
+
+        if (!splash) return;
+
+        // Apply localization to splash screen
+        if (currentLang === 'hi') {
+            if (tagline) tagline.innerText = "स्मार्ट बजट और वित्तीय प्रबंधन";
+            if (securityText) securityText.innerText = "100% सुरक्षित · आपका व्यक्तिगत वित्तीय साथी";
+            if (creditText) creditText.innerHTML = "रोहित द्वारा निर्मित • <strong>PocketPaisa Pro</strong>";
+        }
+
+        // Trigger progress bar filling smoothly
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                if (fill) fill.style.width = '100%';
+            }, 60);
+        });
+
+        // Function to dismiss splash with smooth transition
+        let dismissed = false;
+        function dismissSplash() {
+            if (dismissed) return;
+            dismissed = true;
+            splash.classList.add('splash-dismissed');
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 650);
+        }
+
+        // Auto dismiss after 1.8 seconds
+        setTimeout(dismissSplash, 1850);
+
+        // Allow instant tap to dismiss after initial 350ms
+        setTimeout(() => {
+            splash.addEventListener('click', dismissSplash);
+        }, 350);
+    }
 
     function init() {
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
+            if (themeToggleIcon) themeToggleIcon.innerHTML = Icons.sun('svg-icon-md');
+        } else {
+            document.body.classList.remove('dark-mode');
+            if (themeToggleIcon) themeToggleIcon.innerHTML = Icons.moon('svg-icon-md');
         }
         document.getElementById('currencySelect').value = currentCurrency;
         document.getElementById('languageSelect').value = currentLang;
         updateUI();
+        initSplashScreen();
     }
 
-    function toggleSettings() {
-        if (settingsMenu.style.display === 'block') {
+    function toggleSettings(event) {
+        if (event && event.stopPropagation) {
+            event.stopPropagation();
+        }
+        if (!settingsMenu) return;
+        const isVisible = settingsMenu.style.display === 'flex';
+        settingsMenu.style.display = isVisible ? 'none' : 'flex';
+    }
+
+    function closeSettings(event) {
+        if (event && event.stopPropagation) {
+            event.stopPropagation();
+        }
+        if (settingsMenu) {
             settingsMenu.style.display = 'none';
-        } else {
-            settingsMenu.style.display = 'block';
         }
     }
 
@@ -455,6 +1944,9 @@
         document.body.classList.toggle('dark-mode');
         isDarkMode = document.body.classList.contains('dark-mode');
         localStorage.setItem('web_dark_mode', isDarkMode);
+        if (themeToggleIcon) {
+            themeToggleIcon.innerHTML = isDarkMode ? Icons.sun('svg-icon-md') : Icons.moon('svg-icon-md');
+        }
         updateUI();
     }
 
@@ -470,32 +1962,330 @@
         updateUI();
     }
 
-    function resetAllData() {
-        let confirmReset = confirm(translationsDict[currentLang].confirmReset);
-        if (confirmReset) {
-            localStorage.removeItem('web_salary_v2');
-            localStorage.removeItem('web_balance_v2');
-            localStorage.removeItem('web_transactions_v2');
-            salary = 0.00;
-            balance = 0.00;
-            transactions = [];
-            sirenSound.pause();
-            updateUI();
-            alert(translationsDict[currentLang].alertReset);
+    function quickFillCategory(catName) {
+        if (categoryInput) {
+            categoryInput.value = catName;
+            categoryInput.focus();
         }
+    }
+
+    function setPassbookFilter(type, btn) {
+        activeFilter = type;
+        document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        renderTransactionList();
+    }
+
+    // Modal Handlers
+    function showModalAlert(message) {
+        const modal = document.getElementById('customModal');
+        const text = document.getElementById('customModalText');
+        const cancelBtn = document.getElementById('customModalCancel');
+        const okBtn = document.getElementById('customModalOk');
+        const icon = document.getElementById('customModalIcon');
+        if (!modal) return;
+        
+        if (icon) icon.innerHTML = Icons.info('svg-icon-xl');
+        text.innerText = message;
+        cancelBtn.style.display = 'none';
+        modal.style.display = 'flex';
+        okBtn.onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
+
+    function showModalConfirm(message, callback) {
+        const modal = document.getElementById('customModal');
+        const text = document.getElementById('customModalText');
+        const cancelBtn = document.getElementById('customModalCancel');
+        const okBtn = document.getElementById('customModalOk');
+        const icon = document.getElementById('customModalIcon');
+        if (!modal) {
+            callback(true);
+            return;
+        }
+        if (icon) icon.innerHTML = Icons.warning('svg-icon-xl');
+        text.innerText = message;
+        cancelBtn.style.display = 'inline-block';
+        cancelBtn.innerText = currentLang === 'hi' ? 'रद्द करें' : 'Cancel';
+        modal.style.display = 'flex';
+        okBtn.onclick = function() {
+            modal.style.display = 'none';
+            callback(true);
+        };
+        cancelBtn.onclick = function() {
+            modal.style.display = 'none';
+            callback(false);
+        };
+    }
+
+    window.alert = showModalAlert;
+
+    function resetAllData() {
+        showModalConfirm(translationsDict[currentLang].confirmReset, function(confirmed) {
+            if (confirmed) {
+                localStorage.removeItem('web_salary_v2');
+                localStorage.removeItem('web_balance_v2');
+                localStorage.removeItem('web_transactions_v2');
+                salary = 0.00;
+                balance = 0.00;
+                transactions = [];
+                sirenSound.pause();
+                closeSettings();
+                updateUI();
+                showModalAlert(translationsDict[currentLang].alertReset);
+            }
+        });
     }
 
     function setSalary() {
         const inputVal = parseFloat(salaryInput.value);
         if (isNaN(inputVal) || inputVal <= 0) {
-            alert(currentLang === 'hi' ? 'कृपया सही वेतन राशि दर्ज करें!' : 'Please enter a valid salary amount!');
+            showModalAlert(currentLang === 'hi' ? 'कृपया सही वेतन राशि दर्ज करें!' : 'Please enter a valid salary amount!');
             return;
         }
         salary = inputVal;
         balance = inputVal;
-        
         salaryInput.value = '';
         updateUI();
+    }
+
+    function isCurrentMonth(tr) {
+        if (!tr) return false;
+        let d = null;
+        if (tr.timestamp) {
+            d = new Date(tr.timestamp);
+        } else if (tr.date) {
+            d = new Date(tr.date);
+        }
+        if (!d || isNaN(d.getTime())) {
+            return true;
+        }
+        const now = new Date();
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }
+
+    // D3.js Donut Visualization
+    function renderExpenseChart() {
+        const container = document.getElementById('pieChartContainer');
+        const legendContainer = document.getElementById('chartLegend');
+        const emptyState = document.getElementById('chartEmptyState');
+        const totalAmountEl = document.getElementById('chartTotalAmount');
+        const monthBadge = document.getElementById('chartMonthBadge');
+        const t = translationsDict[currentLang];
+
+        if (!container) return;
+
+        const now = new Date();
+        const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const monthNamesHi = ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+        const currentMonthName = currentLang === 'hi' ? monthNamesHi[now.getMonth()] : monthNamesEn[now.getMonth()];
+        if (monthBadge) {
+            monthBadge.innerText = `${currentMonthName} ${now.getFullYear()}`;
+        }
+
+        const currentMonthExpenses = transactions.filter(tr => tr.type === 'expense' && isCurrentMonth(tr));
+
+        const categoryTotals = {};
+        let totalExpense = 0;
+
+        currentMonthExpenses.forEach(tr => {
+            const cat = (tr.category && tr.category.trim()) || t.otherExpense;
+            const amt = parseFloat(tr.amount) || 0;
+            categoryTotals[cat] = (categoryTotals[cat] || 0) + amt;
+            totalExpense += amt;
+        });
+
+        if (totalAmountEl) {
+            totalAmountEl.innerText = `${currentCurrency}${totalExpense.toFixed(2)}`;
+        }
+
+        const data = Object.entries(categoryTotals).map(([cat, amt]) => ({
+            category: cat,
+            amount: amt,
+            percentage: totalExpense > 0 ? (amt / totalExpense) * 100 : 0
+        })).sort((a, b) => b.amount - a.amount);
+
+        if (data.length === 0 || totalExpense <= 0) {
+            emptyState.style.display = 'block';
+            container.style.display = 'none';
+            legendContainer.style.display = 'none';
+            container.innerHTML = '';
+            legendContainer.innerHTML = '';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+        container.style.display = 'flex';
+        legendContainer.style.display = 'flex';
+        container.innerHTML = '';
+        legendContainer.innerHTML = '';
+
+        if (typeof d3 === 'undefined') {
+            container.innerHTML = '<p style="font-size:12px; color:var(--text-muted);">Loading chart...</p>';
+            return;
+        }
+
+        const width = 230;
+        const height = 200;
+        const radius = 88;
+        const innerRadius = 52;
+
+        const colors = [
+            '#f43f5e', '#f97316', '#eab308', '#10b981', '#06b6d4',
+            '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#6366f1'
+        ];
+        const colorScale = d3.scaleOrdinal()
+            .domain(data.map(d => d.category))
+            .range(colors);
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'chart-tooltip';
+        container.appendChild(tooltip);
+
+        const svg = d3.select(container)
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .append('g')
+            .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+        const pie = d3.pie()
+            .value(d => d.amount)
+            .sort(null)
+            .padAngle(0.025);
+
+        const arc = d3.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(radius)
+            .cornerRadius(4);
+
+        const arcHover = d3.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(radius + 5)
+            .cornerRadius(4);
+
+        const centerGroup = svg.append('g').attr('class', 'center-info');
+        centerGroup.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '-0.3em')
+            .style('font-size', '10px')
+            .style('font-weight', '700')
+            .style('fill', isDarkMode ? '#94a3b8' : '#64748b')
+            .style('text-transform', 'uppercase')
+            .style('letter-spacing', '0.04em')
+            .text(t.chartTotalLabel.replace(':', ''));
+
+        centerGroup.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1.05em')
+            .style('font-size', '13px')
+            .style('fill', isDarkMode ? '#fb7185' : '#f43f5e')
+            .style('font-weight', '800')
+            .style('font-family', "'JetBrains Mono', monospace")
+            .text(`${currentCurrency}${totalExpense >= 10000 ? totalExpense.toFixed(0) : totalExpense.toFixed(2)}`);
+
+        const arcs = svg.selectAll('.slice')
+            .data(pie(data))
+            .enter()
+            .append('g')
+            .attr('class', 'slice');
+
+        const paths = arcs.append('path')
+            .attr('d', arc)
+            .attr('fill', d => colorScale(d.data.category))
+            .attr('stroke', isDarkMode ? '#111827' : '#ffffff')
+            .style('stroke-width', '2px')
+            .style('cursor', 'pointer');
+
+        function highlightSlice(category, active) {
+            paths.filter(d => d.data.category === category)
+                .transition()
+                .duration(160)
+                .attr('d', active ? arcHover : arc)
+                .attr('opacity', active ? 0.92 : 1);
+        }
+
+        paths.on('mouseenter', function(event, d) {
+            highlightSlice(d.data.category, true);
+            tooltip.style.opacity = '1';
+            tooltip.innerHTML = `<strong>${d.data.category}</strong><br><span style="font-family:'JetBrains Mono';">${currentCurrency}${d.data.amount.toFixed(2)}</span> (${d.data.percentage.toFixed(1)}%)`;
+            const [cx, cy] = arc.centroid(d);
+            tooltip.style.left = `${width / 2 + cx}px`;
+            tooltip.style.top = `${height / 2 + cy - 18}px`;
+            tooltip.style.transform = 'translate(-50%, -50%)';
+        })
+        .on('mouseleave', function(event, d) {
+            highlightSlice(d.data.category, false);
+            tooltip.style.opacity = '0';
+        });
+
+        data.forEach(item => {
+            const legendItem = document.createElement('div');
+            legendItem.className = 'legend-item';
+            legendItem.innerHTML = `
+                <span class="legend-color-dot" style="background:${colorScale(item.category)};"></span>
+                <span>${item.category}</span>
+                <span class="legend-amount">${currentCurrency}${item.amount.toFixed(2)}</span>
+                <span class="legend-percent">(${item.percentage.toFixed(1)}%)</span>
+            `;
+
+            legendItem.addEventListener('mouseenter', () => highlightSlice(item.category, true));
+            legendItem.addEventListener('mouseleave', () => highlightSlice(item.category, false));
+
+            legendContainer.appendChild(legendItem);
+        });
+    }
+
+    function renderTransactionList() {
+        const query = (document.getElementById('passbookSearch')?.value || '').toLowerCase().trim();
+        transactionList.innerHTML = '';
+
+        const filtered = transactions.filter((t) => {
+            if (activeFilter !== 'all' && t.type !== activeFilter) return false;
+            if (query && !t.category.toLowerCase().includes(query)) return false;
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            const emptyLi = document.createElement('li');
+            emptyLi.style.textAlign = 'center';
+            emptyLi.style.padding = '24px 10px';
+            emptyLi.style.color = 'var(--text-muted)';
+            emptyLi.style.fontSize = '13px';
+            emptyLi.innerHTML = `<div style="margin-bottom:8px; color:var(--text-muted);">${Icons.receipt('svg-icon-xl')}</div><p style="margin-top:6px;">No transactions found.</p>`;
+            transactionList.appendChild(emptyLi);
+            return;
+        }
+
+        filtered.forEach((t) => {
+            const originalIndex = transactions.indexOf(t);
+            const li = document.createElement('li');
+            li.className = `transaction-item ${t.type}-type`;
+            
+            const isIncome = t.type === 'income';
+            const iconSvg = isIncome ? Icons.arrowIncoming('svg-icon-sm') : Icons.arrowOutgoing('svg-icon-sm');
+
+            li.innerHTML = `
+                <div class="tx-left">
+                    <div class="tx-icon-bubble">${iconSvg}</div>
+                    <div class="tx-details">
+                        <strong>${t.category}</strong>
+                        <small>${t.date || ''}</small>
+                    </div>
+                </div>
+                <div class="tx-right">
+                    <span class="tx-amount" style="color: ${isIncome ? 'var(--accent-green)' : 'var(--accent-rose)'};">
+                        ${isIncome ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
+                    </span>
+                    <button type="button" class="delete-btn" onclick="deleteTransaction(${originalIndex})" title="Delete entry" aria-label="Delete entry">
+                        ${Icons.close('svg-icon-xs')}
+                    </button>
+                </div>
+            `;
+            transactionList.appendChild(li);
+        });
     }
 
     function updateUI() {
@@ -506,76 +2296,108 @@
         document.getElementById('langUpdateSalaryBtn').innerText = t.updateBtn;
         document.getElementById('langAmountLabel').innerText = t.amountLabel;
         document.getElementById('langCategoryLabel').innerText = t.categoryLabel;
-        document.getElementById('langIncomeBtn').innerText = t.incomeBtn;
-        document.getElementById('langExpenseBtn').innerText = t.expenseBtn;
+        document.getElementById('langIncomeBtn').innerHTML = `${Icons.income('svg-icon-sm')} <span>${t.incomeBtn}</span>`;
+        document.getElementById('langExpenseBtn').innerHTML = `${Icons.expense('svg-icon-sm')} <span>${t.expenseBtn}</span>`;
         document.getElementById('langPassbookLabel').innerText = t.passbookLabel;
         document.getElementById('langLabelCurrency').innerText = t.currencyLabel;
         document.getElementById('langLabelLanguage').innerText = t.languageLabel;
-        document.getElementById('langResetBtn').innerText = t.resetBtn;
-
-        salaryDisplay.innerText = `${currentCurrency}${salary.toFixed(2)}`;
-        balanceDisplay.innerText = `${currentCurrency}${balance.toFixed(2)}`;
-        
-        if (isDarkMode) {
-            salaryBox.style.background = '#34495e';
-        } else {
-            salaryBox.style.background = '#f9f9f9';
+        document.getElementById('langResetBtn').innerHTML = `${Icons.trash('svg-icon-md')} <span>${t.resetBtn}</span>`;
+        document.getElementById('langChartTitle').innerText = t.chartTitle;
+        document.getElementById('langChartTotalLabel').innerText = t.chartTotalLabel;
+        document.getElementById('langChartEmpty').innerText = t.chartEmpty;
+        if (document.getElementById('langComposerTitle')) {
+            document.getElementById('langComposerTitle').innerText = t.composerTitle || "Record Transaction";
+        }
+        if (document.getElementById('budgetSpentLabel')) {
+            document.getElementById('budgetSpentLabel').innerText = t.budgetUtilization || "Budget Utilization";
+        }
+        if (document.getElementById('settingsModalHeading')) {
+            document.getElementById('settingsModalHeading').innerText = t.settingsTitle || "Settings";
+        }
+        if (document.getElementById('langLabelEdgeLaunch')) {
+            document.getElementById('langLabelEdgeLaunch').innerText = t.edgeLaunchLabel || "Edge Quick Launch";
         }
 
+        // Quick badges
+        if (amountCurrencyPrefix) {
+            amountCurrencyPrefix.innerText = currentCurrency;
+        }
+        if (quickCurrencyBadge) {
+            quickCurrencyBadge.innerText = currentCurrency;
+        }
+
+        // Numbers format
+        salaryDisplay.innerText = `${currentCurrency}${salary.toFixed(2)}`;
+        balanceDisplay.innerText = `${currentCurrency}${balance.toFixed(2)}`;
+
+        // Budget Utilization Meter
         let totalSpent = salary - balance;
         let spentPercentage = salary > 0 ? (totalSpent / salary) * 100 : 0;
+        let displayPercent = Math.max(0, Math.min(spentPercentage, 100));
 
+        if (budgetProgressBar) {
+            budgetProgressBar.style.width = `${displayPercent}%`;
+            if (spentPercentage >= 95 || balance < 0) {
+                budgetProgressBar.style.backgroundColor = 'var(--accent-rose)';
+            } else if (spentPercentage >= 80) {
+                budgetProgressBar.style.backgroundColor = 'var(--accent-amber)';
+            } else {
+                budgetProgressBar.style.backgroundColor = 'var(--accent-green)';
+            }
+        }
+
+        if (budgetSpentPercent) {
+            budgetSpentPercent.innerText = `${spentPercentage.toFixed(1)}%`;
+            budgetSpentPercent.style.color = (spentPercentage >= 95 || balance < 0) ? 'var(--accent-rose)' : 'var(--text-secondary)';
+        }
+
+        // Warnings & Siren
         warn95Banner.style.display = 'none';
         warnOverBanner.style.display = 'none';
         sirenSound.pause();
 
         if (salary > 0) {
             if (balance < 0) {
-                warnOverBanner.innerText = currentLang === 'hi' ? `🚨 संकट चेतावनी: बजट पार हो गया! सायरन बज रहा है!` : `🚨 CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!`;
-                warnOverBanner.style.display = 'block';
+                document.getElementById('warnOverText').innerText = currentLang === 'hi' 
+                    ? `संकट चेतावनी: बजट पार हो गया! सायरन बज रहा है!` 
+                    : `CRITICAL ALERT: Budget Exceeded! SIREN PLAYING!`;
+                warnOverBanner.style.display = 'flex';
                 sirenSound.play().catch(e => console.log("Audio block handling"));
             } else if (spentPercentage >= 95) {
-                warn95Banner.innerText = currentLang === 'hi' ? `⚠️ चेतावनी: आपने अपने बजट का 95% खर्च कर दिया है!` : `⚠️ WARNING: You have spent 95% of your Budget!`;
-                warn95Banner.style.display = 'block';
+                document.getElementById('warn95Text').innerText = currentLang === 'hi' 
+                    ? `चेतावनी: आपने अपने बजट का 95% खर्च कर दिया है!` 
+                    : `WARNING: You have spent 95% of your Budget!`;
+                warn95Banner.style.display = 'flex';
                 warningSound.play().catch(e => console.log("Audio block handling"));
             }
         }
 
-        transactionList.innerHTML = '';
-        transactions.forEach((t, index) => {
-            const li = document.createElement('li');
-            li.className = `transaction-item ${t.type}-type`;
-            li.innerHTML = `
-                <div>
-                    <strong>${t.type === 'income' ? '➕' : '➖'} ${t.category}</strong>
-                    <br><small style="font-size:10px; opacity:0.7;">${t.date || ''}</small>
-                </div>
-                <div style="display:flex; align-items:center;">
-                    <span style="color: ${t.type === 'income' ? '#27ae60' : '#c0392b'}; font-weight: bold; margin-right: 10px;">
-                        ${t.type === 'income' ? '+' : '-'}${currentCurrency}${t.amount.toFixed(2)}
-                    </span>
-                    <button class="delete-btn" onclick="deleteTransaction(${index})">X</button>
-                </div>
-            `;
-            transactionList.appendChild(li);
-        });
+        renderTransactionList();
 
         localStorage.setItem('web_salary_v2', salary);
         localStorage.setItem('web_balance_v2', balance);
         localStorage.setItem('web_transactions_v2', JSON.stringify(transactions));
+
+        renderExpenseChart();
+
+        if (window.EdgeOverlayService && typeof window.EdgeOverlayService.syncWithApp === 'function') {
+            window.EdgeOverlayService.syncWithApp();
+        }
     }
 
-    function addTransaction(type) {
-        const amount = parseFloat(amountInput.value);
-        let category = categoryInput.value.trim();
+    function addTransaction(type, customAmount, customCategory) {
+        const amount = customAmount !== undefined ? parseFloat(customAmount) : parseFloat(amountInput.value);
+        let category = customCategory !== undefined ? (customCategory || '').trim() : categoryInput.value.trim();
 
         if (isNaN(amount) || amount <= 0) {
-            alert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
-            return;
+            showModalAlert(currentLang === 'hi' ? 'कृपया सही राशि दर्ज करें!' : 'Please enter a valid amount!');
+            return false;
         }
 
         if (category === '') {
-            category = type === 'income' ? (currentLang === 'hi' ? 'अन्य आय' : 'Other Income') : (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
+            category = type === 'income' 
+                ? (currentLang === 'hi' ? 'अन्य आय' : 'Other Income') 
+                : (currentLang === 'hi' ? 'अन्य खर्च' : 'Other Expense');
         }
 
         if (type === 'income') {
@@ -588,15 +2410,21 @@
             type: type, 
             amount: amount, 
             category: category, 
-            date: new Date().toLocaleString() 
+            date: new Date().toLocaleString(),
+            timestamp: Date.now()
         });
-        amountInput.value = '';
-        categoryInput.value = '';
+
+        if (customAmount === undefined) {
+            amountInput.value = '';
+            categoryInput.value = '';
+        }
         updateUI();
+        return true;
     }
 
     function deleteTransaction(index) {
         const t = transactions[index];
+        if (!t) return;
         if (t.type === 'income') {
             balance -= t.amount;
         } else {
@@ -606,8 +2434,26 @@
         updateUI();
     }
 
+    // Expose Bridge for External & Floating Overlay Services
+    window.PocketPaisaBridge = {
+        addTransaction: (type, amt, cat) => addTransaction(type, amt, cat),
+        getState: () => ({
+            salary: salary,
+            balance: balance,
+            currentCurrency: currentCurrency,
+            currentLang: currentLang,
+            transactions: transactions
+        }),
+        updateUI: () => updateUI(),
+        showModalAlert: (msg) => showModalAlert(msg)
+    };
+
+    // Initialize application
     init();
 </script>
+
+<!-- Edge Overlay Handle & Quick Launch Panel Service -->
+<script src="/edge-overlay.js"></script>
 
 </body>
 </html>
